@@ -33,3 +33,7 @@ format:
 
 editor: visual
 
+project:
+  output-dir: docs
+
+
