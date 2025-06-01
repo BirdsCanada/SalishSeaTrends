@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 
 book:
   title: "Modeling sea duck trends in the transboundary waters of the Salish Sea: a multi-scale approach to meet management planning needs."
@@ -10,30 +11,20 @@ book:
     - 02_DataAccess.qmd
     - 03_Analysis.qmd
     - 99_Resources.qmd
-   
-   resources:
+
+resources:
   - Scripts/*.R
-  - Data/*.csv
+  - Data/*
   - Data/Spatial/*
 
 bibliography: references.bib
-
-resources:
-  - scripts/*.R
-  - Data/*.csv
 
 execute:
   eval: false
 
 format:
   html:
+    toc: true
     theme: cosmo
   pdf:
     documentclass: scrreprt
-
-editor: visual
-
-project:
-  output-dir: docs
-
-
