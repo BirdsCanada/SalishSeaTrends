@@ -1,0 +1,87 @@
+species_id,species_code,english_name,scientific_name,Migration,Diet
+45419,AMCO,American Coot,Fulica americana,Local,Herbivore
+420,AMWI,American Wigeon,Mareca americana,Local,Herbivore
+5850,ANMU,Ancient Murrelet,Synthliboramphus antiquus,LDM,Piscivore
+2350,AWPE,American White Pelican,Pelecanus erythrorhynchos,SDM,Piscivore
+3020,BAEA,Bald Eagle,Haliaeetus leucocephalus,Local,Omnivore
+840,BAGO,Barrow's Goldeneye,Bucephala islandica,SDM,Benthivore
+791,BLSC,Black Scoter,Melanitta americana,LDM,Benthivore
+5080,BOGU,Bonaparte's Gull,Chroicocephalus philadelphia,LDM,Omnivore
+2370,BRAC,Brandt's Cormorant,Urile penicillatus,Local,Piscivore
+180,BRAN,Brant,Branta bernicla,LDM,Herbivore
+2360,BRPE,Brown Pelican,Pelecanus occidentalis,LDM,Piscivore
+820,BUFF,Bufflehead,Bucephala albeola,SDM,Benthivore
+5860,CAAU,Cassin's Auklet,Ptychoramphus aleuticus,Local,
+220,CACG,Cackling Goose,Branta hutchinsii,LDM,Herbivore
+230,CAGO,Canada Goose,Branta canadensis,Local,Herbivore
+5160,CAGU,California Gull,Larus californicus,SDM,Omnivore
+630,CANV,Canvasback,Aythya valisineria,SDM,Omnivore
+5500,CATE,Caspian Tern,Hydroprogne caspia,Local,Piscivore
+530,CITE,Cinnamon Teal,Spatula cyanoptera,Local,Omnivore
+1660,CLGR,Clark's Grebe,Aechmophorus clarkii,SDM,Piscivore
+830,COGO,Common Goldeneye,Bucephala clangula,SDM,Benthivore
+3110,COHA,Cooper's Hawk,Accipiter cooperii,Local,
+1560,COLO,Common Loon,Gavia immer,SDM,Piscivore
+880,COME,Common Merganser,Mergus merganser,Local,Piscivore
+5730,COMU,Common Murre,Uria aalge,Local,Piscivore
+5570,COTE,Common Tern,Sterna hirundo,LDM,Piscivore
+2390,DCCO,Double-crested Cormorant,Nannopterum auritum,Local,Piscivore
+1640,EAGR,Eared Grebe,Podiceps nigricollis,SDM,Benthivore
+410,EUWI,Eurasian Wigeon,Mareca penelope,LDM,Herbivore
+390,GADW,Gadwall,Mareca strepera,Local,Herbivore
+2550,GBHE,Great Blue Heron,Ardea herodias,Local,Omnivore
+5270,GLGU,Glaucous Gull,Larus hyperboreus,LDM,Omnivore
+680,GRSC,Greater Scaup,Aythya marila,SDM,Omnivore
+130,GWFG,Greater White-fronted Goose,Anser albifrons,LDM,Herbivore
+5250,GWGU,Glaucous-winged Gull,Larus glaucescens,Local,Omnivore
+590,GWTE,Green-winged Teal,Anas crecca,SDM,Herbivore
+750,HARD,Harlequin Duck,Histrionicus histrionicus,Local,Benthivore
+5090,HEEG,Heermann's Gull,Larus heermanni,LDM,Omnivore
+5170,HERG,Herring Gull,Larus argentatus,SDM,Omnivore
+1620,HOGR,Horned Grebe,Podiceps auritus,SDM,Piscivore
+870,HOME,Hooded Merganser,Lophodytes cucullatus,Local,Omnivore
+5340,IVGU,Ivory Gull,Pagophila eburnea,LDM,
+730,KIEI,King Eider,Somateria spectabilis,LDM,Benthivore
+690,LESC,Lesser Scaup,Aythya affinis,SDM,Omnivore
+810,LTDU,Long-tailed Duck,Clangula hyemalis,LDM,Benthivore
+451,MALL,Mallard,Anas platyrhynchos,Local,Herbivore
+5800,MAMU,Marbled Murrelet,Brachyramphus marmoratus,Local,Piscivore
+3580,MERL,Merlin,Falco columbarius,Local,
+1760,NOFU,Northern Fulmar,Fulmarus glacialis,Local,Omnivore
+3061,NOHA,Northern Harrier,Circus hudsonius,Local,
+30508,NOPI,Northern Pintail,Anas acuta,SDM,Herbivore
+540,NSHO,Northern Shoveler,Spatula clypeata,Local,Omnivore
+2900,OSPR,Osprey,Pandion haliaetus,Local,Piscivore
+1550,PALO,Pacific Loon,Gavia pacifica,LDM,Piscivore
+1600,PBGR,Pied-billed Grebe,Podilymbus podiceps,SDM,Benthivore
+2420,PECO,Pelagic Cormorant,Urile pelagicus,Local,Piscivore
+45581,PEFA,Peregrine Falcon,Falco peregrinus,Local,
+5780,PIGU,Pigeon Guillemot,Cepphus columba,SDM,Piscivore
+5680,POJA,Pomarine Jaeger,Stercorarius pomarinus,LDM,
+5150,RBGU,Ring-billed Gull,Larus delawarensis,SDM,Omnivore
+890,RBME,Red-breasted Merganser,Mergus serrator,SDM,Piscivore
+640,REDH,Redhead,Aythya americana,SDM,Omnivore
+5010,REPH,Red Phalarope,Phalaropus fulicarius,LDM,
+5910,RHAU,Rhinoceros Auklet,Cerorhinca monocerata,Local,Piscivore
+660,RNDU,Ring-necked Duck,Aythya collaris,SDM,Omnivore
+1630,RNGR,Red-necked Grebe,Podiceps grisegena,SDM,Piscivore
+5000,RNPH,Red-necked Phalarope,Phalaropus lobatus,SDM,
+1530,RTLO,Red-throated Loon,Gavia stellata,SDM,Piscivore
+46804,RUDU,Ruddy Duck,Oxyura jamaicensis,SDM,Benthivore
+5300,SAGU,Sabine's Gull,Xema sabini,LDM,
+5142,SBIG,Short-billed Gull,Larus brachyrhynchus,Local,Omnivore
+160,SNGO,Snow Goose,Anser caerulescens,LDM,Herbivore
+2030,SOSH,Sooty Shearwater,Ardenna grisea,LDM,
+3100,SSHA,Sharp-shinned Hawk,Accipiter striatus,Local,
+770,SUSC,Surf Scoter,Melanitta perspicillata,LDM,Benthivore
+290,TUSW,Tundra Swan,Cygnus columbianus,LDM,Herbivore
+1650,WEGR,Western Grebe,Aechmophorus occidentalis,SDM,Piscivore
+5240,WEGU,Western Gull,Larus occidentalis,SDM,Omnivore
+45994,WWSC,White-winged Scoter,Melanitta deglandi,SDM,Benthivore
+1570,YBLO,Yellow-billed Loon,Gavia adamsii,LDM,Piscivore
+680,GRSC,Greater-Lesser Scaup,Aythya marila/ affinis,SDM,Omnivore
+1640,EAGR,Eared-Horned Grebe,Podiceps nigricollis/ auritus,SDM,Benthivore
+1650,WEGR,Western-Clark's Grebe,Aechmophorus occidentalis/ clarkii,SDM,Piscivore
+230,CAGO,Canada-Cackling Goose,Branta canadensis/ hutchinsii,Local,Herbivore
+5160,CAGU,Large Gull,Larus sp. ,SDM,Omnivore
+280,TUSW,Trumpeter Swan,Cygnus buccinator,SDM,Herbivore

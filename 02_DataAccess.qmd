@@ -1,0 +1,246 @@
+---
+title: "Data Access and Cleaning"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+Before you get started, run the `setup.R` script to install and load the necessary packages and functions for this analysis.
+
+[00_Setup.R](scripts/00_Setup.R)
+
+## British Columbia Coastal Waterbird Survey (BCCWS) {#2.1Data}
+
+### Protocol
+
+BCCWS data collection protocol can be found online [here](https://www.birdscanada.org/bird-science/british-columbia-coastal-waterbird-survey/bccws_resources).
+
+In short, surveys have been conducted by volunteers using a standardized protocol and data collection [sheets](https://birdscanada.b-cdn.net/wp-content/uploads/2021/02/BCCWS_Datasheet.pdf). Shore-based counts are completed monthly on or near the second Sunday of each month from September to April. Surveys are complete within approximately 2 hours of high tide to maximize the opportunity for close observation. All waterbirds observed to a distance of 1 km from the high tide line are counted, except those that fly through without stopping. In the case of larger flocks, numbers are estimated by counting individuals and species in groups and scaling up (see [Training Module for Volunteers](https://birdscanada.b-cdn.net/wp-content/uploads/2020/02/BCCWS-Training-Module.pdf)). Data are entered through a customized online data entry system available on the Birds Canada website, [NatureCounts](https://birdscanada.github.io/www.birdscanada.%20org/birdmon/default/main.jsp). Observations are processed using the eBird data filters to flag rare species and high counts during observer data entry, and records are manually reviewed for form accuracy.
+
+The data are collected using a standardized protocol, by trained citizen-science volunteers. This standardization is a strength of this data set for making inferences about coastal waterbirds in the Canadian Salish Sea.
+
+### Data Collected
+
+Observation counts of waterbirds and raptor seen during a survey are compiled at the scale of the route (i.e., the maximum count per species) on each monthly survey. These observations are divided into inland, near shore (shoreline to 500m out from high tide), off shore (beyond 500m), and total counts. The dataset is not zero-filled.
+
+Auxiliary Data Collected:
+
+-   Observer information: observer ID
+
+-   Survey information: time observation started, time observation ended, duration in hours
+
+-   Survey condition: precipitation, % cloud, sea condition, tide state, tide movement, visibility, survey equipment, human activity (all categorical)
+
+### Data Access
+
+Data can be freely accessed through the NatureCounts data [download](https://naturecounts.ca/nc/default/searchquery.jsp) portal or directly through the naturecounts R package. The BCCWS is Access Level 4 dataset, meaning a data request form must be submitted. This is not meant to be a barrier, rather a means of keeping track of who is using the data and for what purposes.
+
+Data are formatted using a standardized schema that is a core standard of the [Avian Knowledge Network](https://avianknowledge.net/) and which feeds into [GBIF](https://www.gbif.org/). This format is called the Bird Monitoring Data Exchange ([BMDE](https://naturecounts.ca/nc/default/nc_bmde.jsp)), which includes 169 core fields for capturing all metric and descriptors associated with bird observations.
+
+```{r BCCWS Data Download}
+
+#sample code to access BCCWS data from NatureCounts
+ BCCWS<-nc_data_dl(collection="BCCWS", username = "YOUR USERNAME", info="MY REASON", fields_set = "extended", request_id = 12345)
+
+#Write to Data folder in working directory
+write.csv(BCCWS, "Data/BCCWS.csv", row.names = FALSE)
+#read from Data folder in working directory
+BCCWS<-read.csv("Data/BCCWS.csv")
+ 
+```
+
+## Puget Sound Seabird Survey (PSSS) {#2.2Data}
+
+### Protocol
+
+PSSS data collection protocol can be found online [here](https://seattleaudubon.org/wp-content/uploads/2021/01/PSSS_Protocol_2014-15.pdf).
+
+In short, surveys are conducted by volunteers using a standardized protocol and data collection [sheets](https://seattleaudubon.org/wp-content/uploads/2021/09/PSSS-Datasheet.pdf). Shore-based counts are completed monthly on the first Saturday of each month from October to April. Surveys are completed within approximately 2 hours of high tide to maximize the opportunity for close observation. Surveys are a minimum of 15 minutes and a maximum of 30 minutes per site. All waterbirds observed to a distance of 300 m from the high tide line are counted, except those that fly through without stopping. For large flocks, surveys estimate both the min, max, and best estimate. Surveyors are required to attend a short training session with Puget Sound Bird Observatory staff prior to their first survey. Data are entered through a customized online data entry system, available [here](http://seabirdsurvey.org/seabirdsurvey/).
+
+The data are collected using a standardized protocol, by trained citizen-science volunteers. This standardization is a strength of this dataset for making inferences about coastal waterbirds in the US Salish Sea.
+
+### Data Collected
+
+Total observation counts of each waterbird species seen during a point survey are recorded, including bearing, distance, and sex ratio. Raptors are recorded separately from the other waterbird species. The dataset is not zero-filled.
+
+Auxiliary Data Collected:
+
+-   Observer information: observer name
+
+-   Survey information: time observation started, time observation ended
+
+-   Survey condition: weather, precipitation, sea state, tide movement, visibility, human activity, raptor activity (all categorical)
+
+### Data Access
+
+At the time of writing, the data were only accessible by reaching out to the Puget Sound Bird Observatory directly and filling out a data share agreement. The data will be sent to you as a .xslx flat file which will be suitable for Data formatting and processing. Ensure that you receive all the data for the specified temporal period you are interested in analyzing. This will be needed to allow for proper zero-filling. Place the data in a `Data` folder in your working directory.
+
+Now you can import the data using the file name.
+
+```{r PSSS, warning=FALSE}
+
+#sample code to access PSSS data from your working Data directory
+
+PSSS <- read.csv("Data/PSSS Survey Data - 13 Mar 2025.csv") #copy contains wyear 2023
+
+```
+
+### Data Format
+
+The PSSS is in a different format than the BCCCW, and therefore requires a separate data processing step to wrangle the data into the 169 core fields of the Bird Monitoring Data Exchange ([BMDE](https://naturecounts.ca/nc/default/nc_bmde.jsp)). The following function will do this step for you.
+
+[PSSSBMDE.R](scripts/PSSSBMDE.R)
+
+```{r PSSS-BMDE, warning=FALSE}
+
+source("PSSSBMDE.R") #warning about "missing pieces" can be ignored
+
+#Write to Data folder in working directory
+write.csv(PSSS, "Data/PSSS.csv", row.names = FALSE)
+
+#read from Data folder in working directory
+PSSS<-read.csv("Data/PSSS.csv")
+ 
+```
+
+## Clean and Combine {#2.3Data}
+
+Now it is time to do some data cleaning before we combine the BCCWS and PSSS datasets. The user has the opportunity here to select the start and end dates of the analysis by changing the Y1 and Y2 variables.
+
+During this process some species are combined following advise from the survey coordinators. These are species that are typically difficult to tell apart and are often misidentified.
+
+-   "Large Gull" = gull (large) + WEGU + GWGU hybrid + Glaucous-winger + Western + Herring + Glaucous + Iceland (Thayer's) + California Gull
+
+-   "Greater-Lesser Scaup" = scaup sp + Lesser + Greater Scaup
+
+-   "Eared-Horned Grebe"
+
+-   "Western-Clark's Grebe"
+
+-   "Canada-Cackling Goose"
+
+Other non-target species are also removed i.e., any species detected less than 10 times over all years is considered rare and removed.
+
+This part of the code also creates and events martix for each program. This is what is used for zero-filling during the species or guild specific analysis.
+
+-   wmonth = MonthCollected (1=September to 8=April)
+-   wyear
+-   ObservationCount3 for BCCWS to match PSSS protocol
+-   Sampling events matrix
+
+```{r}
+
+#Manually specify the start and end year of the analysis
+#Keep in mind that this is the winter year (wyear) which is the start year of the survey, #The survey straddles two calendar years
+Y1 = 2008
+Y2 = 2024
+
+```
+
+#Run the BCCWS and PSSS cleaning scripts. 
+[BCCWSClean.R](scripts/BCCWSClean.R)
+[PSSSClean.R](scripts/PSSSClean.R)
+
+```{r}
+
+#Combine and write the data to you Data folder
+in.data<-rbind(in.BCCWS, in.PSSS)
+events<-rbind(event.BCCWS, event.PSSS)
+
+# To write to local Data directory
+write.csv(in.data, "Data/in.data.csv", row.names = FALSE)
+write.csv(events, "Data/events.csv", row.names = FALSE)
+
+```
+
+
+## Species Selection {#2.4Data}
+
+Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. For example, you may wish to manually create a species list or you can set minimum data requirements for species to be included in the analysis.
+
+To manually create your list, you can use the species name. For example, to include the species: Surf Scoter, Long-tailed Duck, and Buffelhead, you would create a list as follows:
+
+```{r}
+
+sp.list <-c("Surf Scoter", "Long-tailed Dick", "Buffelhead")
+
+#Now filter the full dataset by the species list
+sp.data<-in.data[in.data$CommonName %in% sp.list,]
+
+#write to Data folder in working directory
+write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)
+
+```
+
+Here we select species that are detected by both surveys. Generally, PSSS monitors just targets, whereas the BCCWS monitors more non-targets. In the analysis script we will set some additional minimum data requirements to remove species that do not have enough data to estimate trends.
+
+```{r}
+
+#Determine which SpeciesCode each ProjectCode share in the full dataset
+sp.bccws<-in.data %>% filter(ProjectCode == "BCCWS") %>% dplyr::select(CommonName) %>% distinct()
+sp.psss<-in.data %>% filter(ProjectCode == "PSSS") %>% dplyr::select(CommonName) %>% distinct()
+
+common.species<-intersect(sp.bccws$CommonName, sp.psss$CommonName) 
+#There were 53 species in common between BCCWS and PSSS that are carried forward for the analysis
+
+#filter the full dataset to only include the common species
+sp.data<-in.data[in.data$CommonName %in% common.species,]
+
+#write to Data folder in working directory
+write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)
+
+```
+
+## Guild Assignment {#2.5Data}
+
+The user may be interested in assigning species to Guilds for their analysis. In the Data folder we provide the user with migration and dietary guilds for the 53 species that the survey programs have in common. We can also assign species to family using the NatureCounts metadata.
+
+```{r}
+
+guild<-read.csv("Data/GuildList.csv")
+guild<-guild[guild$english_name %in% common.species,]
+
+family<-meta_species_taxonomy() %>% select(species_id, group_id, family_name, family_english_name)
+guild<-left_join(guild, family, by=c("species_id"))
+
+sp.data<-left_join(sp.data, guild, by=c("CommonName" = "english_name"))
+
+#write to Data folder in working directory
+write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)
+
+```
+
+## Sampling Events Plot {#2.6Data}
+
+Now we will plot the distribution of sampling events over the extent of the Salish Sea. This will be facets by year (wyear) so that changes in sampling effort can be spatially visualized. Each survey program will be given a different colour.
+
+Notice that in 2020, sampling was reduced in Canada and did not happen in the US due to COVID-19. We will therefore remove this wyear during our analysis.
+
+```{r}
+
+#Convert the data to a spatial object
+events_sf <- st_as_sf(events, coords = c("DecimalLongitude", "DecimalLatitude"), crs = 4326)
+
+ggplot(data = events_sf) +
+  # Select a basemap
+  annotation_map_tile(type = "cartolight", zoom = NULL, progress = "none") +
+  # Plot the points, color-coded by survey_year
+  geom_sf(aes(color = as.factor(wyear)), size = 1) +
+  # Facet by survey_year to create the multi-paneled map
+  facet_wrap(~ wyear) +
+  # Add a theme with a minimal design and change the font styles, to your preference
+  theme_minimal() +
+  #theme(legend.position = "bottom") +
+  # To make the points in the legend larger without affecting map points
+  guides(color = guide_legend(override.aes = list(size = 3))) +
+  #make the text on the x-axis vertical
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  # Define the title and axis names
+  labs(title = "Coastal Waterbird Survey Events in the Salish Sea",
+       x = "Longitude",
+       y = "Latitude")+
+  #Define the legend title
+  scale_color_discrete(name = "Winter Year")
+
+```

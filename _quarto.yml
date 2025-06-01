@@ -1,0 +1,35 @@
+project:
+  type: book
+
+book:
+  title: "Modeling sea duck trends in the transboundary waters of the Salish Sea: a multi-scale approach to meet management planning needs."
+  author: "Danielle Ethier"
+  date: "2025-06-01"
+  chapters:
+    - index.qmd
+    - 02_DataAccess.qmd
+    - 03_Analysis.qmd
+    - 99_Resources.qmd
+   
+   resources:
+  - Scripts/*.R
+  - Data/*.csv
+  - Data/Spatial/*
+
+bibliography: references.bib
+
+resources:
+  - scripts/*.R
+  - Data/*.csv
+
+execute:
+  eval: false
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+editor: visual
+

@@ -1,0 +1,51 @@
+---
+title: "Resources"
+---
+
+## Accessing Code on the Birds Canada GitHub
+
+All R scripts and code resources associated with this project, as well as many other tools and tutorials, are available on the Birds Canada GitHub page.
+
+This repository is regularly updated and serves as the central hub for sharing code related to Birds Canada’s monitoring and research programs.
+
+To access the code:
+
+Visit https://github.com/BirdsCanada
+
+Browse the list of repositories for relevant projects, including data access tools, analysis scripts, and the NatureCounts R package.
+
+You can view files directly on GitHub, or download individual scripts and entire repositories by clicking the green Code button and selecting Download ZIP.
+
+For advanced users, you can clone repositories using Git with the command:
+
+bash git clone https://github.com/BirdsCanada/SalishSeaTrends.git
+
+For tutorials and additional resources on using the NatureCounts R package, see the [NatureCounts package website](https://birdscanada.github.io/naturecounts/articles/index.html).
+
+If you are new to GitHub, Birds Canada also provides a [Beginner’s Guide to GitHub](https://birdscanada.github.io/BirdsCanada_GitHubGuide/) with step-by-step instructions for accessing and sharing code. .
+
+\## Downloadable R Scripts
+
+You can download the R scripts used in this analysis below:
+
+-   [00_Setup.R](Scripts/00_Setup.R)
+-   [Analysis_iCAR.R](Scripts/Analysis_iCAR.R)
+-   [Analysis_SPDE.R](Scripts/Analysis_SPDE.R)
+-   [BCCWSClean.R](Scripts/BCCWSClean.R)
+-   [PSSSClean.R](Scripts/PSSSClean.R)
+-   [Graph_iCAR.R](Scripts/Graph_iCAR.R)
+-   [Graph_SPDE.R](Scripts/Graph_SPDE.R)
+-   [OutputTables.R](Scripts/OutputTables.R)
+-   [PSSSBMDE.R](Scripts/PSSSBMDE.R)
+
+# Download Data
+
+-   [GuildList.csv](Data/GuildList.csv)
+-   [Salish_Sea_Water_Polygon.dbf](Data/Spatial/Salish_Sea_Water_Polygon.dbf)
+-   [Salish_Sea_Water_Polygon.prj](Data/Spatial/Salish_Sea_Water_Polygon.prj)
+-   [Salish_Sea_Water_Polygon.shp](Data/Spatial/Salish_Sea_Water_Polygon.shp)
+-   [Salish_Sea_Water_Polygon.shx](Data/Spatial/Salish_Sea_Water_Polygon.shx)
+-   [Salish_Sea_Watershed.dbf](Data/Spatial/Salish_Sea_Watershed.dbf)
+-   [Salish_Sea_Watershed.prj](Data/Spatial/Salish_Sea_Watershed.prj)
+-   [Salish_Sea_Watershed.shp](Data/Spatial/Salish_Sea_Watershed.shp)
+-   [Salish_Sea_Watershed.shx](Data/Spatial/Salish_Sea_Watershed.shx)
