@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 book:
-  title: "Modeling sea duck trends in the transboundary waters of the Salish Sea: a multi-scale approach to meet management planning needs."
+  title: "Transboundary coastal waterbird trends in the Salish Sea"
   author: "Danielle Ethier"
   date: "2025-06-01"
   chapters:

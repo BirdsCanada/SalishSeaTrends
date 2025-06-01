@@ -2,9 +2,9 @@
 title: "Resources"
 ---
 
-## Accessing Code on the Birds Canada GitHub
+## Accessing Code on the Birds Canada GitHub {#9.9BirdsCan}
 
-All R scripts and code resources associated with this project, as well as many other tools and tutorials, are available on the Birds Canada GitHub page.
+All R scripts and code resources associated with this project, as well as many other tools and tutorials, are available on the [Birds Canada GitHub](https://github.com/BirdsCanada) page.
 
 This repository is regularly updated and serves as the central hub for sharing code related to Birds Canada’s monitoring and research programs.
 
@@ -24,7 +24,7 @@ For tutorials and additional resources on using the NatureCounts R package, see 
 
 If you are new to GitHub, Birds Canada also provides a [Beginner’s Guide to GitHub](https://birdscanada.github.io/BirdsCanada_GitHubGuide/) with step-by-step instructions for accessing and sharing code. .
 
-\## Downloadable R Scripts
+## Downloadable R Scripts {#9.91BirdsCan}
 
 You can download the R scripts used in this analysis below:
 
@@ -38,7 +38,7 @@ You can download the R scripts used in this analysis below:
 -   [OutputTables.R](Scripts/OutputTables.R)
 -   [PSSSBMDE.R](Scripts/PSSSBMDE.R)
 
-# Download Data
+## Downloadable Data {#9.92BirdsCan}
 
 -   [GuildList.csv](Data/GuildList.csv)
 -   [Salish_Sea_Water_Polygon.dbf](Data/Spatial/Salish_Sea_Water_Polygon.dbf)
