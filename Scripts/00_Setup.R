@@ -10,6 +10,9 @@ if(!dir.exists("Output")) dir.create("Output")
 if(!dir.exists("Output/Plots")) dir.create("Output/Plots")
 
 source("OutputTables.R")
+source("BCCWSClean.R")
+source("PSSSClean.R")
+source("PSSSBMDE.R")
 
 #Assign directories
 out.dir <- "Output/"
@@ -35,20 +38,16 @@ sp.tax<-meta_species_taxonomy()
 
 sp<-left_join(sp.c, sp.tax, by="species_id")
 sp<-sp %>% distinct(english_name, .keep_all = TRUE)
-
 sp<-sp %>% dplyr::select(species_code, scientific_name, english_name) %>% distinct()
 
 run_analysis <- function(model = c("SPDE", "iCAR")) {
   model <- match.arg(model)
-  
-  
 # Source the appropriate analysis script
   if (model == "SPDE") {
     source("Analysis_SPDE.R", local = knitr::knit_global())
   } else if (model == "iCAR") {
     source("Analysis_iCAR.R", local = knitr::knit_global())
   }
-  
   message("Analysis for '", model, "'model has been run. Check Output folder for results.")
 }
 
@@ -57,19 +56,16 @@ graph_results <- function(model = c("SPDE", "iCAR"), name, trend = c("endpoint",
       model <- match.arg(model)
       trend <- tolower(trend)         # Convert user input to lowercase
       trend <- match.arg(trend)       # Now safely match
-      
       # Make 'name' and 'trend' available to sourced scripts
       assign("name", name, envir = knitr::knit_global())
       assign("trend", trend, envir = knitr::knit_global())
-      
       # Source the appropriate analysis script, suppressing warnings
       if (model == "SPDE") {
         suppressWarnings(source("Graph_SPDE.R", local = knitr::knit_global()))
       } else if (model == "iCAR") {
         suppressWarnings(source("Graph_iCAR.R", local = knitr::knit_global()))
       }
-      
-      message("Graph results for '", model, "' model (", name, ") have been run. Check Output/Plot folder for results.")
+        message("Graph results for '", model, "' model (", name, ") have been run. Check Output/Plot folder for results.")
     }
     
 #Calculate Dispersion Statistic for SPDE 
@@ -138,7 +134,6 @@ calculate_dispersion_iCAR <- function(inla_model, observed, fam = "nbinomial") {
 }
 
 # Function to calculate duration in hours
-
 calculate_duration <- function(start, end) {
   # Convert start and end times to total minutes
   start_minutes <- floor(start) * 60 + round((start - floor(start)) * 60)

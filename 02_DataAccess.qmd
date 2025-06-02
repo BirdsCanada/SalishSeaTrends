@@ -80,9 +80,9 @@ Now you can import the data using the file name.
 
 ```{r PSSS, warning=FALSE}
 
-#sample code to access PSSS data from your working Data directory
+#Sample code to access PSSS data from your working Data directory
 
-PSSS <- read.csv("Data/PSSS Survey Data - 13 Mar 2025.csv") #copy contains wyear 2023
+PSSS_loaded <- read.csv("Data/PSSS Survey Data - 13 Mar 2025.csv") #copy contains wyear 2023
 
 ```
 
@@ -90,18 +90,11 @@ PSSS <- read.csv("Data/PSSS Survey Data - 13 Mar 2025.csv") #copy contains wyear
 
 The PSSS is in a different format than the BCCCW, and therefore requires a separate data processing step to wrangle the data into the 169 core fields of the Bird Monitoring Data Exchange ([BMDE](https://naturecounts.ca/nc/default/nc_bmde.jsp)). The following function will do this step for you.
 
-[PSSSBMDE.R](scripts/PSSSBMDE.R)
+```{r}
 
-```{r PSSS-BMDE, warning=FALSE}
+# Call the function passing the loaded data frame
+psss_to_bmde(PSSS_loaded)
 
-source("PSSSBMDE.R") #warning about "missing pieces" can be ignored
-
-#Write to Data folder in working directory
-write.csv(PSSS, "Data/PSSS.csv", row.names = FALSE)
-
-#read from Data folder in working directory
-PSSS<-read.csv("Data/PSSS.csv")
- 
 ```
 
 ## Clean and Combine {#2.3Data}
@@ -136,13 +129,20 @@ This part of the code also creates and events martix for each program. This is w
 Y1 = 2008
 Y2 = 2024
 
+clean_BCCWS(Y1, Y2)
+clean_PSSS(Y1, Y2)
+
 ```
 
-#Run the BCCWS and PSSS cleaning scripts. 
-[BCCWSClean.R](scripts/BCCWSClean.R)
-[PSSSClean.R](scripts/PSSSClean.R)
+Read in the clean datasets and combine.
 
 ```{r}
+
+in.BCCWS<-read.csv("Data/in.BCCWS.csv")
+in.PSSS<-read.csv("Data/in.PSSS.csv")
+
+event.BCCWS<-read.csv("Data/event.BCCWS.csv")
+event.PSSS<-read.csv("Data/event.PSSS.csv")
 
 #Combine and write the data to you Data folder
 in.data<-rbind(in.BCCWS, in.PSSS)
@@ -154,26 +154,11 @@ write.csv(events, "Data/events.csv", row.names = FALSE)
 
 ```
 
+## Species Filtering {#2.4Data}
 
-## Species Selection {#2.4Data}
+Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. In the next section, you will be given the option to manually [select focal species or guilds](#3.1.2Analysis) for the analysis. 
 
-Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. For example, you may wish to manually create a species list or you can set minimum data requirements for species to be included in the analysis.
-
-To manually create your list, you can use the species name. For example, to include the species: Surf Scoter, Long-tailed Duck, and Buffelhead, you would create a list as follows:
-
-```{r}
-
-sp.list <-c("Surf Scoter", "Long-tailed Dick", "Buffelhead")
-
-#Now filter the full dataset by the species list
-sp.data<-in.data[in.data$CommonName %in% sp.list,]
-
-#write to Data folder in working directory
-write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)
-
-```
-
-Here we select species that are detected by both surveys. Generally, PSSS monitors just targets, whereas the BCCWS monitors more non-targets. In the analysis script we will set some additional minimum data requirements to remove species that do not have enough data to estimate trends.
+Here we filter for species that are detected by both surveys. Generally, PSSS monitors just targets, whereas the BCCWS monitors more non-targets. In the analysis script we will set some additional [minimum data requirements](#3.1.3Analysis) to remove species that do not have enough data to estimate trends.
 
 ```{r}
 
@@ -194,7 +179,9 @@ write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)
 
 ## Guild Assignment {#2.5Data}
 
-The user may be interested in assigning species to Guilds for their analysis. In the Data folder we provide the user with migration and dietary guilds for the 53 species that the survey programs have in common. We can also assign species to family using the NatureCounts metadata.
+The user may be interested in assigning species to Guilds for their analysis. In the Data folder we provide the user with migration and dietary guilds for the 53 species that the survey programs have in common. We can also assign species to family using the NatureCounts metadata, which can be accessed using the R package.
+
+The user may wish to review and update this .csv as needed, as new species might be added that are not currently on the list. 
 
 ```{r}
 
@@ -215,7 +202,7 @@ write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)
 
 Now we will plot the distribution of sampling events over the extent of the Salish Sea. This will be facets by year (wyear) so that changes in sampling effort can be spatially visualized. Each survey program will be given a different colour.
 
-Notice that in 2020, sampling was reduced in Canada and did not happen in the US due to COVID-19. We will therefore remove this wyear during our analysis.
+Notice that in 2020, sampling was reduced in Canada and did not happen in the US due to COVID-19. We will therefore remove this wyear during the analysis.
 
 ```{r}
 

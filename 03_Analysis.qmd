@@ -41,7 +41,7 @@ xy<-st_transform(xy, mapCRS) #transform
 
 Here the user has several customization options.
 
-### Model Type
+### Model Type {#3.1.1Analysis}
 
 You can choose the continuous space "SPDE" or discrete space "iCAR" method.
 
@@ -130,7 +130,7 @@ events <- left_join(events, grid, by = "SurveyAreaIdentifier") %>% drop_na(Name)
 
 ```
 
-### Species or Guild Specific Analysis
+### Species or Guild Specific Analysis {#3.1.2Analysis}
 
 For a species-specific analysis, select the species you wish to analyse.
 
@@ -172,7 +172,7 @@ type <-"migration"
 
 ```
 
-### Minimum Data Requirement
+### Minimum Data Requirement {#3.1.3Analysis}
 
 Select the minimum data requirements for the analysis. The ones selected here were done following the inspection of the International dataset. However, finer scale assessment may need to assess their suitability.
 
@@ -239,6 +239,7 @@ The analysis calculates trends using both the end point method and a slope throu
 ```{r}
 
 trend <- "Slope" 
+#trend <- "Endpoint"
 
 #Graph your outputs
 graph_results(model, name, trend)

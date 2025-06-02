@@ -2,27 +2,23 @@
 title: "Resources"
 ---
 
-## Accessing Code on the Birds Canada GitHub {#9.9BirdsCan}
+## Birds Canada GitHub {#9.9BirdsCan}
 
-All R scripts and code resources associated with this project, as well as many other tools and tutorials, are available on the [Birds Canada GitHub](https://github.com/BirdsCanada) page.
+All R scripts and resources associated with this project, as well as many other tools and tutorials, are available on the [Birds Canada GitHub](https://github.com/BirdsCanada) page.
 
-This repository is regularly updated and serves as the central hub for sharing code related to Birds Canada’s monitoring and research programs.
+This repository is regularly updated and serves as the central hub for sharing code related to Birds Canada’s monitoring and research programs. If you run into issues using this code, or it generates errors, please open a git issue of email dethier@birdscanada.org.
 
-To access the code:
-
-Visit https://github.com/BirdsCanada
-
-Browse the list of repositories for relevant projects, including data access tools, analysis scripts, and the NatureCounts R package.
+To access the code visit: https://github.com/BirdsCanada/SalishSeaTrends
 
 You can view files directly on GitHub, or download individual scripts and entire repositories by clicking the green Code button and selecting Download ZIP.
 
-For advanced users, you can clone repositories using Git with the command:
+For advanced users, you can clone repositories using Git into RStudio using the following command in the Terminal:
 
-bash git clone https://github.com/BirdsCanada/SalishSeaTrends.git
+git clone https://github.com/BirdsCanada/SalishSeaTrends.git
 
 For tutorials and additional resources on using the NatureCounts R package, see the [NatureCounts package website](https://birdscanada.github.io/naturecounts/articles/index.html).
 
-If you are new to GitHub, Birds Canada also provides a [Beginner’s Guide to GitHub](https://birdscanada.github.io/BirdsCanada_GitHubGuide/) with step-by-step instructions for accessing and sharing code. .
+If you are new to GitHub, Birds Canada also provides a [Beginner’s Guide to GitHub](https://birdscanada.github.io/BirdsCanada_GitHubGuide/) with step-by-step instructions for accessing and sharing code.
 
 ## Downloadable R Scripts {#9.91BirdsCan}
 
