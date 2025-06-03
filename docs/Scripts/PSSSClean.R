@@ -13,7 +13,7 @@ clean_PSSS <- function(Y1, Y2) {
   in.PSSS <- distinct(in.PSSS)
   
   # Make columns numeric
-  in.PSSS<-in.PSSS %>% mutate_at(c("YearCollected", "MonthCollected", "DecimalLatitude", "DecimalLongitude", "ObservationCount", "DurationInHours", "TimeObservationsStarted", "TimeObservationsEnded"), as.numeric)
+  in.PSSS<-in.PSSS %>% mutate_at(c("YearCollected", "MonthCollected", "DayCollected", "DecimalLatitude", "DecimalLongitude", "ObservationCount", "DurationInHours", "TimeObservationsStarted", "TimeObservationsEnded"), as.numeric)
   
   # Create time tracking columns
   in.PSSS$doy <- as.numeric(format(as.Date(paste(in.PSSS$YearCollected, in.PSSS$MonthCollected, in.PSSS$DayCollected, sep = "-")), "%j"))

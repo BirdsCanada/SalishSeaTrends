@@ -359,12 +359,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span>guild[guild<span class="sc">$</span>english_name <span class="sc">%in%</span> common.species,]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>family<span class="ot">&lt;-</span><span class="fu">meta_species_taxonomy</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(species_id, group_id, family_name, family_english_name)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span><span class="fu">left_join</span>(guild, family, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"species_id"</span>))</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span><span class="fu">left_join</span>(sp.data, guild, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"CommonName"</span> <span class="ot">=</span> <span class="st">"english_name"</span>))</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#write to Data folder in working directory</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp.data, <span class="st">"Data/sp.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span><span class="fu">left_join</span>(guild, family, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"species_id"</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span><span class="fu">left_join</span>(sp.data, guild, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"CommonName"</span> <span class="ot">=</span> <span class="st">"english_name"</span>))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#write to Data folder in working directory</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp.data, <span class="st">"Data/sp.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="2.6Data" class="level2" data-number="2.6">
