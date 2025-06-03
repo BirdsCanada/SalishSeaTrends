@@ -151,3 +151,9 @@ calculate_duration <- function(start, end) {
 #Guild default is "No" unless otherwise changed in the setup script
 guild<-"no"
 
+
+epsg6703km <- paste(
+  "+proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5",
+  "+lat_2=45.5 +x_0=0 +y_0=0 +datum=NAD83",
+  "+units=km +no_defs"
+)

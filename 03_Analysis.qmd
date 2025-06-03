@@ -7,16 +7,15 @@ editor_options:
 ---
 
 Run setup if starting a new environment.
-
-[00_Setup.R](scripts/00_Setup.R)
-
 Load previously saved data and format for analysis.
 
 ```{r}
 
+source("Scripts/00_Setup.R")
+
 #Manually Specify the start and end year of the analysis. These years should match those selected for the data cleaning scripts. 
 Y1 = 2008
-Y2 = 2024
+Y2 = 2023
 
 #Load your saved species data 
 sp.data<-read.csv("Data/sp.data.csv")
@@ -74,7 +73,6 @@ if(model == "iCAR"){
   
 #Load polygon shapefile
 poly <- st_read("Data/Spatial/Salish_Sea_Watersheds.shp") %>% st_make_valid()
-#poly <- st_read("Data/Spatial/BC_WA_Merged_Polygon.shp") %>% st_make_valid()
 
 #Check that your polygon is valid
 st_is_valid(poly)
@@ -129,6 +127,8 @@ events <- left_join(events, grid, by = "SurveyAreaIdentifier") %>% drop_na(Name)
 }
 
 ```
+
+![Alt text for accessibility](Images/WatershedSampleMap.png)
 
 ### Species or Guild Specific Analysis {#3.1.2Analysis}
 
@@ -205,6 +205,8 @@ prior.range = c(20, 0.5)  # 50% probability range >20 km
 prior.sigma = c(1, 0.1)   # 10% probability stdev >1 
 
 ```
+
+![Alt text for accessibility](Images/SPDEModelMesh.png)
 
 ## Analysis {#3.2Analysis}
 

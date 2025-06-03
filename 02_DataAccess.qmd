@@ -152,7 +152,7 @@ write.csv(events, "Data/events.csv", row.names = FALSE)
 
 ## Species Filtering {#2.4Data}
 
-Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. In the next section, you will be given the option to manually [select focal species or guilds](#3.1.2Analysis) for the analysis. 
+Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. In the next section, you will be given the option to manually [select focal species or guilds](#3.1.2Analysis) for the analysis.
 
 Here we filter for species that are detected by both surveys. Generally, PSSS monitors just targets, whereas the BCCWS monitors more non-targets. In the analysis script we will set some additional [minimum data requirements](#3.1.3Analysis) to remove species that do not have enough data to estimate trends.
 
@@ -177,7 +177,7 @@ write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)
 
 The user may be interested in assigning species to Guilds for their analysis. In the Data folder we provide the user with migration and dietary guilds for the 53 species that the survey programs have in common. We can also assign species to family using the NatureCounts metadata, which can be accessed using the R package.
 
-The user may wish to review and update this .csv as needed, as new species might be added that are not currently on the list. 
+The user may wish to review and update this .csv as needed, as new species might be added that are not currently on the list.
 
 ```{r}
 
@@ -185,6 +185,7 @@ guild<-read.csv("Data/GuildList.csv")
 guild<-guild[guild$english_name %in% common.species,]
 
 family<-meta_species_taxonomy() %>% select(species_id, group_id, family_name, family_english_name)
+
 guild<-left_join(guild, family, by=c("species_id"))
 
 sp.data<-left_join(sp.data, guild, by=c("CommonName" = "english_name"))
