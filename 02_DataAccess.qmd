@@ -227,3 +227,5 @@ ggplot(data = events_sf) +
   scale_color_discrete(name = "Winter Year")
 
 ```
+
+![Alt text for accessibility](Images/EventsMapbyYear.png)

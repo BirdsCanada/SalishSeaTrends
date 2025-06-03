@@ -188,7 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data-format" id="toc-data-format" class="nav-link" data-scroll-target="#data-format"><span class="header-section-number">2.2.4</span> Data Format</a></li>
   </ul></li>
   <li><a href="#2.3Data" id="toc-2.3Data" class="nav-link" data-scroll-target="#2.3Data"><span class="header-section-number">2.3</span> Clean and Combine</a></li>
-  <li><a href="#2.4Data" id="toc-2.4Data" class="nav-link" data-scroll-target="#2.4Data"><span class="header-section-number">2.4</span> Species Selection</a></li>
+  <li><a href="#2.4Data" id="toc-2.4Data" class="nav-link" data-scroll-target="#2.4Data"><span class="header-section-number">2.4</span> Species Filtering</a></li>
   <li><a href="#2.5Data" id="toc-2.5Data" class="nav-link" data-scroll-target="#2.5Data"><span class="header-section-number">2.5</span> Guild Assignment</a></li>
   <li><a href="#2.6Data" id="toc-2.6Data" class="nav-link" data-scroll-target="#2.6Data"><span class="header-section-number">2.6</span> Sampling Events Plot</a></li>
   </ul>
@@ -217,7 +217,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Before you get started, run the <code>setup.R</code> script to install and load the necessary packages and functions for this analysis.</p>
-<p><a href="scripts/00_Setup.R">00_Setup.R</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"Scripts/00_Setup.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="2.1Data" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="2.1Data"><span class="header-section-number">2.1</span> British Columbia Coastal Waterbird Survey (BCCWS)</h2>
 <section id="protocol" class="level3" data-number="2.1.1">
@@ -241,13 +243,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Data can be freely accessed through the NatureCounts data <a href="https://naturecounts.ca/nc/default/searchquery.jsp">download</a> portal or directly through the naturecounts R package. The BCCWS is Access Level 4 dataset, meaning a data request form must be submitted. This is not meant to be a barrier, rather a means of keeping track of who is using the data and for what purposes.</p>
 <p>Data are formatted using a standardized schema that is a core standard of the <a href="https://avianknowledge.net/">Avian Knowledge Network</a> and which feeds into <a href="https://www.gbif.org/">GBIF</a>. This format is called the Bird Monitoring Data Exchange (<a href="https://naturecounts.ca/nc/default/nc_bmde.jsp">BMDE</a>), which includes 169 core fields for capturing all metric and descriptors associated with bird observations.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#sample code to access BCCWS data from NatureCounts</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> BCCWS<span class="ot">&lt;-</span><span class="fu">nc_data_dl</span>(<span class="at">collection=</span><span class="st">"BCCWS"</span>, <span class="at">username =</span> <span class="st">"YOUR USERNAME"</span>, <span class="at">info=</span><span class="st">"MY REASON"</span>, <span class="at">fields_set =</span> <span class="st">"extended"</span>, <span class="at">request_id =</span> <span class="dv">12345</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Write to Data folder in working directory</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(BCCWS, <span class="st">"Data/BCCWS.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#read from Data folder in working directory</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>BCCWS<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/BCCWS.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sample code to access BCCWS data from NatureCounts</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a> BCCWS_BMDE<span class="ot">&lt;-</span><span class="fu">nc_data_dl</span>(<span class="at">collection=</span><span class="st">"BCCWS"</span>, <span class="at">username =</span> <span class="st">"YOUR USERNAME"</span>, <span class="at">info=</span><span class="st">"MY REASON"</span>, <span class="at">fields_set =</span> <span class="st">"extended"</span>, <span class="at">request_id =</span> <span class="dv">12345</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Write raw data to the `Data` folder in working directory</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(BCCWS_BMDE, <span class="st">"Data/BCCWS_BMDE.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -271,26 +271,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="data-access-1" class="level3" data-number="2.2.3">
 <h3 data-number="2.2.3" class="anchored" data-anchor-id="data-access-1"><span class="header-section-number">2.2.3</span> Data Access</h3>
-<p>At the time of writing, the data were only accessible by reaching out to the Puget Sound Bird Observatory directly and filling out a data share agreement. The data will be sent to you as a .xslx flat file which will be suitable for Data formatting and processing. Ensure that you receive all the data for the specified temporal period you are interested in analyzing. This will be needed to allow for proper zero-filling. Place the data in a <code>Data</code> folder in your working directory.</p>
-<p>Now you can import the data using the file name.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#sample code to access PSSS data from your working Data directory</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>PSSS <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Data/PSSS Survey Data - 13 Mar 2025.csv"</span>) <span class="co">#copy contains wyear 2023</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>At the time of writing, the data were only accessible by reaching out to the Puget Sound Bird Observatory directly and filling out a data share agreement. The data will be sent to you as a .csv flat file which will be suitable for Data formatting and processing. Ensure that you receive all the data for the specified temporal period you are interested in analyzing. This will be needed to allow for proper zero-filling. Place the data in a <code>Data</code> folder in your working directory.</p>
 </section>
 <section id="data-format" class="level3" data-number="2.2.4">
 <h3 data-number="2.2.4" class="anchored" data-anchor-id="data-format"><span class="header-section-number">2.2.4</span> Data Format</h3>
 <p>The PSSS is in a different format than the BCCCW, and therefore requires a separate data processing step to wrangle the data into the 169 core fields of the Bird Monitoring Data Exchange (<a href="https://naturecounts.ca/nc/default/nc_bmde.jsp">BMDE</a>). The following function will do this step for you.</p>
-<p><a href="scripts/PSSSBMDE.R">PSSSBMDE.R</a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"PSSSBMDE.R"</span>) <span class="co">#warning about "missing pieces" can be ignored</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the function passing the file path into the PSSS_BMDE function</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Write to Data folder in working directory</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(PSSS, <span class="st">"Data/PSSS.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#read from Data folder in working directory</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>PSSS<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/PSSS.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>PSSS_BMDE <span class="ot">&lt;-</span> <span class="fu">psss_to_bmde</span>(<span class="st">"Data/psss20250313.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -315,94 +304,103 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Manually specify the start and end year of the analysis</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Keep in mind that this is the winter year (wyear) which is the start year of the survey, #The survey straddles two calendar years</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>Y1 <span class="ot">=</span> <span class="dv">2008</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Y2 <span class="ot">=</span> <span class="dv">2024</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Keep in mind that this is the winter year (wyear) which is the start year of the survey</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#The survey straddles two calendar years</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Y1 <span class="ot">=</span> <span class="dv">2008</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Y2 <span class="ot">=</span> <span class="dv">2023</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>clean_BCCWS<span class="ot">&lt;-</span><span class="fu">clean_BCCWS</span>(Y1, Y2)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>clean_PSSS<span class="ot">&lt;-</span><span class="fu">clean_PSSS</span>(Y1, Y2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>#Run the BCCWS and PSSS cleaning scripts. <a href="scripts/BCCWSClean.R">BCCWSClean.R</a> <a href="scripts/PSSSClean.R">PSSSClean.R</a></p>
+<p>Combine the clean datasets and events tables</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Combine and write the data to you Data folder</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>in.data<span class="ot">&lt;-</span><span class="fu">rbind</span>(in.BCCWS, in.PSSS)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>events<span class="ot">&lt;-</span><span class="fu">rbind</span>(event.BCCWS, event.PSSS)</span>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Access clean data</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>in.BCCWS <span class="ot">&lt;-</span> clean_BCCWS<span class="sc">$</span>in.BCCWS</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>in.PSSS <span class="ot">&lt;-</span> clean_PSSS<span class="sc">$</span>in.PSSS</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># To write to local Data directory</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(in.data, <span class="st">"Data/in.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(events, <span class="st">"Data/events.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Access events data</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>event.PSSS <span class="ot">&lt;-</span> clean_PSSS<span class="sc">$</span>event.PSSS</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>event.BCCWS <span class="ot">&lt;-</span> clean_BCCWS<span class="sc">$</span>event.BCCWS</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Combine and write the data to you Data folder</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>in.data<span class="ot">&lt;-</span><span class="fu">rbind</span>(in.BCCWS, in.PSSS)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>events<span class="ot">&lt;-</span><span class="fu">rbind</span>(event.BCCWS, event.PSSS)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># To write to local Data directory</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(in.data, <span class="st">"Data/in.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(events, <span class="st">"Data/events.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="2.4Data" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="2.4Data"><span class="header-section-number">2.4</span> Species Selection</h2>
-<p>Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. For example, you may wish to manually create a species list or you can set minimum data requirements for species to be included in the analysis.</p>
-<p>To manually create your list, you can use the species name. For example, to include the species: Surf Scoter, Long-tailed Duck, and Buffelhead, you would create a list as follows:</p>
+<h2 data-number="2.4" class="anchored" data-anchor-id="2.4Data"><span class="header-section-number">2.4</span> Species Filtering</h2>
+<p>Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. In the next section, you will be given the option to manually <a href="03_Analysis.html#3.1.2Analysis">select focal species or guilds</a> for the analysis.</p>
+<p>Here we filter for species that are detected by both surveys. Generally, PSSS monitors just targets, whereas the BCCWS monitors more non-targets. In the analysis script we will set some additional <a href="03_Analysis.html#3.1.3Analysis">minimum data requirements</a> to remove species that do not have enough data to estimate trends.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sp.list <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Surf Scoter"</span>, <span class="st">"Long-tailed Dick"</span>, <span class="st">"Buffelhead"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Now filter the full dataset by the species list</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span>in.data[in.data<span class="sc">$</span>CommonName <span class="sc">%in%</span> sp.list,]</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#write to Data folder in working directory</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp.data, <span class="st">"Data/sp.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Here we select species that are detected by both surveys. Generally, PSSS monitors just targets, whereas the BCCWS monitors more non-targets. In the analysis script we will set some additional minimum data requirements to remove species that do not have enough data to estimate trends.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Determine which SpeciesCode each ProjectCode share in the full dataset</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>sp.bccws<span class="ot">&lt;-</span>in.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ProjectCode <span class="sc">==</span> <span class="st">"BCCWS"</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(CommonName) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>sp.psss<span class="ot">&lt;-</span>in.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ProjectCode <span class="sc">==</span> <span class="st">"PSSS"</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(CommonName) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>common.species<span class="ot">&lt;-</span><span class="fu">intersect</span>(sp.bccws<span class="sc">$</span>CommonName, sp.psss<span class="sc">$</span>CommonName) </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#There were 53 species in common between BCCWS and PSSS that are carried forward for the analysis</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#filter the full dataset to only include the common species</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span>in.data[in.data<span class="sc">$</span>CommonName <span class="sc">%in%</span> common.species,]</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#write to Data folder in working directory</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp.data, <span class="st">"Data/sp.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Determine which SpeciesCode each ProjectCode share in the full dataset</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sp.bccws<span class="ot">&lt;-</span>in.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ProjectCode <span class="sc">==</span> <span class="st">"BCCWS"</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(CommonName) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sp.psss<span class="ot">&lt;-</span>in.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ProjectCode <span class="sc">==</span> <span class="st">"PSSS"</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(CommonName) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>common.species<span class="ot">&lt;-</span><span class="fu">intersect</span>(sp.bccws<span class="sc">$</span>CommonName, sp.psss<span class="sc">$</span>CommonName) </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#There were 53 species in common between BCCWS and PSSS that are carried forward for the analysis</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#filter the full dataset to only include the common species</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span>in.data[in.data<span class="sc">$</span>CommonName <span class="sc">%in%</span> common.species,]</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#write to Data folder in working directory</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp.data, <span class="st">"Data/sp.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="2.5Data" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="2.5Data"><span class="header-section-number">2.5</span> Guild Assignment</h2>
-<p>The user may be interested in assigning species to Guilds for their analysis. In the Data folder we provide the user with migration and dietary guilds for the 53 species that the survey programs have in common. We can also assign species to family using the NatureCounts metadata.</p>
+<p>The user may be interested in assigning species to Guilds for their analysis. In the Data folder we provide the user with migration and dietary guilds for the 53 species that the survey programs have in common. We can also assign species to family using the NatureCounts metadata, which can be accessed using the R package.</p>
+<p>The user may wish to review and update this .csv as needed, as new species might be added that are not currently on the list.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/GuildList.csv"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span>guild[guild<span class="sc">$</span>english_name <span class="sc">%in%</span> common.species,]</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>family<span class="ot">&lt;-</span><span class="fu">meta_species_taxonomy</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(species_id, group_id, family_name, family_english_name)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span><span class="fu">left_join</span>(guild, family, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"species_id"</span>))</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span><span class="fu">left_join</span>(sp.data, guild, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"CommonName"</span> <span class="ot">=</span> <span class="st">"english_name"</span>))</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#write to Data folder in working directory</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp.data, <span class="st">"Data/sp.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/GuildList.csv"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span>guild[guild<span class="sc">$</span>english_name <span class="sc">%in%</span> common.species,]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>family<span class="ot">&lt;-</span><span class="fu">meta_species_taxonomy</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(species_id, group_id, family_name, family_english_name)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span><span class="fu">left_join</span>(guild, family, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"species_id"</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span><span class="fu">left_join</span>(sp.data, guild, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"CommonName"</span> <span class="ot">=</span> <span class="st">"english_name"</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#write to Data folder in working directory</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp.data, <span class="st">"Data/sp.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="2.6Data" class="level2" data-number="2.6">
 <h2 data-number="2.6" class="anchored" data-anchor-id="2.6Data"><span class="header-section-number">2.6</span> Sampling Events Plot</h2>
 <p>Now we will plot the distribution of sampling events over the extent of the Salish Sea. This will be facets by year (wyear) so that changes in sampling effort can be spatially visualized. Each survey program will be given a different colour.</p>
-<p>Notice that in 2020, sampling was reduced in Canada and did not happen in the US due to COVID-19. We will therefore remove this wyear during our analysis.</p>
+<p>Notice that in 2020, sampling was reduced in Canada and did not happen in the US due to COVID-19. We will therefore remove this wyear during the analysis.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert the data to a spatial object</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>events_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(events, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"DecimalLongitude"</span>, <span class="st">"DecimalLatitude"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> events_sf) <span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select a basemap</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotation_map_tile</span>(<span class="at">type =</span> <span class="st">"cartolight"</span>, <span class="at">zoom =</span> <span class="cn">NULL</span>, <span class="at">progress =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot the points, color-coded by survey_year</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">color =</span> <span class="fu">as.factor</span>(wyear)), <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Facet by survey_year to create the multi-paneled map</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> wyear) <span class="sc">+</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add a theme with a minimal design and change the font styles, to your preference</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme(legend.position = "bottom") +</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># To make the points in the legend larger without affecting map points</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">3</span>))) <span class="sc">+</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#make the text on the x-axis vertical</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define the title and axis names</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Coastal Waterbird Survey Events in the Salish Sea"</span>,</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Longitude"</span>,</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Latitude"</span>)<span class="sc">+</span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Define the legend title</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">name =</span> <span class="st">"Winter Year"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Convert the data to a spatial object</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>events_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(events, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"DecimalLongitude"</span>, <span class="st">"DecimalLatitude"</span>), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> events_sf) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select a basemap</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotation_map_tile</span>(<span class="at">type =</span> <span class="st">"cartolight"</span>, <span class="at">zoom =</span> <span class="cn">NULL</span>, <span class="at">progress =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plot the points, color-coded by survey_year</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">color =</span> <span class="fu">as.factor</span>(wyear)), <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Facet by survey_year to create the multi-paneled map</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> wyear) <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add a theme with a minimal design and change the font styles, to your preference</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme(legend.position = "bottom") +</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># To make the points in the legend larger without affecting map points</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">3</span>))) <span class="sc">+</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#make the text on the x-axis vertical</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Define the title and axis names</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Coastal Waterbird Survey Events in the Salish Sea"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Longitude"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Latitude"</span>)<span class="sc">+</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Define the legend title</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_discrete</span>(<span class="at">name =</span> <span class="st">"Winter Year"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Images/EventsMapbyYear.png" class="img-fluid figure-img"></p>
+<figcaption>Alt text for accessibility</figcaption>
+</figure>
 </div>
 
 

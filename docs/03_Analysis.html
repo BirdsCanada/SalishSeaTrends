@@ -176,9 +176,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#3.1Analysis" id="toc-3.1Analysis" class="nav-link active" data-scroll-target="#3.1Analysis"><span class="header-section-number">3.1</span> Set Analysis Parameters</a>
   <ul class="collapse">
-  <li><a href="#model-type" id="toc-model-type" class="nav-link" data-scroll-target="#model-type"><span class="header-section-number">3.1.1</span> Model Type</a></li>
-  <li><a href="#species-or-guild-specific-analysis" id="toc-species-or-guild-specific-analysis" class="nav-link" data-scroll-target="#species-or-guild-specific-analysis"><span class="header-section-number">3.1.2</span> Species or Guild Specific Analysis</a></li>
-  <li><a href="#minimum-data-requirement" id="toc-minimum-data-requirement" class="nav-link" data-scroll-target="#minimum-data-requirement"><span class="header-section-number">3.1.3</span> Minimum Data Requirement</a></li>
+  <li><a href="#3.1.1Analysis" id="toc-3.1.1Analysis" class="nav-link" data-scroll-target="#3.1.1Analysis"><span class="header-section-number">3.1.1</span> Model Type</a></li>
+  <li><a href="#3.1.2Analysis" id="toc-3.1.2Analysis" class="nav-link" data-scroll-target="#3.1.2Analysis"><span class="header-section-number">3.1.2</span> Species or Guild Specific Analysis</a></li>
+  <li><a href="#3.1.3Analysis" id="toc-3.1.3Analysis" class="nav-link" data-scroll-target="#3.1.3Analysis"><span class="header-section-number">3.1.3</span> Minimum Data Requirement</a></li>
   <li><a href="#model-specifications" id="toc-model-specifications" class="nav-link" data-scroll-target="#model-specifications"><span class="header-section-number">3.1.4</span> Model Specifications</a></li>
   </ul></li>
   <li><a href="#3.2Analysis" id="toc-3.2Analysis" class="nav-link" data-scroll-target="#3.2Analysis"><span class="header-section-number">3.2</span> Analysis</a></li>
@@ -236,8 +236,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="3.1Analysis" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="3.1Analysis"><span class="header-section-number">3.1</span> Set Analysis Parameters</h2>
 <p>Here the user has several customization options.</p>
-<section id="model-type" class="level3" data-number="3.1.1">
-<h3 data-number="3.1.1" class="anchored" data-anchor-id="model-type"><span class="header-section-number">3.1.1</span> Model Type</h3>
+<section id="3.1.1Analysis" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="3.1.1Analysis"><span class="header-section-number">3.1.1</span> Model Type</h3>
 <p>You can choose the continuous space “SPDE” or discrete space “iCAR” method.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#model&lt;-"iCAR"</span></span>
@@ -313,8 +313,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="species-or-guild-specific-analysis" class="level3" data-number="3.1.2">
-<h3 data-number="3.1.2" class="anchored" data-anchor-id="species-or-guild-specific-analysis"><span class="header-section-number">3.1.2</span> Species or Guild Specific Analysis</h3>
+<section id="3.1.2Analysis" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="3.1.2Analysis"><span class="header-section-number">3.1.2</span> Species or Guild Specific Analysis</h3>
 <p>For a species-specific analysis, select the species you wish to analyse.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#To view your options of species</span></span>
@@ -346,8 +346,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>type <span class="ot">&lt;-</span><span class="st">"migration"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="minimum-data-requirement" class="level3" data-number="3.1.3">
-<h3 data-number="3.1.3" class="anchored" data-anchor-id="minimum-data-requirement"><span class="header-section-number">3.1.3</span> Minimum Data Requirement</h3>
+<section id="3.1.3Analysis" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="3.1.3Analysis"><span class="header-section-number">3.1.3</span> Minimum Data Requirement</h3>
 <p>Select the minimum data requirements for the analysis. The ones selected here were done following the inspection of the International dataset. However, finer scale assessment may need to assess their suitability.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#The minimum data required across sites with at least one detection:</span></span>
@@ -400,9 +400,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which <code>trend</code> outputs they would like to view as either “Endpoint” or “Slope”. Given these models are</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>trend <span class="ot">&lt;-</span> <span class="st">"Slope"</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Graph your outputs</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">graph_results</span>(model, name, trend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#trend &lt;- "Endpoint"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Graph your outputs</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">graph_results</span>(model, name, trend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

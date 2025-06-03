@@ -7,6 +7,9 @@
 /_site/
 /.quarto/
 
-.csv
-.pdf
-.jpeg
+*.csv
+*.pdf
+
+!Data/GuildList.csv
+!Data/Spatial/*
+
