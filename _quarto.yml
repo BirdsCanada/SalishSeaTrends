@@ -11,6 +11,7 @@ book:
     - 02_DataAccess.qmd
     - 03_Analysis.qmd
     - 99_Resources.qmd
+  cover-image: coverphoto.png
 
 resources:
   - Scripts/*.R

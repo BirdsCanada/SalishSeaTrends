@@ -1,7 +1,15 @@
-psss_to_bmde <- function(PSSS) {
-
-  # Read PSSS data
-  PSSS <- read.csv("Data/PSSS.csv", stringsAsFactors = FALSE)
+psss_to_bmde <- function(input_csv_path) {
+  
+ 
+    library(readr)
+  PSSS <- read_csv(
+    input_csv_path,
+    col_types = cols(
+      .default = col_guess(),
+      raptor3_affect = col_character()  # Force character type for problem column
+    )
+  )
+  
   
   # Parse latitude and longitude from position string
   PSSS$lat <- sub(" W.*", "", PSSS$position)
@@ -120,9 +128,10 @@ psss_to_bmde <- function(PSSS) {
   missing <- setdiff(BMDE_col, names(PSSS))
   PSSS[missing] <- ""
   
+  
   # Filter to BMDE columns and write output
   PSSS <- PSSS[BMDE_col]
-  write.csv(PSSS, "Data/PSSS_BMDE.csv", row.names = FALSE, quote = FALSE)
+  write.csv(PSSS, "Data/PSSS_BMDE.csv", row.names = FALSE, quote = TRUE, na="")
   
-  invisible(PSSS)
+  return(PSSS)
 }

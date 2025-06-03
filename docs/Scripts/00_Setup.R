@@ -9,10 +9,10 @@ if(!dir.exists("Data/Spatial")) dir.create("Data/Spatial")
 if(!dir.exists("Output")) dir.create("Output")
 if(!dir.exists("Output/Plots")) dir.create("Output/Plots")
 
-source("OutputTables.R")
-source("BCCWSClean.R")
-source("PSSSClean.R")
-source("PSSSBMDE.R")
+source("Scripts/PSSSBMDE.R")
+source("Scripts/BCCWSClean.R")
+source("Scripts/PSSSClean.R")
+source("Scripts/OutputTables.R")
 
 #Assign directories
 out.dir <- "Output/"

@@ -1,6 +1,6 @@
 clean_PSSS <- function(Y1, Y2) {
   # Read raw data
-  in.PSSS <- read.csv("Data/PSSS.csv")
+  in.PSSS <- PSSS_BMDE
   
   # Fix Thayer's Gull species code
   in.PSSS$SpeciesCode[in.PSSS$CommonName == "Iceland (Thayer's) Gull"] <- "ICGU"
@@ -11,6 +11,9 @@ clean_PSSS <- function(Y1, Y2) {
   
   # Remove duplicates
   in.PSSS <- distinct(in.PSSS)
+  
+  # Make columns numeric
+  in.PSSS<-in.PSSS %>% mutate_at(c("YearCollected", "MonthCollected", "DecimalLatitude", "DecimalLongitude", "ObservationCount", "DurationInHours", "TimeObservationsStarted", "TimeObservationsEnded"), as.numeric)
   
   # Create time tracking columns
   in.PSSS$doy <- as.numeric(format(as.Date(paste(in.PSSS$YearCollected, in.PSSS$MonthCollected, in.PSSS$DayCollected, sep = "-")), "%j"))
@@ -30,6 +33,9 @@ clean_PSSS <- function(Y1, Y2) {
     filter(!is.na(DecimalLatitude), !is.na(DecimalLongitude)) %>%
     filter(DecimalLatitude >= 45.06 & DecimalLatitude <= 50.64 & 
              DecimalLongitude >= -125.07 & DecimalLongitude <= -115.15)
+  
+  in.PSSS$TimeIntervalStarted <-as.numeric(in.PSSS$TimeObservationsStarted)
+  in.PSSS$TimeIntervalEnded <-as.numeric(in.PSSS$TimeObservationsEnded)
   
   # Process time data
   in.PSSS <- in.PSSS %>%
@@ -96,5 +102,5 @@ clean_PSSS <- function(Y1, Y2) {
   write.csv(in.PSSS, "Data/PSSS.clean.csv", row.names = FALSE)
   write.csv(event.PSSS, "Data/PSSS.events.csv", row.names = FALSE)
   
-  list(clean_data = in.PSSS, event_data = event.PSSS)
+  list(in.PSSS = in.PSSS, event.PSSS = event.PSSS)
 }

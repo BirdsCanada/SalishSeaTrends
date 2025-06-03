@@ -1,6 +1,11 @@
 clean_BCCWS <- function(Y1, Y2) {
   # Read raw data
-  in.BCCWS <- read.csv("Data/BCCWS.csv")
+  in.BCCWS <- read.csv("Data/BCCWS_BMDE.csv")
+  
+  # Adjust SpeciesCode for MEW GULL species_id 5140 and 5142
+  in.BCCWS$SpeciesCode[in.BCCWS$species_id == 5140] <- "SBIG"
+  in.BCCWS$SpeciesCode[in.BCCWS$species_id == 5142] <- "SBIG"
+  in.BCCWS$SpeciesCode <- as.factor(in.BCCWS$SpeciesCode)
   
   # Use Nearshore observation counts only
   in.BCCWS$ObservationCount <- as.numeric(in.BCCWS$ObservationCount3)
@@ -88,10 +93,7 @@ clean_BCCWS <- function(Y1, Y2) {
       )
     )
   
-  # Adjust SpeciesCode for MEW GULL species_id 5140 and 5142
-  in.BCCWS$SpeciesCode[in.BCCWS$species_id == 5140] <- "SBIG"
-  in.BCCWS$SpeciesCode[in.BCCWS$species_id == 5142] <- "SBIG"
-  in.BCCWS$SpeciesCode <- as.factor(in.BCCWS$SpeciesCode)
+  
   
   # Remove rows with NA CommonName or ObservationCount
   in.BCCWS <- in.BCCWS %>% filter(!is.na(CommonName), !is.na(ObservationCount))
@@ -101,5 +103,5 @@ clean_BCCWS <- function(Y1, Y2) {
   write.csv(event.BCCWS, "Data/BCCWS.events.csv", row.names = FALSE)
   
   # Return cleaned data frames invisibly if needed
-  list(clean_data = in.BCCWS, event_data = event.BCCWS)
+  list(in.BCCWS = in.BCCWS, event.BCCWS = event.BCCWS)
 }

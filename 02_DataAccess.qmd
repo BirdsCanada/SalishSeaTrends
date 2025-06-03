@@ -8,7 +8,11 @@ editor_options:
 
 Before you get started, run the `setup.R` script to install and load the necessary packages and functions for this analysis.
 
-[00_Setup.R](scripts/00_Setup.R)
+```{r}
+
+source("Scripts/00_Setup.R")
+
+```
 
 ## British Columbia Coastal Waterbird Survey (BCCWS) {#2.1Data}
 
@@ -40,14 +44,12 @@ Data are formatted using a standardized schema that is a core standard of the [A
 
 ```{r BCCWS Data Download}
 
-#sample code to access BCCWS data from NatureCounts
- BCCWS<-nc_data_dl(collection="BCCWS", username = "YOUR USERNAME", info="MY REASON", fields_set = "extended", request_id = 12345)
+#Sample code to access BCCWS data from NatureCounts
+ BCCWS_BMDE<-nc_data_dl(collection="BCCWS", username = "YOUR USERNAME", info="MY REASON", fields_set = "extended", request_id = 12345)
 
-#Write to Data folder in working directory
-write.csv(BCCWS, "Data/BCCWS.csv", row.names = FALSE)
-#read from Data folder in working directory
-BCCWS<-read.csv("Data/BCCWS.csv")
- 
+#Write raw data to the `Data` folder in working directory
+write.csv(BCCWS_BMDE, "Data/BCCWS_BMDE.csv", row.names = FALSE)
+
 ```
 
 ## Puget Sound Seabird Survey (PSSS) {#2.2Data}
@@ -74,17 +76,7 @@ Auxiliary Data Collected:
 
 ### Data Access
 
-At the time of writing, the data were only accessible by reaching out to the Puget Sound Bird Observatory directly and filling out a data share agreement. The data will be sent to you as a .xslx flat file which will be suitable for Data formatting and processing. Ensure that you receive all the data for the specified temporal period you are interested in analyzing. This will be needed to allow for proper zero-filling. Place the data in a `Data` folder in your working directory.
-
-Now you can import the data using the file name.
-
-```{r PSSS, warning=FALSE}
-
-#Sample code to access PSSS data from your working Data directory
-
-PSSS_loaded <- read.csv("Data/PSSS Survey Data - 13 Mar 2025.csv") #copy contains wyear 2023
-
-```
+At the time of writing, the data were only accessible by reaching out to the Puget Sound Bird Observatory directly and filling out a data share agreement. The data will be sent to you as a .csv flat file which will be suitable for Data formatting and processing. Ensure that you receive all the data for the specified temporal period you are interested in analyzing. This will be needed to allow for proper zero-filling. Place the data in a `Data` folder in your working directory.
 
 ### Data Format
 
@@ -92,8 +84,9 @@ The PSSS is in a different format than the BCCCW, and therefore requires a separ
 
 ```{r}
 
-# Call the function passing the loaded data frame
-psss_to_bmde(PSSS_loaded)
+# Call the function passing the file path into the PSSS_BMDE function
+
+PSSS_BMDE <- psss_to_bmde("Data/psss20250313.csv")
 
 ```
 
@@ -125,24 +118,27 @@ This part of the code also creates and events martix for each program. This is w
 ```{r}
 
 #Manually specify the start and end year of the analysis
-#Keep in mind that this is the winter year (wyear) which is the start year of the survey, #The survey straddles two calendar years
+#Keep in mind that this is the winter year (wyear) which is the start year of the survey
+#The survey straddles two calendar years
 Y1 = 2008
-Y2 = 2024
+Y2 = 2023
 
-clean_BCCWS(Y1, Y2)
-clean_PSSS(Y1, Y2)
+clean_BCCWS<-clean_BCCWS(Y1, Y2)
+clean_PSSS<-clean_PSSS(Y1, Y2)
 
 ```
 
-Read in the clean datasets and combine.
+Combine the clean datasets and events tables
 
 ```{r}
 
-in.BCCWS<-read.csv("Data/in.BCCWS.csv")
-in.PSSS<-read.csv("Data/in.PSSS.csv")
+#Access clean data
+in.BCCWS <- clean_BCCWS$in.BCCWS
+in.PSSS <- clean_PSSS$in.PSSS
 
-event.BCCWS<-read.csv("Data/event.BCCWS.csv")
-event.PSSS<-read.csv("Data/event.PSSS.csv")
+#Access events data
+event.PSSS <- clean_PSSS$event.PSSS
+event.BCCWS <- clean_BCCWS$event.BCCWS
 
 #Combine and write the data to you Data folder
 in.data<-rbind(in.BCCWS, in.PSSS)

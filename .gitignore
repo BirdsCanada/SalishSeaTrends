@@ -6,3 +6,7 @@
 /_book/
 /_site/
 /.quarto/
+
+.csv
+.pdf
+.jpeg
