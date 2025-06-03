@@ -6,8 +6,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Run setup if starting a new environment.
-Load previously saved data and format for analysis.
+Run setup if starting a new environment. Load previously saved data and format for analysis.
 
 ```{r}
 

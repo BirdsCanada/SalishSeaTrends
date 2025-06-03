@@ -4,9 +4,11 @@ title: "Resources"
 
 ## Birds Canada GitHub {#9.9BirdsCan}
 
+![Alt text for accessibility](Images/BirdsCanadaGithub.png)
+
 All R scripts and resources associated with this project, as well as many other tools and tutorials, are available on the [Birds Canada GitHub](https://github.com/BirdsCanada) page.
 
-This repository is regularly updated and serves as the central hub for sharing code related to Birds Canada’s monitoring and research programs. If you run into issues using this code, or it generates errors, please open a git issue of email dethier@birdscanada.org.
+This repository is regularly updated and serves as the central hub for sharing code related to Birds Canada’s monitoring and research programs. If you run into issues using this code, or it generates errors, please open a git issue of email dethier\@birdscanada.org.
 
 To access the code visit: https://github.com/BirdsCanada/SalishSeaTrends
 
