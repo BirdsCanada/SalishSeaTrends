@@ -86,7 +86,7 @@ The PSSS is in a different format than the BCCCW, and therefore requires a separ
 
 # Call the function passing the file path into the PSSS_BMDE function
 
-PSSS_BMDE <- psss_to_bmde("Data/psss20250313.csv")
+PSSS_BMDE <- psss_to_bmde("Data/psss20250603.csv")
 
 ```
 
@@ -121,7 +121,7 @@ This part of the code also creates and events martix for each program. This is w
 #Keep in mind that this is the winter year (wyear) which is the start year of the survey
 #The survey straddles two calendar years
 Y1 = 2008
-Y2 = 2023
+Y2 = 2024
 
 clean_BCCWS<-clean_BCCWS(Y1, Y2)
 clean_PSSS<-clean_PSSS(Y1, Y2)
@@ -137,8 +137,8 @@ in.BCCWS <- clean_BCCWS$in.BCCWS
 in.PSSS <- clean_PSSS$in.PSSS
 
 #Access events data
-event.PSSS <- clean_PSSS$event.PSSS
 event.BCCWS <- clean_BCCWS$event.BCCWS
+event.PSSS <- clean_PSSS$event.PSSS
 
 #Combine and write the data to you Data folder
 in.data<-rbind(in.BCCWS, in.PSSS)

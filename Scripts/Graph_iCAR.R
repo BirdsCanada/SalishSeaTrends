@@ -14,7 +14,7 @@ if (trend == "endpoint") {
 
 
 # Ensure Grid and map are sf objects
-if(!inherits(Grid, "sf")) stop("Grid must be an sf object")
+if(!inherits(poly, "sf")) stop("poly must be an sf object")
 if(!inherits(map, "sf")) stop("map must be an sf object")
 
 species_list3 <- unique(all.trends$species_code)
@@ -24,7 +24,7 @@ for(current_sp in species_list3) {
   species_data <- all.trends %>% filter(species_code == current_sp)
   
   # Join and clip
-  Grid_sp <- Grid %>% left_join(species_data, by = c("Name" = "area_code"))
+  Grid_sp <-  poly %>% left_join(species_data, by = c("Name" = "area_code"))
   Grid_sp<- st_transform(Grid_sp, st_crs(mapCRS))
   Grid_sp_clipped <- sf::st_intersection(Grid_sp, map)
   

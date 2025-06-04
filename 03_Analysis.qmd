@@ -14,7 +14,7 @@ source("Scripts/00_Setup.R")
 
 #Manually Specify the start and end year of the analysis. These years should match those selected for the data cleaning scripts. 
 Y1 = 2008
-Y2 = 2023
+Y2 = 2024
 
 #Load your saved species data 
 sp.data<-read.csv("Data/sp.data.csv")
@@ -45,8 +45,8 @@ You can choose the continuous space "SPDE" or discrete space "iCAR" method.
 
 ```{r}
 
-#model<-"iCAR"
-model<-"SPDE"
+model<-"iCAR"
+#model<-"SPDE"
 
 ```
 
@@ -67,62 +67,69 @@ If doing an iCAR model, upload the desired spatial polygon for the analysis. We 
 A polygon should have counts in all years to ensure that sampling is complete and consistent. Those that have incomplete time series are removed.
 
 ```{r}
-
 if(model == "iCAR"){
   
-#Load polygon shapefile
-poly <- st_read("Data/Spatial/Salish_Sea_Watersheds.shp") %>% st_make_valid()
-
-#Check that your polygon is valid
-st_is_valid(poly)
-
+  assignment_method <- "within"  
+#  assignment_method <- "nearest"
+  
+# Load and prepare polygon
+  poly <- st_read("Data/Spatial/Salish_Sea_Watersheds.shp") %>% 
+    st_make_valid() %>% 
+    st_transform(st_crs(mapCRS))  # Ensure CRS matches points
+  
 #List available fields for user selection
-print(names(poly))
+  print(names(poly))
 
 #Prompt user to select polygon ID and area fields
-polygon_id_field <- "Name" #Enter the field name for polygon ID (e.g., 'WatershedID')
-area_field <- "" #Enter the field name for area (or leave blank if none or you desire equal weights)
+  polygon_id_field <- "Name" #Enter the field name for polygon ID (e.g., 'WatershedID')
+  area_field <- "" #Enter the field name for area (or leave blank if none or you desire equal weights)
 
 #Rename fields to 'Name' and 'Area'. If polygon area is missing, this will be created and assigned to 1. Analytically, this means the "Study Area" trend will be equally weighted across all polygons. 
-poly <- poly %>%
+  poly <- poly %>%
   rename(Name = !!polygon_id_field) %>%
   mutate(Area = if (area_field != "") .data[[area_field]] else 1)
+  
+#Assignment method   
+ if (assignment_method == "within") {
+  # Assign points to polygons only if strictly within
+  xy_assigned <- st_join(xy, poly, join = st_within)
+} else if (assignment_method == "nearest") {
+  # Assign each point to the nearest polygon
+  nearest_poly_index <- st_nearest_feature(xy, poly)
+  xy_assigned <- xy
+  xy_assigned$Name <- poly$Name[nearest_poly_index]
+  xy_assigned$Area <- poly$Area[nearest_poly_index]
+} else {
+  stop("Unknown assignment method.")
+}
 
-#Spatially filter the polygon to those that have points
-poly <- st_transform(poly, st_crs(mapCRS))
-Grid <- poly %>% st_filter(xy, .predicate = st_intersects)
-loc.xy <- st_join(Grid, xy)
+# Drop polygons with no assigned points
+used_names <- unique(na.omit(xy_assigned$Name))
+poly <- poly %>% filter(Name %in% used_names)
 
-#Spatially filter the point to those that are only contained within the polygon
-points <- st_filter(xy, Grid, .predicate = st_within)
 
-#Visualize
-plot <- ggplot() +
-  geom_sf(data = Grid, aes(fill = Name), color = "black") +
-  geom_sf(data = points, color = "black", size = 1) +
-  theme_minimal()
-
-print(plot)
-
-ggsave(
-  filename = file.path(plot.dir, "iCAR_Spatial_Plot.jpeg"),
-  plot = plot,
-  width = 8,
-  height = 6,
-  dpi = 300
-)
-
-#Create the grid table that links the polygon ID to the SurveyAreaIdentifier
-grid <- loc.xy %>%
+ # Create grid table
+grid <- xy_assigned %>%
   st_drop_geometry() %>%
+  filter(Name %in% poly$Name) %>%
   select(SurveyAreaIdentifier, Name, Area) %>%
   distinct() %>%
-  mutate(
-    alpha_i = as.integer(factor(Name))
-  )
+  mutate(alpha_i = as.integer(factor(Name)))
 
-#Joint to your events layer and drop survey points outside the polygon
-events <- left_join(events, grid, by = "SurveyAreaIdentifier") %>% drop_na(Name)
+# Merge grid info back to events
+events <- events %>%
+  left_join(grid, by = "SurveyAreaIdentifier") %>%
+  drop_na(Name)
+
+  # Visualization
+  spatial_plot <- ggplot() +
+    geom_sf(data = poly, aes(fill = Name), color = "black") +
+    geom_sf(data = xy, color = "black", size = 1) +
+    theme_minimal()
+  
+  print(spatial_plot)
+  ggsave(file.path(plot.dir, "iCAR_Spatial_Plot.jpeg"), 
+         plot = spatial_plot, width = 8, height = 6, dpi = 300)
 }
 
 ```
@@ -167,7 +174,7 @@ family<-unique(sp.data$family_name)
 #view(family)
 
 #select on of the options for the analysis
-type <-"migration"
+type <-"family"
 
 ```
 
@@ -199,7 +206,7 @@ fam<-'nbinomial'
 #Priors for the random effects
 hyper.iid <- list(prec = list(prior = "pc.prec", param = c(1, 0.01)))
 
-#SPDE spatial priors
+#SPDE spatial priors used to make the model mesh
 prior.range = c(20, 0.5)  # 50% probability range >20 km  
 prior.sigma = c(1, 0.1)   # 10% probability stdev >1 
 
@@ -219,7 +226,7 @@ You are ready to start your analysis! The analysis will write results to the fil
 
 #Give your analytically output file a unique name (e.g., BCCWS_Species, SalishSea_Migration, Watershed_Species), 
 
-name<-"Salish_Species"
+name<-"Watershed_Species"
 
 #This is the template used for the State of Canada's Birds and is required for upload into NatureCounts
 

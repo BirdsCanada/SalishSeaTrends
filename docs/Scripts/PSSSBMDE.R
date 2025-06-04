@@ -10,15 +10,17 @@ psss_to_bmde <- function(input_csv_path) {
     )
   )
   
+  PSSS[PSSS == "null"] <- NA
   
   # Parse latitude and longitude from position string
   PSSS$lat <- sub(" W.*", "", PSSS$position)
   PSSS$long <- sub(".*W", "", PSSS$position)
   PSSS$lat <- gsub('N', '', PSSS$lat)
   PSSS$long <- gsub('W', '', PSSS$long)
-  PSSS$DecimalLatitude <- as.numeric(conv_unit(PSSS$lat, from = 'deg_dec_min', to = 'dec_deg'))
-  PSSS$DecimalLongitude <- as.numeric(conv_unit(PSSS$long, from = 'deg_dec_min', to = 'dec_deg')) * -1
-  
+ 
+  suppressWarnings({
+    PSSS$DecimalLatitude <- as.numeric(conv_unit(PSSS$lat, from = 'deg_dec_min', to = 'dec_deg'))
+    PSSS$DecimalLongitude <- as.numeric(conv_unit(PSSS$long, from = 'deg_dec_min', to = 'dec_deg')) * -1
   # Handle sites with different lat/long format
   test <- PSSS %>%
     filter(is.na(DecimalLatitude)) %>%
@@ -27,12 +29,14 @@ psss_to_bmde <- function(input_csv_path) {
     filter(!is.na(DecimalLatitude)) %>%
     select(-lat)
   PSSS <- rbind(PSSS, test)
-  
   # Split survey_date into Month, Day, Year
   PSSS <- PSSS %>%
     separate(survey_date, into = c("Date", "del"), sep = " ") %>%
     select(-del) %>%
     separate(Date, into = c("MonthCollected", "DayCollected", "YearCollected"), sep = "/")
+  })
+
+    PSSS<-PSSS %>% mutate_at(c("bird_count", "MonthCollected", "DayCollected", "YearCollected"), as.numeric)
   
   # Wrangle raptor data into long format
   raptor1 <- PSSS %>%
