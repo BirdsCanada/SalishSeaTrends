@@ -44,9 +44,9 @@ run_analysis <- function(model = c("SPDE", "iCAR")) {
   model <- match.arg(model)
 # Source the appropriate analysis script
   if (model == "SPDE") {
-    source("Analysis_SPDE.R", local = knitr::knit_global())
+    source("Scripts/Analysis_SPDE.R", local = knitr::knit_global())
   } else if (model == "iCAR") {
-    source("Analysis_iCAR.R", local = knitr::knit_global())
+    source("Scripts/Analysis_iCAR.R", local = knitr::knit_global())
   }
   message("Analysis for '", model, "'model has been run. Check Output folder for results.")
 }
@@ -61,15 +61,15 @@ graph_results <- function(model = c("SPDE", "iCAR"), name, trend = c("endpoint",
       assign("trend", trend, envir = knitr::knit_global())
       # Source the appropriate analysis script, suppressing warnings
       if (model == "SPDE") {
-        suppressWarnings(source("Graph_SPDE.R", local = knitr::knit_global()))
+        suppressWarnings(source("Scripts/Graph_SPDE.R", local = knitr::knit_global()))
       } else if (model == "iCAR") {
-        suppressWarnings(source("Graph_iCAR.R", local = knitr::knit_global()))
+        suppressWarnings(source("Scripts/Graph_iCAR.R", local = knitr::knit_global()))
       }
         message("Graph results for '", model, "' model (", name, ") have been run. Check Output/Plot folder for results.")
     }
     
 #Calculate Dispersion Statistic for SPDE 
-compute_dispersion_SPDE <- function(M1, Stack, family) {
+compute_dispersion_SPDE <- function(M1, Stack, fam) {
   # Extract indices of estimation points from the stack
   stack_data <- inla.stack.data(Stack)
   est_indices <- which(!is.na(stack_data$count))  # Identify non-NA responses
@@ -80,10 +80,10 @@ compute_dispersion_SPDE <- function(M1, Stack, family) {
   p_eff <- M1$dic$p.eff
   n <- length(observed)
   # Compute Pearson residuals
-  if(family == "nbinomial") {
+  if(fam == "nbinomial") {
     theta <- M1$summary.hyperpar$mean[1]
     pearson <- (observed - fitted_mean) / sqrt(fitted_mean * (1 + fitted_mean/theta))
-  } else if(family == "poisson") {
+  } else if(fam == "poisson") {
     pearson <- (observed - fitted_mean) / sqrt(fitted_mean)
   } else {
     stop("Family must be 'poisson' or 'nbinomial'")
@@ -101,7 +101,7 @@ calculate_dispersion_iCAR <- function(inla_model, observed, fam = "nbinomial") {
     # Initialize theta (only used for negative binomial)
   theta <- NULL
     # Family-specific calculations
-  if(family == "nbinomial") {
+  if(fam == "nbinomial") {
     # Check for negative binomial family and extract theta (size)
     theta_name <- grep("size for the nbinomial", 
                        rownames(inla_model$summary.hyperpar), 

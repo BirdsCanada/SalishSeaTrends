@@ -33,7 +33,7 @@ if(guild=="yes"){
 }  
 
 #grid data are only those cells containing data. This layers is created in ArcGIS. 
-nb1 <- spdep::poly2nb(Grid, row.names=Grid$data); nb1
+nb1 <- spdep::poly2nb(poly, row.names=poly$data); nb1
 is.symmetric.nb(nb1, verbose = FALSE, force = TRUE)
 nb2INLA("nb1.graph", nb1)
 nb1.adj <- paste(getwd(),"/nb1.graph", sep="")
@@ -102,10 +102,10 @@ for(i in 1:length(sp.list)){
     site_years_detected <- aggregate(ObservationCount ~ SurveyAreaIdentifier + wyear, data = dat, FUN = sum)
     site_years_detected$Detected <- site_years_detected$ObservationCount > 0
     
-    # Sum the number of years with detections for each site
+    # Sum the number of years with detection for each site
     site_detect_years <- aggregate(Detected ~ SurveyAreaIdentifier, data = site_years_detected, FUN = sum)
     
-    # Filter for sites with detections in more than 1 years
+    # Filter for sites with detection in more than 1 years
     sites_to_keep <- subset(site_detect_years, Detected > 1)$SurveyAreaIdentifier
     
     # Filter the main dataset
@@ -162,19 +162,19 @@ for(i in 1:length(sp.list)){
         slice_max(ObservationCount, n = 1, with_ties = FALSE) %>%
         ungroup()
       
-      #Last, remove alpha_i with incomplete sampling over all years. 
-      #Indicates that the polygon is not well sampled for a given species and end point trend may not work
-      period_num = Y2-Y1 
-      
-       complete_sites <- dat %>%
-        group_by(alpha_i) %>%
-        summarise(has_all_years = n_distinct(wyear)) %>%
-        filter(has_all_years == period_num) %>%
-        select(alpha_i)
-      
+      # #Last, remove alpha_i with incomplete sampling over all years. 
+      # #Indicates that the polygon is not well sampled for a given species and end point trend may not work
+      # period_num = Y2-Y1 
+      # 
+      #  complete_sites <- dat %>%
+      #   group_by(alpha_i) %>%
+      #   summarise(has_all_years = n_distinct(wyear)) %>%
+      #   filter(has_all_years == period_num) %>%
+      #   select(alpha_i)
+      # 
       # Filter original data frame to keep only complete sites
-      dat <- dat %>%
-        filter(alpha_i %in% complete_sites$alpha_i)
+      # dat <- dat %>%
+      #   filter(alpha_i %in% complete_sites$alpha_i)
       
       #Model Formula
       if(guild=="yes"){

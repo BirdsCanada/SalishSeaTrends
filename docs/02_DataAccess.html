@@ -279,7 +279,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the function passing the file path into the PSSS_BMDE function</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>PSSS_BMDE <span class="ot">&lt;-</span> <span class="fu">psss_to_bmde</span>(<span class="st">"Data/psss20250313.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>PSSS_BMDE <span class="ot">&lt;-</span> <span class="fu">psss_to_bmde</span>(<span class="st">"Data/psss20250603.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -307,7 +307,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Keep in mind that this is the winter year (wyear) which is the start year of the survey</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#The survey straddles two calendar years</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Y1 <span class="ot">=</span> <span class="dv">2008</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Y2 <span class="ot">=</span> <span class="dv">2023</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Y2 <span class="ot">=</span> <span class="dv">2024</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>clean_BCCWS<span class="ot">&lt;-</span><span class="fu">clean_BCCWS</span>(Y1, Y2)</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>clean_PSSS<span class="ot">&lt;-</span><span class="fu">clean_PSSS</span>(Y1, Y2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -319,8 +319,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>in.PSSS <span class="ot">&lt;-</span> clean_PSSS<span class="sc">$</span>in.PSSS</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Access events data</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>event.PSSS <span class="ot">&lt;-</span> clean_PSSS<span class="sc">$</span>event.PSSS</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>event.BCCWS <span class="ot">&lt;-</span> clean_BCCWS<span class="sc">$</span>event.BCCWS</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>event.BCCWS <span class="ot">&lt;-</span> clean_BCCWS<span class="sc">$</span>event.BCCWS</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>event.PSSS <span class="ot">&lt;-</span> clean_PSSS<span class="sc">$</span>event.PSSS</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Combine and write the data to you Data folder</span></span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>in.data<span class="ot">&lt;-</span><span class="fu">rbind</span>(in.BCCWS, in.PSSS)</span>
@@ -333,8 +333,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="2.4Data" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="2.4Data"><span class="header-section-number">2.4</span> Species Filtering</h2>
-<p>Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. In the next section, you will be given the option to manually <a href="#3.1.2Analysis">select focal species or guilds</a> for the analysis.</p>
-<p>Here we filter for species that are detected by both surveys. Generally, PSSS monitors just targets, whereas the BCCWS monitors more non-targets. In the analysis script we will set some additional <a href="#3.1.3Analysis">minimum data requirements</a> to remove species that do not have enough data to estimate trends.</p>
+<p>Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. In the next section, you will be given the option to manually <a href="03_Analysis.html#3.1.2Analysis">select focal species or guilds</a> for the analysis.</p>
+<p>Here we filter for species that are detected by both surveys. Generally, PSSS monitors just targets, whereas the BCCWS monitors more non-targets. In the analysis script we will set some additional <a href="03_Analysis.html#3.1.3Analysis">minimum data requirements</a> to remove species that do not have enough data to estimate trends.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Determine which SpeciesCode each ProjectCode share in the full dataset</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sp.bccws<span class="ot">&lt;-</span>in.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ProjectCode <span class="sc">==</span> <span class="st">"BCCWS"</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(CommonName) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
