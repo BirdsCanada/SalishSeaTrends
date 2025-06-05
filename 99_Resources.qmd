@@ -4,17 +4,15 @@ title: "Resources"
 
 ## Birds Canada GitHub {#9.9BirdsCan}
 
-![Alt text for accessibility](Images/BirdsCanadaGithub.png)
-
 All R scripts and resources associated with this project, as well as many other tools and tutorials, are available on the [Birds Canada GitHub](https://github.com/BirdsCanada) page.
+
+![Alt text for accessibility](Images/BirdsCanadaGithub.png)
 
 This repository is regularly updated and serves as the central hub for sharing code related to Birds Canada’s monitoring and research programs. If you run into issues using this code, or it generates errors, please open a git issue of email dethier\@birdscanada.org.
 
 To access the code visit: https://github.com/BirdsCanada/SalishSeaTrends
 
-You can view files directly on GitHub, or download individual scripts and entire repositories by clicking the green Code button and selecting Download ZIP.
-
-For advanced users, you can clone repositories using Git into RStudio using the following command in the Terminal:
+You can view files directly on GitHub, or download individual scripts and entire repositories by clicking the green Code button and selecting Download ZIP.For advanced users, you can clone repositories using Git into RStudio using the following command in the Terminal:
 
 git clone https://github.com/BirdsCanada/SalishSeaTrends.git
 
@@ -22,9 +20,9 @@ For tutorials and additional resources on using the NatureCounts R package, see 
 
 If you are new to GitHub, Birds Canada also provides a [Beginner’s Guide to GitHub](https://birdscanada.github.io/BirdsCanada_GitHubGuide/) with step-by-step instructions for accessing and sharing code.
 
-## Downloadable R Scripts {#9.91BirdsCan}
+Data users are encourage to review the [Transboundary avian data for the Salish Sea](https://birdscanada.github.io/TransboundaryData_SalishSea/) user guide, which details addition avian datasets and spatial data layers available for the Salish Sea.
 
-You can download the R scripts used in this analysis below:
+## Downloadable R Scripts {#9.91BirdsCan}
 
 -   [00_Setup.R](Scripts/00_Setup.R)
 -   [Analysis_iCAR.R](Scripts/Analysis_iCAR.R)

@@ -8,6 +8,7 @@ book:
   date: "2025-06-01"
   chapters:
     - index.qmd
+    - 01_Intro.qmd
     - 02_DataAccess.qmd
     - 03_Analysis.qmd
     - 99_Resources.qmd
