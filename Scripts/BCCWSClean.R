@@ -23,6 +23,18 @@ clean_BCCWS <- function(Y1, Y2) {
   in.BCCWS$form.id <- gsub("BCCWS-", "", in.BCCWS$SamplingEventIdentifier)
   in.BCCWS <- subset(in.BCCWS, !(form.id %in% c(3794, 5469, 5063, 6945)))
   
+  #Remove route being done for joint venture research (primarily in marshes)
+  remove <- c("LM-GR-ctrl-WS01", "LM-GR-ctrl-WS02", "LM-SA-WS01", "LM-SA-WS02", 
+              "LM-SA-ctrl-WS01", "LM-BU-ctrl-WS01", "LM-BU-WS01", "LM-MS-WS01", 
+              "LM-MS-WS02", "LM-MS-ctrl-WS01", "LM-MS-ctrl-WS02", "LM-WV-ctrl-WS01", 
+              "LM-WV-WS01", "LM-WC-WS01", "LM-WC-ctrl-WS01", "LM-GE-WS01", 
+              "LM-SW-WS01", "LM-SW-GE-ctrl-WS01", "LM-NC-WS01", "LM-NC-WS02", 
+              "LM-NC-ctrl-WS01", "LM-BE-ctrl-WS01", "LM-BE-WS01", "LM-BE-WS02")
+  
+  in.BCCWS <- in.BCCWS %>% 
+    filter(!SurveyAreaIdentifier %in% remove)
+  
+  
   # Remove duplicate records
   in.BCCWS <- distinct(in.BCCWS)
   
