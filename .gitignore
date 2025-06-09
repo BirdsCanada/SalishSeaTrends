@@ -10,6 +10,7 @@
 *.csv
 *.pdf
 *.jpeg
+*.xlsx
 
 !Data/GuildList.csv
 !Data/Spatial/*
