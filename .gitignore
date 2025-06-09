@@ -13,6 +13,7 @@
 *.xlsx
 
 !Data/GuildList.csv
+!Data/Species_Analysis_List.csv
 !Data/Spatial/*
 
 PlotTrends.R 

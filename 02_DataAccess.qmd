@@ -152,21 +152,17 @@ write.csv(events, "Data/events.csv", row.names = FALSE)
 
 ## Species Filtering {#2.4Data}
 
-Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. In the next section, you will be given the option to manually [select focal species or guilds](#3.1.2Analysis) for the analysis.
+Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species well monitored by the coastal waterbird survey protocol. In the next section, you will be given the option to manually [select focal species or guilds](#3.1.2Analysis) for the analysis.
 
-Here we filter for species that are detected by both surveys. Generally, PSSS monitors just targets, whereas the BCCWS monitors more non-targets. In the analysis script we will set some additional [minimum data requirements](#3.1.3Analysis) to remove species that do not have enough data to estimate trends.
+Here we filter for thirty nine species that are detected regularly by both protocols and are considered representative by the survey coordinators. In the analysis script we will set some additional [minimum data requirements](#3.1.3Analysis) to remove species that do not have enough data to estimate trends.
 
 ```{r}
 
-#Determine which SpeciesCode each ProjectCode share in the full dataset
-sp.bccws<-in.data %>% filter(ProjectCode == "BCCWS") %>% dplyr::select(CommonName) %>% distinct()
-sp.psss<-in.data %>% filter(ProjectCode == "PSSS") %>% dplyr::select(CommonName) %>% distinct()
-
-common.species<-intersect(sp.bccws$CommonName, sp.psss$CommonName) 
-#There were 53 species in common between BCCWS and PSSS that are carried forward for the analysis
+sp.analysis<-read.csv("Data/Species_Analysis_List.csv")
+sp.analysis<-unique(sp.analysis$CommonName)
 
 #filter the full dataset to only include the common species
-sp.data<-in.data[in.data$CommonName %in% common.species,]
+sp.data<-in.data[in.data$CommonName %in% sp.analysis,]
 
 #write to Data folder in working directory
 write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)
@@ -182,7 +178,7 @@ The user may wish to review and update this .csv as needed, as new species might
 ```{r}
 
 guild<-read.csv("Data/GuildList.csv")
-guild<-guild[guild$english_name %in% common.species,]
+guild<-guild[guild$english_name %in% sp.analysis,]
 
 family<-meta_species_taxonomy() %>% select(species_id, group_id, family_name, family_english_name)
 
