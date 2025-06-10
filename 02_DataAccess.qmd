@@ -92,7 +92,7 @@ PSSS_BMDE <- psss_to_bmde("Data/psss20250603.csv")
 
 ## Clean and Combine {#2.3Data}
 
-Now it is time to do some data cleaning before we combine the BCCWS and PSSS datasets. The user has the opportunity here to select the start and end dates of the analysis by changing the Y1 and Y2 variables.
+Each dataset will be clearned independently before we combine them. The user has the opportunity here to select the start and end dates of the analysis by changing the Y1 and Y2 variables.
 
 During this process some species are combined following advise from the survey coordinators. These are species that are typically difficult to tell apart and are often misidentified.
 
@@ -106,14 +106,11 @@ During this process some species are combined following advise from the survey c
 
 -   "Canada-Cackling Goose"
 
-Other non-target species are also removed i.e., any species detected less than 10 times over all years is considered rare and removed.
-
-This part of the code also creates and events martix for each program. This is what is used for zero-filling during the species or guild specific analysis.
+This part of the code also creates a sampling events martix for each program. This is what is used for zero-filling during the species or guild specific analysis.
 
 -   wmonth = MonthCollected (1=September to 8=April)
 -   wyear
--   ObservationCount3 for BCCWS to match PSSS protocol
--   Sampling events matrix
+-   ObservationCount3 (nearshore) for BCCWS to match PSSS protocol
 
 ```{r}
 
@@ -128,7 +125,7 @@ clean_PSSS<-clean_PSSS(Y1, Y2)
 
 ```
 
-Combine the clean datasets and events tables
+Combine the clean datasets and events tables.
 
 ```{r}
 

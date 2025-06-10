@@ -30,7 +30,6 @@ librarian::shelf("BirdsCanada/naturecounts", tidyverse, sf, mapview, sdmpredicto
                  maps, splancs, spdep, igraph, ggspatial, terra, tidyterra, stringr, reshape2, 
                  measurements, ggOceanMaps, leaflet, readr, shiny, rsconnect, quarto)
 
-
 BMDE<-meta_bmde_fields("core")
 
 sp.c<-meta_species_codes()
