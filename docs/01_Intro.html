@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; Overview – Transboundary coastal waterbird trends in the Salish Sea</title>
+<title>2&nbsp; Project Overview – Transboundary coastal waterbird trends in the Salish Sea</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Overview</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Project Overview</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -115,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01_Intro.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Project Overview</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -157,7 +157,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Overview</span></h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Project Overview</span></h1>
 </div>
 
 
@@ -182,14 +182,14 @@ ul.task-list li input[type="checkbox"] {
 <section id="1.2Intro" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="1.2Intro"><span class="header-section-number">2.2</span> Methods</h2>
 <p>The analysis framework is spatially explicit, meaning the model borrows strength from data-rich regions to stabilize estimates in areas with sparse sampling. The user can choose from one of two spatially explicit analytical approaches. Both use spatially varying coefficients (SVCs, Gelfand et al.&nbsp;2003) to account for relationships between variables (in this case, counts of birds) that are not uniform across large spatial areas. This modelling approach was first applied to continent wide bird abundance data to assess winter bird population trends using discrete aerial units (Meehan et al.&nbsp;2019) and an intrinsic conditional autoregressive model (iCAR; Besag 1974). The modelling framework was later adapted (Meehan et al.&nbsp;2024) to incorporate continuous space using a triangulated model mesh and stochastic partial differential equation (SPDE; Lindgren et al.&nbsp;2022). The benefits of a continuous-space (SPDE) versus a discrete-space (iCAR) models are (1) finer resolution of trends, (2) a better understanding of the range of spatial correlation, and (3) a reduction in boundary effects associated with discrete-space analyses. However, many management units (such as geopolitical boundaries) are divided by discrete polygons, making the iCAR approach appropriate in many instances. We therefore develop workflows which allows for both an iCAR and SPDE SCV approach to derive estimates of annual relative abundance as well as long-term trends of coastal waterbirds in the Salish Sea.</p>
-<p><a href="02_DataAccess.html#2.1Data">Details on data collection and processing can be found in the next section of this user guide</a></p>
+<p><a href="#2.1Data">Details on data collection and processing can be found in the next section of this user guide</a></p>
 <p>The basic statistical unit for the analysis was the maximum yearly count of each species at a survey site. We initially structured the analysis at a monthly resolution, treating monthly counts at sites as our response variable. However, model diagnostics revealed convergence failures and inflated variance components indicating poor identifiable of monthly effects. To balance temporal resolution with model stability, we aggregated counts to the maximum yearly count at each survey site. This aggregation reduced overdispersion while maintaining ecological relevance.</p>
-<p>Species must meet the minimum data requirements in order to be included in the analysis. By default, these include (1) minimum annual abundance &gt;10 individuals across all sites, (2) detection in &gt;50% of study years (specifically &gt;(Y₂-Y₁)/2 years where Y₁ and Y₂ represent the study period endpoints), and (3) presence at &gt;10 distinct monitoring locations. <a href="03_Analysis.html#3.1Analysis">Minimum data filters can be adjusted by users before running the analysis</a>.</p>
+<p>Species must meet the minimum data requirements in order to be included in the analysis. By default, these include (1) minimum annual abundance &gt;10 individuals across all sites, (2) detection in &gt;50% of study years (specifically &gt;(Y₂-Y₁)/2 years where Y₁ and Y₂ represent the study period endpoints), and (3) presence at &gt;10 distinct monitoring locations. <a href="#3.1Analysis">Minimum data filters can be adjusted by users before running the analysis</a>.</p>
 <p>Extreme outliers in observation counts are identified using a quantile-based threshold. We calculated the outlier cutoff as three times the 99th percentile of the maximum observation count. This was done to prevent disproportionate influence from rare extreme values and to aid in model fit. Data from 2020 were also removed to due survey disruptions caused by COVID-19.</p>
 <p>We modeled the maximum observed counts yₐₜ at site a and year t using a negative binomial distribution: yₐₜ ∼ NB(μₐₜ, ϕ) where μₐₜ = exp[log(Dₐₜ) + fₜ + γₖ + α(sₐ)]. The linear predictor incorporated survey duration Dₐₜ as an offset, a temporal parameter γₖ with an independent and identically distributed (IID) random effect to allow for random fluctuations in counts from year to year, and a site-level random effects fₜ with IID.</p>
-<p>The spatial component on abundance α(sₐ) uses either the SPDE or iCAR approach. <a href="03_Analysis.html#3.1Analysis">This is user defined before running the analysis.</a></p>
+<p>The spatial component on abundance α(sₐ) uses either the SPDE or iCAR approach. <a href="#3.1Analysis">This is user defined before running the analysis.</a></p>
 <p>The SPDE approach uses a mesh, featuring maximum edge lengths of 25 km (inner domain) and 50 km (outer buffer), minimum vertex spacing of 2 km, and boundary constraints derived from coastline geometry. For the spatial range parameter, we set the prior such that there was a 50% probability that the spatial correlation range exceeded 20 km (i.e., P(range &gt; 20 km) = 0.5). For the spatial standard deviation, we set the prior so that there was a 10% probability that the marginal standard deviation exceeded 1 (i.e., P(σ &gt; 1) = 0.1). These priors provide weakly informative regularization, reflecting plausible spatial scales and variation while avoiding over fitting. <a href="#3.1SPDE">These priors can be adjusted by users before running an analysis</a>.</p>
-<p>The iCAR approach assigned spatially structured random intercepts for each provided polygon based on the neighborhood adjacency (1=neighbour, 0 otherwise). This allowed for information on relative abundance to be shared across neighbouring polygons. Values of α(sₐ) came from a normal distribution with a mean value related to the average of adjacent cells and with a conditional variance proportional to the variance across adjacent cells and inversely proportional to the number of adjacent cells. We provide an example using the “Watersheds in the Salish Sea Bioregion” layer from the <a href="https://salish-sea-atlas-data-wwu.hub.arcgis.com/">Salish Sea Atlas Data</a>. Users can <a href="03_Analysis.html#3.1Analysis">upload a multipolygon spatial layer</a>, which covers part or all of the Salish Sea to run the analysis for the management jurisdictions of interest.</p>
+<p>The iCAR approach assigned spatially structured random intercepts for each provided polygon based on the neighborhood adjacency (1=neighbour, 0 otherwise). This allowed for information on relative abundance to be shared across neighbouring polygons. Values of α(sₐ) came from a normal distribution with a mean value related to the average of adjacent cells and with a conditional variance proportional to the variance across adjacent cells and inversely proportional to the number of adjacent cells. We provide an example using the “Watersheds in the Salish Sea Bioregion” layer from the <a href="https://salish-sea-atlas-data-wwu.hub.arcgis.com/">Salish Sea Atlas Data</a>. Users can <a href="#3.1Analysis">upload a multipolygon spatial layer</a>, which covers part or all of the Salish Sea to run the analysis for the management jurisdictions of interest.</p>
 <p>Models are fitted via integrated nested Laplace approximation (INLA) with 1,000 posterior samples drawn for uncertainty quantification. We computed annual abundance indices Ñₜ by summing exponentiated linear predictos of abundances, then derived trends using the slope and enpoint methods.</p>
 <ul>
 <li><p>Slope Trend = 100 x (exp(coef(lm(log(NY) ~ Y))[2]) - 1)</p>
@@ -197,7 +197,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Endpoint Trend = 100 × [(Ñ_Y₂/Ñ_Y₁)^{1/(Y₂-Y₁)} - 1].</p>
 <p><em>The constant annual rate that would transition NY1 to NY2 over Y2−Y1 years, assuming exponential growth. This is equivalent to the geometric mean of annual growth rates, and is standard with the Canadian Breeding Bird Survey (BBS) analysis. Because the BBS uses a GAM year effect, the smoothing of the annual indices makes the end-point approach more stable as it mitigates the sensitivity of anomalous start/end years.</em></p></li>
 </ul>
-<p>Credible intervals reflected the 2.5% and 97.5% quantiles of posterior trend estimates, with interval width calculated as their difference. The iCAR model also produces area-weighted composite indices of abundance, where <a href="03_Analysis.html#3.1.1Analysis">weights are assigned by the user as being equal or based on the polygon area</a>.</p>
+<p>Credible intervals reflected the 2.5% and 97.5% quantiles of posterior trend estimates, with interval width calculated as their difference. The iCAR model also produces area-weighted composite indices of abundance, where <a href="#3.1.1Analysis">weights are assigned by the user as being equal or based on the polygon area</a>.</p>
 <p>For analyses conducted at the guild level, we included an additional species-level random effect, also modeled with an IID, to account for unstructured heterogeneity among species.</p>
 </section>
 <section id="1.3Intro" class="level2" data-number="2.3">

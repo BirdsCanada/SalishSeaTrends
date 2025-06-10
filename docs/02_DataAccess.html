@@ -149,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01_Intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Project Overview</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -339,8 +339,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="2.4Data" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="2.4Data"><span class="header-section-number">3.4</span> Species Filtering</h2>
-<p>Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species well monitored by the coastal waterbird survey protocol. In the next section, you will be given the option to manually <a href="03_Analysis.html#3.1.2Analysis">select focal species or guilds</a> for the analysis.</p>
-<p>Here we filter for thirty nine species that are detected regularly by both protocols and are considered representative by the survey coordinators. In the analysis script we will set some additional <a href="03_Analysis.html#3.1.3Analysis">minimum data requirements</a> to remove species that do not have enough data to estimate trends.</p>
+<p>Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species well monitored by the coastal waterbird survey protocol. In the next section, you will be given the option to manually <a href="#3.1.2Analysis">select focal species or guilds</a> for the analysis.</p>
+<p>Here we filter for thirty nine species that are detected regularly by both protocols and are considered representative by the survey coordinators. In the analysis script we will set some additional <a href="#3.1.3Analysis">minimum data requirements</a> to remove species that do not have enough data to estimate trends.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sp.analysis<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/Species_Analysis_List.csv"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sp.analysis<span class="ot">&lt;-</span><span class="fu">unique</span>(sp.analysis<span class="sc">$</span>CommonName)</span>
@@ -832,8 +832,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./01_Intro.html" class="pagination-link" aria-label="Overview">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Overview</span></span>
+      <a href="./01_Intro.html" class="pagination-link" aria-label="Project Overview">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Project Overview</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

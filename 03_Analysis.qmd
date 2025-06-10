@@ -2,8 +2,7 @@
 title: "Analysis and Visualization"
 format: html
 editor: visual
-filters:
-  - shinylive
+server: shiny
 editor_options: 
   chunk_output_type: console
 ---
@@ -257,63 +256,73 @@ graph_results(model, name, trend)
 
 ```
 
-Visually map trends per survey site resulting from the SPDE analysis.
+Visually map of species trends per survey site resulting from the SPDE analysis.
 
-```{shinylive-r}
-#| standalone: true
+```{r}
+
+# In your Quarto document, use a regular R chunk (no special options)
 library(shiny)
+library(leaflet)
+library(dplyr)
+library(readr)
 
+ui <- fluidPage(
+  titlePanel("Species Trends Map"),
+  leafletOutput("map", height = 600)
+)
 
-# --- 1. Load your data (replace file names as needed) ---
-trends <- read.csv(file.path(out.dir, paste0(name, "_TrendsSlope_SPDE.csv"))) %>% 
-  drop_na(results_code) %>% 
-  select(area_code, species_code, trnd, lower_ci, upper_ci, percent_change)
-
-events <- read_csv("Data/events.csv")
-events <- events %>% select(SurveyAreaIdentifier, wyear, DecimalLatitude, DecimalLongitude) %>% distinct()
-
-annual_indices <- read.csv(file.path(out.dir, paste0(name, "_AnnualIndices_SPDE.csv"))) %>% 
-  drop_na(results_code) 
-
-# --- 2. Merge trends with site coordinates ---
-trends_map <- trends %>%
-  left_join(events, by = c("area_code" = "SurveyAreaIdentifier"))
-
-# --- 3. Prepare popup content (basic version) ---
-trends_map <- trends_map %>%
-  mutate(
-    popup = paste0(
-      "<b>Area:</b> ", area_code, "<br>",
-      "<b>Species:</b> ", species_code, "<br>",
-      "<b>Trend (slope):</b> ", round(trnd, 2), "<br>",
-      "<b>95% CI:</b> [", round(lower_ci, 2), ", ", round(upper_ci, 2), "]<br>",
-      "<b>Percent Change:</b> ", round(percent_change, 1), "%<br>"
-      # Optionally, add more info or links here
+server <- function(input, output, session) {
+  trends <- read.csv("Output/SalishSea_TrendsSlope_SPDE.csv") %>% 
+    tidyr::drop_na(results_code) %>% 
+    select(area_code, species_code, trnd, lower_ci, upper_ci, percent_change)
+  
+  events <- read_csv("Data/events.csv") %>%
+    select(SurveyAreaIdentifier, wyear, DecimalLatitude, DecimalLongitude) %>%
+    distinct()
+  
+  annual_indices <- read.csv(file.path(out.dir, paste0(name, "_AnnualIndices_SPDE.csv"))) %>% 
+    tidyr::drop_na(results_code)
+  
+  # Merge trends with site coordinates
+  trends_map <- trends %>%
+    left_join(events, by = c("area_code" = "SurveyAreaIdentifier"))
+  
+  # Prepare popup content
+  trends_map <- trends_map %>%
+    mutate(
+      popup = paste0(
+        "<b>Area:</b> ", area_code, "<br>",
+        "<b>Species:</b> ", species_code, "<br>",
+        "<b>Trend (slope):</b> ", round(trnd, 2), "<br>",
+        "<b>95% CI:</b> [", round(lower_ci, 2), ", ", round(upper_ci, 2), "]<br>",
+        "<b>Percent Change:</b> ", round(percent_change, 1), "%<br>"
+      )
     )
-  )
+  
+  pal <- colorNumeric(palette = "RdYlBu", domain = trends_map$trnd, reverse = TRUE)
+  
+  output$map <- renderLeaflet({
+    leaflet(trends_map) %>%
+      addProviderTiles("CartoDB.Positron") %>%
+      addCircleMarkers(
+        lng = ~DecimalLongitude,
+        lat = ~DecimalLatitude,
+        radius = 8,
+        color = ~pal(trnd),
+        stroke = TRUE,
+        fillOpacity = 0.8,
+        popup = ~popup
+      ) %>%
+      addLegend(
+        "bottomright",
+        pal = pal,
+        values = ~trnd,
+        title = "Trend (slope)",
+        opacity = 1
+      )
+  })
+}
 
-# --- 4. Set color palette for trend slope ---
-pal <- colorNumeric(palette = "RdYlBu", domain = trends_map$trnd, reverse = TRUE)
-
-# --- 5. Build and display the Leaflet map ---
-leaflet(trends_map) %>%
-  addProviderTiles("CartoDB.Positron") %>%
-  addCircleMarkers(
-    lng = ~DecimalLongitude,
-    lat = ~DecimalLatitude,
-    radius = 8,
-    color = ~pal(trnd),
-    stroke = TRUE,
-    fillOpacity = 0.8,
-    popup = ~popup
-  ) %>%
-  addLegend(
-    "bottomright",
-    pal = pal,
-    values = ~trnd,
-    title = "Trend (slope)",
-    opacity = 1
-  )
 shinyApp(ui, server)
 
 ```

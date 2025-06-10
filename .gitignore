@@ -16,4 +16,7 @@
 !Data/Species_Analysis_List.csv
 !Data/Spatial/*
 
+!Output/SalishSea_Species_TrendsSlope.csv
+!Data/events.csv
+
 PlotTrends.R 

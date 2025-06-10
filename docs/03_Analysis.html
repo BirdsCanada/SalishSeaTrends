@@ -427,7 +427,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="3.3Vis" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="3.3Vis"><span class="header-section-number">4.3</span> Results</h2>
-<p>The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which <code>trend</code> outputs they would like to view as either “Endpoint” or “Slope”. Given these models are</p>
+<p>The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which <code>trend</code> outputs they would like to view as either “Endpoint” or “Slope”.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>trend <span class="ot">&lt;-</span> <span class="st">"Slope"</span> </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#trend &lt;- "Endpoint"</span></span>
@@ -440,8 +440,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
 #| standalone: true
-library(shiny)
-
 
 # --- 1. Load your data (replace file names as needed) ---
 trends &lt;- read.csv(file.path(out.dir, paste0(name, "_TrendsSlope_SPDE.csv"))) %&gt;% 
@@ -495,6 +493,69 @@ leaflet(trends_map) %&gt;%
   )
 shinyApp(ui, server)
 </code></pre>
+<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+
+ui &lt;- fluidPage(
+  titlePanel("Species Trends Map"),
+  leafletOutput("map", height = 600)
+)
+
+server &lt;- function(input, output, session) {
+  trends &lt;- read.csv(file.path(out.dir, paste0(name, "_TrendsSlope_SPDE.csv"))) %&gt;% 
+  drop_na(results_code) %&gt;% 
+  select(area_code, species_code, trnd, lower_ci, upper_ci, percent_change)
+
+events &lt;- read_csv("Data/events.csv")
+events &lt;- events %&gt;% select(SurveyAreaIdentifier, wyear, DecimalLatitude, DecimalLongitude) %&gt;% distinct()
+
+annual_indices &lt;- read.csv(file.path(out.dir, paste0(name, "_AnnualIndices_SPDE.csv"))) %&gt;% 
+  drop_na(results_code) 
+
+# --- 2. Merge trends with site coordinates ---
+trends_map &lt;- trends %&gt;%
+  left_join(events, by = c("area_code" = "SurveyAreaIdentifier"))
+
+# --- 3. Prepare popup content (basic version) ---
+trends_map &lt;- trends_map %&gt;%
+  mutate(
+    popup = paste0(
+      "&lt;b&gt;Area:&lt;/b&gt; ", area_code, "&lt;br&gt;",
+      "&lt;b&gt;Species:&lt;/b&gt; ", species_code, "&lt;br&gt;",
+      "&lt;b&gt;Trend (slope):&lt;/b&gt; ", round(trnd, 2), "&lt;br&gt;",
+      "&lt;b&gt;95% CI:&lt;/b&gt; [", round(lower_ci, 2), ", ", round(upper_ci, 2), "]&lt;br&gt;",
+      "&lt;b&gt;Percent Change:&lt;/b&gt; ", round(percent_change, 1), "%&lt;br&gt;"
+      # Optionally, add more info or links here
+    )
+  )
+
+  pal &lt;- colorNumeric(palette = "RdYlBu", domain = trends_map$trnd, reverse = TRUE)
+  
+  output$map &lt;- renderLeaflet({
+    leaflet(trends_map) %&gt;%
+      addProviderTiles("CartoDB.Positron") %&gt;%
+      addCircleMarkers(
+        lng = ~DecimalLongitude,
+        lat = ~DecimalLatitude,
+        radius = 8,
+        color = ~pal(trnd),
+        stroke = TRUE,
+        fillOpacity = 0.8,
+        popup = ~popup
+      ) %&gt;%
+      addLegend(
+        "bottomright",
+        pal = pal,
+        values = ~trnd,
+        title = "Trend (slope)",
+        opacity = 1
+      )
+  })
+}
+
+shinyApp(ui, server)</code></pre>
 
 
 </section>
