@@ -149,7 +149,7 @@ for(i in 1:length(sp.list)){
       dat <- dat %>% mutate( 
         std_yr = wyear - Y2,
         alpha_i = as.integer(factor(dat$Name)),
-        protocol = factor(ProjectCode), 
+        protocol = as.factor(dat$ProjectCode), 
         kappa = as.integer(factor(dat$SurveyAreaIdentifier)),
         year_idx = as.integer(wyear - mean_wyear), #intercept is the expected count during the most recent year of data collection. 
         wmonth_idx = as.factor(wmonth), 

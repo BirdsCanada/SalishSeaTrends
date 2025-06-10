@@ -2,6 +2,8 @@
 title: "Analysis and Visualization"
 format: html
 editor: visual
+filters:
+  - shinylive
 editor_options: 
   chunk_output_type: console
 ---
@@ -45,8 +47,8 @@ You can choose the continuous space "SPDE" or discrete space "iCAR" method.
 
 ```{r}
 
-model<-"iCAR"
-#model<-"SPDE"
+#model<-"iCAR"
+model<-"SPDE"
 
 ```
 
@@ -70,7 +72,7 @@ A polygon should have counts in all years to ensure that sampling is complete an
 if(model == "iCAR"){
   
   assignment_method <- "within"  
-#  assignment_method <- "nearest"
+# assignment_method <- "nearest"
   
 # Load and prepare polygon
   poly <- st_read("Data/Spatial/Salish_Sea_Watersheds.shp") %>% 
@@ -174,7 +176,7 @@ family<-unique(sp.data$family_name)
 #view(family)
 
 #select on of the options for the analysis
-type <-"family"
+type <-"migration"
 
 ```
 
@@ -226,7 +228,7 @@ You are ready to start your analysis! The analysis will write results to the fil
 
 #Give your analytically output file a unique name (e.g., BCCWS_Species, SalishSea_Migration, Watershed_Species), 
 
-name<-"Watershed_Species"
+name<-"SalishSea_Species"
 
 #This is the template used for the State of Canada's Birds and is required for upload into NatureCounts
 
@@ -242,7 +244,7 @@ Note that the Dispersion Statistic file in the Output folder should be reviewed 
 
 ## Results {#3.3Vis}
 
-The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which `trend` outputs they would like to view as either "Endpoint" or "Slope". Given these models are
+The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which `trend` outputs they would like to view as either "Endpoint" or "Slope".
 
 ```{r}
 
@@ -252,5 +254,66 @@ trend <- "Slope"
 #Graph your outputs
 graph_results(model, name, trend)
 
+
+```
+
+Visually map trends per survey site resulting from the SPDE analysis.
+
+```{shinylive-r}
+#| standalone: true
+library(shiny)
+
+
+# --- 1. Load your data (replace file names as needed) ---
+trends <- read.csv(file.path(out.dir, paste0(name, "_TrendsSlope_SPDE.csv"))) %>% 
+  drop_na(results_code) %>% 
+  select(area_code, species_code, trnd, lower_ci, upper_ci, percent_change)
+
+events <- read_csv("Data/events.csv")
+events <- events %>% select(SurveyAreaIdentifier, wyear, DecimalLatitude, DecimalLongitude) %>% distinct()
+
+annual_indices <- read.csv(file.path(out.dir, paste0(name, "_AnnualIndices_SPDE.csv"))) %>% 
+  drop_na(results_code) 
+
+# --- 2. Merge trends with site coordinates ---
+trends_map <- trends %>%
+  left_join(events, by = c("area_code" = "SurveyAreaIdentifier"))
+
+# --- 3. Prepare popup content (basic version) ---
+trends_map <- trends_map %>%
+  mutate(
+    popup = paste0(
+      "<b>Area:</b> ", area_code, "<br>",
+      "<b>Species:</b> ", species_code, "<br>",
+      "<b>Trend (slope):</b> ", round(trnd, 2), "<br>",
+      "<b>95% CI:</b> [", round(lower_ci, 2), ", ", round(upper_ci, 2), "]<br>",
+      "<b>Percent Change:</b> ", round(percent_change, 1), "%<br>"
+      # Optionally, add more info or links here
+    )
+  )
+
+# --- 4. Set color palette for trend slope ---
+pal <- colorNumeric(palette = "RdYlBu", domain = trends_map$trnd, reverse = TRUE)
+
+# --- 5. Build and display the Leaflet map ---
+leaflet(trends_map) %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addCircleMarkers(
+    lng = ~DecimalLongitude,
+    lat = ~DecimalLatitude,
+    radius = 8,
+    color = ~pal(trnd),
+    stroke = TRUE,
+    fillOpacity = 0.8,
+    popup = ~popup
+  ) %>%
+  addLegend(
+    "bottomright",
+    pal = pal,
+    values = ~trnd,
+    title = "Trend (slope)",
+    opacity = 1
+  )
+shinyApp(ui, server)
 
 ```

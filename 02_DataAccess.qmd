@@ -177,14 +177,14 @@ The user may wish to review and update this .csv as needed, as new species might
 
 ```{r}
 
-guild<-read.csv("Data/GuildList.csv")
-guild<-guild[guild$english_name %in% sp.analysis,]
+guilds<-read.csv("Data/GuildList.csv")
+guilds<-guilds[guilds$english_name %in% sp.analysis,]
 
 family<-meta_species_taxonomy() %>% select(species_id, group_id, family_name, family_english_name)
 
-guild<-left_join(guild, family, by=c("species_id"))
+guilds<-left_join(guilds, family, by=c("species_id"))
 
-sp.data<-left_join(sp.data, guild, by=c("CommonName" = "english_name"))
+sp.data<-left_join(sp.data, guilds, by=c("CommonName" = "english_name"))
 
 #write to Data folder in working directory
 write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)

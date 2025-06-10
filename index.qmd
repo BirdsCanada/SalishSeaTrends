@@ -7,7 +7,7 @@ numbered: false
 
 ## Goals {#0.1Intro}
 
-The goals of this user guide is to empower resource managers to leverage standardized citizen-science monitoring data, collected by the BC Coastal Waterbird Survey (BCCWS) and Puget Sound Seabird Survey (PSSS), to (1) obtain scientifically credible measures of abundance trends of coastal waterbirds in the transboundary waters of the Salish Seas at scales appropriate for resource management, (2) identify priority species for conservation, and (3) provide resource managers with openly accessible annual indices of abundance for model-based management planning. In turn, these modelling outputs can be used to assess environmental and human-induced mechanisms of waterbird changes and provide a foundation from which to tease apart whether local population fluctuations are a result of true changing abundance or shifts in species distributions over time.
+The goals of this user guide is to empower resource managers to leverage standardized citizen-science monitoring data, collected by the British Columbia Coastal Waterbird Survey (BCCWS) and Puget Sound Seabird Survey (PSSS), to (1) obtain scientifically credible measures of abundance trends of coastal waterbirds in the transboundary waters of the Salish Seas at scales appropriate for resource management, (2) identify priority species for conservation, and (3) provide resource managers with openly accessible annual indices of abundance for model-based management planning. In turn, these modelling outputs can be used to assess environmental and human-induced mechanisms of waterbird changes and provide a foundation from which to tease apart whether local population fluctuations are a result of true changing abundance or shifts in species distributions over time.
 
 Data users are encourage to review the [Transboundary avian data for the Salish Sea](https://birdscanada.github.io/TransboundaryData_SalishSea/) user guide, which details addition avian datasets and spatial data layers available for the Salish Sea.
 
@@ -21,7 +21,7 @@ The methods section is technical, but users are strongly encouraged to read this
 
 **Chapter 2: Data Access and Cleaning**
 
-Data cleaning and formatting steps are done in the background and were vetted by the BCCWS and PSSS coordinators. Species filtered for the analysis are those which the coordinators felt were representative and regularly monitored by both programs.
+Data cleaning and formatting steps are largely done in the background and were vetted by the BCCWS and PSSS program coordinators. Species selected for the analysis are those which the program coordinators felt were representative and regularly monitored by both survey protocols.
 
 [GuildList.csv](Data/GuildList.csv) can be modified by data users if species are missing or modification are deemed needed.
 
@@ -40,6 +40,10 @@ Users Select to following parameter settings (or can use the defaults):
 -   `model` = Specify the model as iCAR (discrete space) or SPDE (continuous space)
 
     -   if `model` = "iCAR" the user will need to load a multi-polygon shapefile or use the default provided
+
+        -   Option is given to assign data point to polygons they fall `within` or are `nearest`
+
+        -   Option is given to assign weights to areas for full study area trend roll up.
 
     -   if `model` = "SPDE" the user can select the `area` as SALISHSEA, BCCWS, or PSSS
 

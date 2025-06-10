@@ -1,6 +1,6 @@
 clean_PSSS <- function(Y1, Y2) {
   # Read raw data
-  in.PSSS <- PSSS_BMDE
+  in.PSSS <- read.csv("Data/PSSS_BMDE.csv")
   
   # Fix Thayer's Gull species code
   in.PSSS$SpeciesCode[in.PSSS$CommonName == "Iceland (Thayer's) Gull"] <- "ICGU"

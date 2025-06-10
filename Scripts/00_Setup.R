@@ -27,7 +27,8 @@ librarian::shelf("BirdsCanada/naturecounts", tidyverse, sf, mapview, sdmpredicto
                  svMisc, terra, geojsonsf, leaflet, HelpersMG, gdalUtilities, ggplot2,
                  exactextractr, readxl, reshape, ggmap, gridExtra, ggspatial, prettymapr, 
                  rnaturalearth, mapview, INLA, mgcv, sn, fmesher, inlabru, splines, 
-                 maps, splancs, spdep, igraph, ggspatial, terra, tidyterra, stringr, reshape2, measurements, ggOceanMaps)
+                 maps, splancs, spdep, igraph, ggspatial, terra, tidyterra, stringr, reshape2, 
+                 measurements, ggOceanMaps, leaflet, readr, shiny)
 
 BMDE<-meta_bmde_fields("core")
 

@@ -75,6 +75,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<meta name="shinylive:serviceworker_dir" content=".">
+<script src="site_libs/quarto-contrib/shinylive-0.9.1/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="site_libs/quarto-contrib/shinylive-0.9.1/shinylive/run-python-blocks.js" type="module"></script>
+<link href="site_libs/quarto-contrib/shinylive-0.9.1/shinylive/shinylive.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -149,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01_Intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Project Overview</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -246,8 +251,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="4.1.1" class="anchored" data-anchor-id="3.1.1Analysis"><span class="header-section-number">4.1.1</span> Model Type</h3>
 <p>You can choose the continuous space “SPDE” or discrete space “iCAR” method.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model<span class="ot">&lt;-</span><span class="st">"iCAR"</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#model&lt;-"SPDE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#model&lt;-"iCAR"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model<span class="ot">&lt;-</span><span class="st">"SPDE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If doing an SPDE model, you may define your <code>area</code> as “SalishSea”, “BCCWS”, or “PSSS”. Only sites with more than 10 years of data will be retained in the analysis.</p>
 <div class="cell">
@@ -263,7 +268,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(model <span class="sc">==</span> <span class="st">"iCAR"</span>){</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  assignment_method <span class="ot">&lt;-</span> <span class="st">"within"</span>  </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  assignment_method &lt;- "nearest"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># assignment_method &lt;- "nearest"</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and prepare polygon</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  poly <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Data/Spatial/Salish_Sea_Watersheds.shp"</span>) <span class="sc">%&gt;%</span> </span>
@@ -362,7 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#view(family)</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#select on of the options for the analysis</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>type <span class="ot">&lt;-</span><span class="st">"family"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>type <span class="ot">&lt;-</span><span class="st">"migration"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="3.1.3Analysis" class="level3" data-number="4.1.3">
@@ -408,7 +413,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Give your analytically output file a unique name (e.g., BCCWS_Species, SalishSea_Migration, Watershed_Species), </span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>name<span class="ot">&lt;-</span><span class="st">"Watershed_Species"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>name<span class="ot">&lt;-</span><span class="st">"SalishSea_Species"</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#This is the template used for the State of Canada's Birds and is required for upload into NatureCounts</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -430,6 +435,66 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Graph your outputs</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">graph_results</span>(model, name, trend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Visually map trends per survey site resulting from the SPDE analysis.</p>
+<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+library(shiny)
+
+
+# --- 1. Load your data (replace file names as needed) ---
+trends &lt;- read.csv(file.path(out.dir, paste0(name, "_TrendsSlope_SPDE.csv"))) %&gt;% 
+  drop_na(results_code) %&gt;% 
+  select(area_code, species_code, trnd, lower_ci, upper_ci, percent_change)
+
+events &lt;- read_csv("Data/events.csv")
+events &lt;- events %&gt;% select(SurveyAreaIdentifier, wyear, DecimalLatitude, DecimalLongitude) %&gt;% distinct()
+
+annual_indices &lt;- read.csv(file.path(out.dir, paste0(name, "_AnnualIndices_SPDE.csv"))) %&gt;% 
+  drop_na(results_code) 
+
+# --- 2. Merge trends with site coordinates ---
+trends_map &lt;- trends %&gt;%
+  left_join(events, by = c("area_code" = "SurveyAreaIdentifier"))
+
+# --- 3. Prepare popup content (basic version) ---
+trends_map &lt;- trends_map %&gt;%
+  mutate(
+    popup = paste0(
+      "&lt;b&gt;Area:&lt;/b&gt; ", area_code, "&lt;br&gt;",
+      "&lt;b&gt;Species:&lt;/b&gt; ", species_code, "&lt;br&gt;",
+      "&lt;b&gt;Trend (slope):&lt;/b&gt; ", round(trnd, 2), "&lt;br&gt;",
+      "&lt;b&gt;95% CI:&lt;/b&gt; [", round(lower_ci, 2), ", ", round(upper_ci, 2), "]&lt;br&gt;",
+      "&lt;b&gt;Percent Change:&lt;/b&gt; ", round(percent_change, 1), "%&lt;br&gt;"
+      # Optionally, add more info or links here
+    )
+  )
+
+# --- 4. Set color palette for trend slope ---
+pal &lt;- colorNumeric(palette = "RdYlBu", domain = trends_map$trnd, reverse = TRUE)
+
+# --- 5. Build and display the Leaflet map ---
+leaflet(trends_map) %&gt;%
+  addProviderTiles("CartoDB.Positron") %&gt;%
+  addCircleMarkers(
+    lng = ~DecimalLongitude,
+    lat = ~DecimalLatitude,
+    radius = 8,
+    color = ~pal(trnd),
+    stroke = TRUE,
+    fillOpacity = 0.8,
+    popup = ~popup
+  ) %&gt;%
+  addLegend(
+    "bottomright",
+    pal = pal,
+    values = ~trnd,
+    title = "Trend (slope)",
+    opacity = 1
+  )
+shinyApp(ui, server)
+</code></pre>
 
 
 </section>

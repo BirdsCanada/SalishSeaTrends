@@ -339,21 +339,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="2.4Data" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="2.4Data"><span class="header-section-number">3.4</span> Species Filtering</h2>
-<p>Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species of focus for your study area. In the next section, you will be given the option to manually <a href="03_Analysis.html#3.1.2Analysis">select focal species or guilds</a> for the analysis.</p>
-<p>Here we filter for species that are detected by both surveys. Generally, PSSS monitors just targets, whereas the BCCWS monitors more non-targets. In the analysis script we will set some additional <a href="03_Analysis.html#3.1.3Analysis">minimum data requirements</a> to remove species that do not have enough data to estimate trends.</p>
+<p>Not all species will be included in an analysis. Some species are detected too infrequently to be included or they may not be species well monitored by the coastal waterbird survey protocol. In the next section, you will be given the option to manually <a href="03_Analysis.html#3.1.2Analysis">select focal species or guilds</a> for the analysis.</p>
+<p>Here we filter for thirty nine species that are detected regularly by both protocols and are considered representative by the survey coordinators. In the analysis script we will set some additional <a href="03_Analysis.html#3.1.3Analysis">minimum data requirements</a> to remove species that do not have enough data to estimate trends.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Determine which SpeciesCode each ProjectCode share in the full dataset</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sp.bccws<span class="ot">&lt;-</span>in.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ProjectCode <span class="sc">==</span> <span class="st">"BCCWS"</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(CommonName) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sp.psss<span class="ot">&lt;-</span>in.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ProjectCode <span class="sc">==</span> <span class="st">"PSSS"</span>) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(CommonName) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>common.species<span class="ot">&lt;-</span><span class="fu">intersect</span>(sp.bccws<span class="sc">$</span>CommonName, sp.psss<span class="sc">$</span>CommonName) </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#There were 53 species in common between BCCWS and PSSS that are carried forward for the analysis</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#filter the full dataset to only include the common species</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span>in.data[in.data<span class="sc">$</span>CommonName <span class="sc">%in%</span> common.species,]</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#write to Data folder in working directory</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp.data, <span class="st">"Data/sp.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sp.analysis<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/Species_Analysis_List.csv"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sp.analysis<span class="ot">&lt;-</span><span class="fu">unique</span>(sp.analysis<span class="sc">$</span>CommonName)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#filter the full dataset to only include the common species</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span>in.data[in.data<span class="sc">$</span>CommonName <span class="sc">%in%</span> sp.analysis,]</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#write to Data folder in working directory</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp.data, <span class="st">"Data/sp.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="2.5Data" class="level2" data-number="3.5">
@@ -361,14 +357,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The user may be interested in assigning species to Guilds for their analysis. In the Data folder we provide the user with migration and dietary guilds for the 53 species that the survey programs have in common. We can also assign species to family using the NatureCounts metadata, which can be accessed using the R package.</p>
 <p>The user may wish to review and update this .csv as needed, as new species might be added that are not currently on the list.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/GuildList.csv"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span>guild[guild<span class="sc">$</span>english_name <span class="sc">%in%</span> common.species,]</span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>guilds<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/GuildList.csv"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>guilds<span class="ot">&lt;-</span>guilds[guilds<span class="sc">$</span>english_name <span class="sc">%in%</span> sp.analysis,]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>family<span class="ot">&lt;-</span><span class="fu">meta_species_taxonomy</span>() <span class="sc">%&gt;%</span> <span class="fu">select</span>(species_id, group_id, family_name, family_english_name)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>guild<span class="ot">&lt;-</span><span class="fu">left_join</span>(guild, family, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"species_id"</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>guilds<span class="ot">&lt;-</span><span class="fu">left_join</span>(guilds, family, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"species_id"</span>))</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span><span class="fu">left_join</span>(sp.data, guild, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"CommonName"</span> <span class="ot">=</span> <span class="st">"english_name"</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span><span class="fu">left_join</span>(sp.data, guilds, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"CommonName"</span> <span class="ot">=</span> <span class="st">"english_name"</span>))</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#write to Data folder in working directory</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp.data, <span class="st">"Data/sp.data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

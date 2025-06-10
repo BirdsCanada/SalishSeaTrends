@@ -53,7 +53,7 @@ if(guild=="yes"){
 
 #Create a loop for the species list
   for(i in 1:length(sp.list)){
-  # for(i in 34:length(sp.list)){ #restarting loop if it breaks
+  # for(i in 30:length(sp.list)){ #restarting loop if it breaks
    dat<-NULL 
     #i<-1 #for testing
    
@@ -334,7 +334,7 @@ N<-nrow(dat)
     
     # Calculate disperson statistic
     
-    disp <- compute_dispersion_SPDE(M1 = M1, Stack = Stack, family = fam)
+    disp <- compute_dispersion_SPDE(M1 = M1, Stack = Stack, fam = fam)
     print(paste(sp.list[i], " Dispersions Statistic = ", disp, sep = ""))
     
     # Append to dispersion file
