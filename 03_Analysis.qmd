@@ -45,8 +45,8 @@ You can choose the continuous space "SPDE" or discrete space "iCAR" method.
 
 ```{r}
 
-#model<-"iCAR"
-model<-"SPDE"
+model<-"iCAR"
+#model<-"SPDE"
 
 ```
 
@@ -246,11 +246,15 @@ The analysis calculates trends using both the end point method and a slope throu
 
 ```{r}
 
-trend <- "Slope" 
+if(model=="iCAR"){
+
+ trend <- "Slope" 
 #trend <- "Endpoint"
 
 #Graph your outputs
-graph_results(model, name, trend)
+graph_results(name, trend)
+
+}
 
 
 ```
@@ -258,3 +262,5 @@ graph_results(model, name, trend)
 Visually map of species trends per survey site resulting from the SPDE analysis.
 
 <iframe src="https://dmethier.shinyapps.io/SalishSeaTrends_Map/" width="100%" height="600"></iframe>
+
+Code for creating the Shiny App are available at https://github.com/DMEthier/SalishSeaTrends_Map/settings.

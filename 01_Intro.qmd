@@ -44,4 +44,6 @@ For analyses conducted at the guild level, we included an additional species-lev
 
 ## Results {#1.3Intro}
 
-Select model outputs (national and international trends) are accessible through the *naturecounts* R package and will be made available through the web portal in late 2025. The outputs from this analysis will therefore provide resource managers with openly accessible annual indices of abundance for model-based management planning. User generated output will be stored in the output folder in the working directory of this project.
+Select model outputs (national and international trends) are accessible through the *naturecounts* R package using the nc_query_table() function. Users will need to request permission to access these tables: naturecounts\@birdscanada.org. The outputs from this analysis provides resource managers with openly accessible annual indices of abundance for model-based management planning.
+
+User generated output will be stored in the `Output` folder in the working directory of this R project.
