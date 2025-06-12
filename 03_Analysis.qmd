@@ -6,7 +6,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Run setup if starting a new environment. Load previously saved data and format for analysis.
+Run the setup if starting a new environment and load previously saved data and format for analysis.
 
 ```{r}
 
@@ -63,8 +63,6 @@ area <- "SALISHSEA" #one word to be compatible with the code.
 ```
 
 If doing an iCAR model, upload the desired spatial polygon for the analysis. We use "Watersheds in the Salish Sea Bioregion" layer from the [Salish Sea Atlas Data](https://salish-sea-atlas-data-wwu.hub.arcgis.com/) as an example.
-
-A polygon should have counts in all years to ensure that sampling is complete and consistent. Those that have incomplete time series are removed.
 
 ```{r}
 if(model == "iCAR"){
@@ -206,10 +204,13 @@ fam<-'nbinomial'
 #Priors for the random effects
 hyper.iid <- list(prec = list(prior = "pc.prec", param = c(1, 0.01)))
 
+if(model == "SPDE"){
+
 #SPDE spatial priors used to make the model mesh
 prior.range = c(20, 0.5)  # 50% probability range >20 km  
 prior.sigma = c(1, 0.1)   # 10% probability stdev >1 
 
+}
 ```
 
 ![Alt text for accessibility](Images/SPDEModelMesh.png)
@@ -218,9 +219,7 @@ prior.sigma = c(1, 0.1)   # 10% probability stdev >1
 
 Create output tables to the `Output` folder using a custom file `name`.
 
-The files that this code creates is a file for Annual Indices for each sampling site, end-point Trends, and a file with the Dispersion statistic.
-
-You are ready to start your analysis! The analysis will write results to the files on the folder and also create some plots for model checking.
+The Output_Tables function creates is a file for Annual Indices, Trends, and a file with the Dispersion statistic.
 
 ```{r}
 
@@ -233,16 +232,22 @@ name<-"SalishSea_Species"
 #Create output tables, which will include your custom name and the `model` you specified.
 output_tables(name, model)
 
+```
+
+You are ready to start your analysis! The analysis will write results to the files on in the `Output` folder and also create some plots for model checking.
+
+```{r}
+
 #Now we can initiate the analysis based on the `model` you previously specified.   
 run_analysis(model)
 
 ```
 
-Note that the Dispersion Statistic file in the Output folder should be reviewed after the analysis. If the statistic is \> 10 you should inspect the FitPlots in the Plot directory. In this case we will want to rerun using a different distributional assumption on the counts. This can be done by manually changing the `fam` to Poission and selecting these species to be rerun.
+Note that the Dispersion Statistic file in the `Output` folder should be reviewed after the analysis. If the statistic is \> 10 you should inspect the FitPlots in the Plot directory. In this case we will want to rerun using a different distributional assumption on the counts. This can be done by manually changing the `fam` to Poission and selecting these species to be rerun.
 
-## Results {#3.3Vis}
+## Visualize Results {#3.3Vis}
 
-The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which `trend` outputs they would like to view as either "Endpoint" or "Slope".
+The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which `trend` outputs they would like to view as either "Endpoint" or "Slope". The "Slope" trend is recommneded for reasons specified in the [methods](#1.1Intro). 
 
 ```{r}
 
@@ -256,11 +261,12 @@ graph_results(name, trend)
 
 }
 
-
 ```
 
 Visually map of species trends per survey site resulting from the SPDE analysis.
 
-<iframe src="https://dmethier.shinyapps.io/SalishSeaTrends_Map/" width="100%" height="600"></iframe>
+<iframe src="https://dmethier.shinyapps.io/SalishSeaTrends_Map/" width="100%" height="600">
+
+</iframe>
 
 Code for creating the Shiny App are available at https://github.com/DMEthier/SalishSeaTrends_Map/settings.

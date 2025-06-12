@@ -272,7 +272,7 @@ for(i in 1:length(sp.list)){
         summarise(sample_size = n_distinct(SurveyAreaIdentifier), .groups = "drop")
       
       #Calculate Posterior estimate of abundance
-      nsamples<- 100
+      nsamples<- 1000
       post.sample1 <-NULL #clear previous
       post.sample1<-inla.posterior.sample(nsamples, M2)
       

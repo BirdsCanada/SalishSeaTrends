@@ -5,7 +5,7 @@ editor: visual
 numbered: false
 ---
 
-## Goals {#0.1Intro}
+## Project Goals {#0.1Intro}
 
 The goals of this user guide is to empower resource managers to leverage standardized citizen-science monitoring data, collected by the British Columbia Coastal Waterbird Survey (BCCWS) and Puget Sound Seabird Survey (PSSS), to (1) obtain scientifically credible measures of abundance trends of coastal waterbirds in the transboundary waters of the Salish Seas at scales appropriate for resource management, (2) identify priority species for conservation, and (3) provide resource managers with openly accessible annual indices of abundance for model-based management planning. In turn, these modelling outputs can be used to assess environmental and human-induced mechanisms of waterbird changes and provide a foundation from which to tease apart whether local population fluctuations are a result of true changing abundance or shifts in species distributions over time.
 
@@ -13,17 +13,23 @@ Data users are encourage to review the [Transboundary avian data for the Salish 
 
 ## Using this Technical Guide {#0.2Intro}
 
-This guide provides users with step-by-step instructions and user defined parameters to customize the analysis. The workflow is as follows:
+This guide provides users with step-by-step instructions and user defined parameters to customize the analysis.
+
+The workflow is as follows:
 
 **Chapter 1: Overview of Methods**
 
-The methods section is technical, but users are strongly encouraged to read this section in full before proceeding with an analysis.
+The methods section is technical. Users are strongly encouraged to read this section in full before proceeding with an analysis.
+
+Pre-computed annual indices of abundance and trends are available through `naturecounts` r-package and can be retrieved with the nc_query_table() function. Trend have been generated for BC, WA, BCR-5, and for each survey site that had more than 10-years of data.
 
 **Chapter 2: Data Access and Cleaning**
 
-Data cleaning and formatting steps are largely done in the background and were vetted by the BCCWS and PSSS program coordinators. Species selected for the analysis are those which the program coordinators felt were representative and regularly monitored by both survey protocols.
+Data cleaning and formatting steps are largely done in the background. Data cleaning was vetted by the BCCWS and PSSS program coordinators. All back end formatting and cleaning scripts are available in the `Scripts` folder (see [Resources](#9.9BirdsCan)).
 
-[GuildList.csv](Data/GuildList.csv) can be modified by data users if species are missing or modification are deemed needed.
+Species selected for the analysis are those which the program coordinators felt were representative and regularly monitored by both survey protocols. There are a total of 39 species included in the base model. These can be found in the [Species_Analysis_List.csv](Data/Species_Analysis_List.csv)
+
+The [GuildList.csv](Data/GuildList.csv) specifies which family, diet, and migration guild a species belongs. This can be updated by a data users if species are missing or modification are deemed needed.
 
 Sampling events plot should be inspected prior to proceeding with the analysis.
 
@@ -31,7 +37,7 @@ Sampling events plot should be inspected prior to proceeding with the analysis.
 
 Several user defined options are presented here to customize the analysis
 
-Users Select to following parameter settings (or can use the defaults):
+Users select the following parameter settings (or can use the defaults):
 
 -   `Y1` = Start year of analysis
 
@@ -43,15 +49,15 @@ Users Select to following parameter settings (or can use the defaults):
 
         -   Option is given to assign data point to polygons they fall `within` or are `nearest`
 
-        -   Option is given to assign weights to areas for full study area trend roll up.
+        -   Option is given to assign weights for full study area trends
 
     -   if `model` = "SPDE" the user can select the `area` as SALISHSEA, BCCWS, or PSSS
 
--   `species.list` can either be all the species the programs have in common, or the user can select species of interest
+-   `species.list` can either be all the species the programs have in common (n=39), or the user can select species of interest
 
 -   `guild` can be turned to "yes" to indicate the user wishes to do a guild level analysis. Default this is set to "no".
 
-    -   if `guild` = "yes" the user can selece the `type` as family, diet, or migration.
+    -   if `guild` = "yes" the user can select the `type` as family, diet, or migration.
 
 -   Minimum data requirement setting include: `min.abundance`, `min.year`, and `nsites`
 
@@ -59,7 +65,9 @@ Users Select to following parameter settings (or can use the defaults):
 
 -   A meaningful `name` is given to the output files - When displaying results, users can select between the "endpoint" or "slope" `trend`
 
-This guide assumes that you have a basic understanding of R. All the R scripts and data resources associated with this project are available on the [Birds Canada GitHub](https://github.com/BirdsCanada/SalishSeaTrends) page and in the [Resource](#9.9BirdsCan) section of this guide. If you run into issues executing the code or it generates errors, please open a git issue, or send an email to dethier\@birdscanada.org.
+## Prerequisite
+
+This guide assumes that you have a basic understanding of R and R Studio. All the R scripts and data resources associated with this project are available on the [Birds Canada GitHub](https://github.com/BirdsCanada/SalishSeaTrends) page and in the [Resource](#9.9BirdsCan) section of this guide. If you run into issues executing the code or it generates errors, please open a git issue, or send an email to dethier\@birdscanada.org.
 
 ## Acknowledgement {#0.3Intro}
 

@@ -53,21 +53,14 @@ run_analysis <- function(model = c("SPDE", "iCAR")) {
 }
 
 # Source the appropriate graph script
-graph_results <- function(model = c("SPDE", "iCAR"), name, trend = c("endpoint", "slope")) {
-      model <- match.arg(model)
-      trend <- tolower(trend)         # Convert user input to lowercase
-      trend <- match.arg(trend)       # Now safely match
-      # Make 'name' and 'trend' available to sourced scripts
-      assign("name", name, envir = knitr::knit_global())
-      assign("trend", trend, envir = knitr::knit_global())
-      # Source the appropriate analysis script, suppressing warnings
-      if (model == "SPDE") {
-        suppressWarnings(source("Scripts/Graph_SPDE.R", local = knitr::knit_global()))
-      } else if (model == "iCAR") {
-        suppressWarnings(source("Scripts/Graph_iCAR.R", local = knitr::knit_global()))
-      }
-        message("Graph results for '", model, "' model (", name, ") have been run. Check Output/Plot folder for results.")
-    }
+graph_results <- function(name, trend = c("slope", "endpoint")) {
+  trend <- tolower(trend)
+  trend <- match.arg(trend)
+  assign("name", name, envir = knitr::knit_global())
+  assign("trend", trend, envir = knitr::knit_global())
+  suppressWarnings(source("Scripts/Graph_iCAR.R", local = knitr::knit_global()))
+  message("Graph results for SPDE model (", name, ") have been run. Check Output/Plot folder for results.")
+}
     
 #Calculate Dispersion Statistic for SPDE 
 compute_dispersion_SPDE <- function(M1, Stack, fam) {

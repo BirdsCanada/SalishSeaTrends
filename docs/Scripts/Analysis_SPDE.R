@@ -387,7 +387,7 @@ N<-nrow(dat)
     
     
 #Calculate Posterior estimate of abundance
-nsamples<- 100
+nsamples<- 1000
 post.sample1 <-NULL #clear previous
 post.sample1<-inla.posterior.sample(nsamples, M1)
 

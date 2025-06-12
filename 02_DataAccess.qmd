@@ -6,7 +6,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Before you get started, run the `setup.R` script to install and load the necessary packages and functions for this analysis.
+Before you get started, run the `setup.R` script to install and load the necessary packages and functions.
 
 ```{r}
 
@@ -92,7 +92,7 @@ PSSS_BMDE <- psss_to_bmde("Data/psss20250603.csv")
 
 ## Clean and Combine {#2.3Data}
 
-Each dataset will be clearned independently before we combine them. The user has the opportunity here to select the start and end dates of the analysis by changing the Y1 and Y2 variables.
+Each dataset will be cleaned independently before we combine them. The user has the opportunity here to select the start and end dates of the analysis by changing the Y1 and Y2 variables.
 
 During this process some species are combined following advise from the survey coordinators. These are species that are typically difficult to tell apart and are often misidentified.
 
@@ -108,9 +108,12 @@ During this process some species are combined following advise from the survey c
 
 This part of the code also creates a sampling events martix for each program. This is what is used for zero-filling during the species or guild specific analysis.
 
--   wmonth = MonthCollected (1=September to 8=April)
--   wyear
--   ObservationCount3 (nearshore) for BCCWS to match PSSS protocol
+Additional data cleaning includes the creation of:
+
+-   wmonth variable (MonthCollected; 1=September to 8=April)
+-   wyear variable based on the start year of the survey (winter 2024/25 = wyear 2024)
+-   Duration in Hours for PSSS for use as an offset in the analysis
+-   ObservationCount3 (nearshore) is used for BCCWS to better match the PSSS protocol
 
 ```{r}
 
@@ -168,7 +171,7 @@ write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)
 
 ## Guild Assignment {#2.5Data}
 
-The user may be interested in assigning species to Guilds for their analysis. In the Data folder we provide the user with migration and dietary guilds for the 53 species that the survey programs have in common. We can also assign species to family using the NatureCounts metadata, which can be accessed using the R package.
+The user may be interested in assigning species to Guilds for their analysis. In the `Data` folder we provide the user with the [GuildList.csv](Data/GuildList.csv) for assigning migration and dietary guilds. We can also assign species to family using the NatureCounts metadata, which can be accessed using the R package.
 
 The user may wish to review and update this .csv as needed, as new species might be added that are not currently on the list.
 

@@ -8,11 +8,11 @@ All R scripts and resources associated with this project, as well as many other 
 
 ![Alt text for accessibility](Images/BirdsCanadaGithub.png)
 
-This repository is regularly updated and serves as the central hub for sharing code related to Birds Canada’s monitoring and research programs. If you run into issues using this code, or it generates errors, please open a git issue of email dethier\@birdscanada.org.
+This repository is regularly updated and serves as the central hub for sharing code related to Birds Canada’s monitoring and research programs. If you run into issues using this code, or it generates errors, please open a git issue or email dethier\@birdscanada.org.
 
-To access the code visit: https://github.com/BirdsCanada/SalishSeaTrends
+To access the R code directly visit: https://github.com/BirdsCanada/SalishSeaTrends
 
-You can view files directly on GitHub, or download individual scripts and entire repositories by clicking the green Code button and selecting Download ZIP.For advanced users, you can clone repositories using Git into RStudio using the following command in the Terminal:
+You can view files directly on GitHub, or download individual scripts and entire repositories by clicking the green Code button and selecting Download ZIP. For advanced users, you can clone repositories using Git into RStudio using the following command in the Terminal:
 
 git clone https://github.com/BirdsCanada/SalishSeaTrends.git
 
@@ -37,6 +37,7 @@ Data users are encourage to review the [Transboundary avian data for the Salish 
 ## Downloadable Data {#9.92BirdsCan}
 
 -   [GuildList.csv](Data/GuildList.csv)
+-   [Species_Analysis_List.csv](Data/Species_Analysis_List.csv)
 -   [Salish_Sea_Water_Polygon.dbf](Data/Spatial/Salish_Sea_Water_Polygon.dbf)
 -   [Salish_Sea_Water_Polygon.prj](Data/Spatial/Salish_Sea_Water_Polygon.prj)
 -   [Salish_Sea_Water_Polygon.shp](Data/Spatial/Salish_Sea_Water_Polygon.shp)

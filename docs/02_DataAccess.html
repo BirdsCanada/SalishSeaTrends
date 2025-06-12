@@ -149,7 +149,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01_Intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Project Overview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Overview of Methods</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -222,7 +222,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Before you get started, run the <code>setup.R</code> script to install and load the necessary packages and functions for this analysis.</p>
+<p>Before you get started, run the <code>setup.R</code> script to install and load the necessary packages and functions.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"Scripts/00_Setup.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -291,7 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="2.3Data" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="2.3Data"><span class="header-section-number">3.3</span> Clean and Combine</h2>
-<p>Each dataset will be clearned independently before we combine them. The user has the opportunity here to select the start and end dates of the analysis by changing the Y1 and Y2 variables.</p>
+<p>Each dataset will be cleaned independently before we combine them. The user has the opportunity here to select the start and end dates of the analysis by changing the Y1 and Y2 variables.</p>
 <p>During this process some species are combined following advise from the survey coordinators. These are species that are typically difficult to tell apart and are often misidentified.</p>
 <ul>
 <li><p>“Large Gull” = gull (large) + WEGU + GWGU hybrid + Glaucous-winger + Western + Herring + Glaucous + Iceland (Thayer’s) + California Gull</p></li>
@@ -301,10 +301,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>“Canada-Cackling Goose”</p></li>
 </ul>
 <p>This part of the code also creates a sampling events martix for each program. This is what is used for zero-filling during the species or guild specific analysis.</p>
+<p>Additional data cleaning includes the creation of:</p>
 <ul>
-<li>wmonth = MonthCollected (1=September to 8=April)</li>
-<li>wyear</li>
-<li>ObservationCount3 (nearshore) for BCCWS to match PSSS protocol</li>
+<li>wmonth variable (MonthCollected; 1=September to 8=April)</li>
+<li>wyear variable based on the start year of the survey (winter 2024/25 = wyear 2024)</li>
+<li>Duration in Hours for PSSS for use as an offset in the analysis</li>
+<li>ObservationCount3 (nearshore) is used for BCCWS to better match the PSSS protocol</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Manually specify the start and end year of the analysis</span></span>
@@ -352,7 +354,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="2.5Data" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="2.5Data"><span class="header-section-number">3.5</span> Guild Assignment</h2>
-<p>The user may be interested in assigning species to Guilds for their analysis. In the Data folder we provide the user with migration and dietary guilds for the 53 species that the survey programs have in common. We can also assign species to family using the NatureCounts metadata, which can be accessed using the R package.</p>
+<p>The user may be interested in assigning species to Guilds for their analysis. In the <code>Data</code> folder we provide the user with the <a href="Data/GuildList.csv">GuildList.csv</a> for assigning migration and dietary guilds. We can also assign species to family using the NatureCounts metadata, which can be accessed using the R package.</p>
 <p>The user may wish to review and update this .csv as needed, as new species might be added that are not currently on the list.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>guilds<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/GuildList.csv"</span>)</span>
@@ -830,8 +832,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./01_Intro.html" class="pagination-link" aria-label="Project Overview">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Project Overview</span></span>
+      <a href="./01_Intro.html" class="pagination-link" aria-label="Overview of Methods">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Overview of Methods</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
