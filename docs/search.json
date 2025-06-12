@@ -104,7 +104,7 @@
     "href": "03_Analysis.html#3.3Vis",
     "title": "4  Analysis and Mapping",
     "section": "4.3 Map Results",
-    "text": "4.3 Map Results\nThe analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which trend outputs they would like to view as either “Endpoint” or “Slope”. The “Slope” trend is recommended for reasons specified in the methods.\n\nif(model==\"iCAR\"){\n trend &lt;- \"Slope\" \n#trend &lt;- \"Endpoint\"\n\n#Graph your outputs\ngraph_results(name, trend)\n}\n\n\n\n\nAlt text for accessibility\n\n\nVisually map of species trends per survey site resulting from the SPDE analysis.\n\n\nCode for creating the Shiny App are available at https://github.com/DMEthier/SalishSeaTrends_Map/settings.",
+    "text": "4.3 Map Results\nThe analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which trend outputs they would like to view as either “Endpoint” or “Slope”. The “Slope” trend is recommended for reasons specified in the methods.\n\nif(model==\"iCAR\"){\n trend &lt;- \"Slope\" \n#trend &lt;- \"Endpoint\"\n\n#Graph your outputs\ngraph_results(name, trend)\n}\n\n\n\n\nAlt text for accessibility\n\n\nVisually map of species trends per survey site resulting from the SPDE analysis.\n\n\nCode for creating the Shiny App are available at https://github.com/DMEthier/SalishSeaTrends_Map.",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Analysis and Mapping</span>"
     ]
