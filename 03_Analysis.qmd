@@ -267,4 +267,4 @@ Visually map of species trends per survey site resulting from the SPDE analysis.
 
 </iframe>
 
-Code for creating the Shiny App are available at https://github.com/DMEthier/SalishSeaTrends_Map/settings.
+Code for creating the Shiny App are available at https://github.com/DMEthier/SalishSeaTrends_Map.
