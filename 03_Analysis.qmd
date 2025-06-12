@@ -205,11 +205,9 @@ fam<-'nbinomial'
 hyper.iid <- list(prec = list(prior = "pc.prec", param = c(1, 0.01)))
 
 if(model == "SPDE"){
-
 #SPDE spatial priors used to make the model mesh
 prior.range = c(20, 0.5)  # 50% probability range >20 km  
 prior.sigma = c(1, 0.1)   # 10% probability stdev >1 
-
 }
 ```
 
@@ -247,21 +245,21 @@ Note that the Dispersion Statistic file in the `Output` folder should be reviewe
 
 ## Map Results {#3.3Vis}
 
-The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which `trend` outputs they would like to view as either "Endpoint" or "Slope". The "Slope" trend is recommneded for reasons specified in the [methods](#1.1Intro). 
+The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which `trend` outputs they would like to view as either "Endpoint" or "Slope". The "Slope" trend is recommended for reasons specified in the [methods](#1.1Intro). 
 
 ```{r}
 
 if(model=="iCAR"){
-
  trend <- "Slope" 
 #trend <- "Endpoint"
 
 #Graph your outputs
 graph_results(name, trend)
-
 }
 
 ```
+
+![Alt text for accessibility](Images/iCAR_SalishSea_SpeciesWEGR.png)
 
 Visually map of species trends per survey site resulting from the SPDE analysis.
 

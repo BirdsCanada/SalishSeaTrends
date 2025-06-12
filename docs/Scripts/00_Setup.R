@@ -59,7 +59,7 @@ graph_results <- function(name, trend = c("slope", "endpoint")) {
   assign("name", name, envir = knitr::knit_global())
   assign("trend", trend, envir = knitr::knit_global())
   suppressWarnings(source("Scripts/Graph_iCAR.R", local = knitr::knit_global()))
-  message("Graph results for SPDE model (", name, ") have been run. Check Output/Plot folder for results.")
+  message("Graph results for iCAR model (", name, ") have been run. Check Output/Plot folder for results.")
 }
     
 #Calculate Dispersion Statistic for SPDE 

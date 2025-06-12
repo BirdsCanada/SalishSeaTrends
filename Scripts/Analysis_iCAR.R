@@ -217,8 +217,13 @@ for(i in 1:length(sp.list)){
                    )
       ))
   
-      
-      #Dispersion Statistic
+      if (inherits(M2, "try-error")) {
+        cat("The iCAR model failed to run. Please check your input or model specifications.\n")
+      } else {
+        # Continue with normal processing
+        print("Model iCAR model ran successfully.")
+        
+     #Dispersion Statistic
        Dispersion1 <- calculate_dispersion_iCAR(M2, dat$ObservationCount)
        print(paste(sp.list[i], " Dispersions Statistic = ", Dispersion1, sep = ""))
       
@@ -881,7 +886,7 @@ for(i in 1:length(sp.list)){
                   sep = ",", 
                   col.names = FALSE)  
   
-  
+        } # end try error
       } #end min data
     } #end if nrows = 0
   } #end sp.list
