@@ -218,10 +218,10 @@ for(i in 1:length(sp.list)){
       ))
   
       if (inherits(M2, "try-error")) {
-        cat("The model failed to run. Please check your input or model specifications.\n")
+        cat("The iCAR model failed to run. Please check your input or model specifications.\n")
       } else {
         # Continue with normal processing
-        print("Model M2 ran successfully.")
+        print("Model iCAR model ran successfully.")
         
      #Dispersion Statistic
        Dispersion1 <- calculate_dispersion_iCAR(M2, dat$ObservationCount)

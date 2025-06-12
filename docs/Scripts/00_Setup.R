@@ -20,7 +20,7 @@ data.dir <- "Data/"
 spatial.dir <- "Data/Spatial/"
 plot.dir <- "Output/Plots/"
 
-install.packages("INLA",repos=c(getOption("repos"),INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE) 
+#install.packages("INLA",repos=c(getOption("repos"),INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE) 
 
 #Load required libraries
 librarian::shelf("BirdsCanada/naturecounts", tidyverse, sf, mapview, sdmpredictors,

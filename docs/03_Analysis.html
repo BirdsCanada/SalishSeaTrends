@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Analysis and Visualization – Transboundary coastal waterbird trends in the Salish Sea</title>
+<title>4&nbsp; Analysis and Mapping – Transboundary coastal waterbird trends in the Salish Sea</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03_Analysis.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Analysis and Visualization</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03_Analysis.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Analysis and Mapping</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -161,7 +161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03_Analysis.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Analysis and Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Analysis and Mapping</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -188,7 +188,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#model-specifications" id="toc-model-specifications" class="nav-link" data-scroll-target="#model-specifications"><span class="header-section-number">4.1.4</span> Model Specifications</a></li>
   </ul></li>
   <li><a href="#3.2Analysis" id="toc-3.2Analysis" class="nav-link" data-scroll-target="#3.2Analysis"><span class="header-section-number">4.2</span> Analysis</a></li>
-  <li><a href="#3.3Vis" id="toc-3.3Vis" class="nav-link" data-scroll-target="#3.3Vis"><span class="header-section-number">4.3</span> Results</a></li>
+  <li><a href="#3.3Vis" id="toc-3.3Vis" class="nav-link" data-scroll-target="#3.3Vis"><span class="header-section-number">4.3</span> Map Results</a></li>
   </ul>
 </nav>
     </div>
@@ -197,7 +197,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Analysis and Visualization</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Analysis and Mapping</span></h1>
 </div>
 
 
@@ -388,12 +388,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>hyper.iid <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">prior =</span> <span class="st">"pc.prec"</span>, <span class="at">param =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.01</span>)))</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(model <span class="sc">==</span> <span class="st">"SPDE"</span>){</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#SPDE spatial priors used to make the model mesh</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>prior.range <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="fl">0.5</span>)  <span class="co"># 50% probability range &gt;20 km  </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>prior.sigma <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.1</span>)   <span class="co"># 10% probability stdev &gt;1 </span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#SPDE spatial priors used to make the model mesh</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>prior.range <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="fl">0.5</span>)  <span class="co"># 50% probability range &gt;20 km  </span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>prior.sigma <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.1</span>)   <span class="co"># 10% probability stdev &gt;1 </span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -425,18 +423,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Note that the Dispersion Statistic file in the <code>Output</code> folder should be reviewed after the analysis. If the statistic is &gt; 10 you should inspect the FitPlots in the Plot directory. In this case we will want to rerun using a different distributional assumption on the counts. This can be done by manually changing the <code>fam</code> to Poission and selecting these species to be rerun.</p>
 </section>
 <section id="3.3Vis" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="3.3Vis"><span class="header-section-number">4.3</span> Results</h2>
-<p>The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which <code>trend</code> outputs they would like to view as either “Endpoint” or “Slope”. The “Slope” trend is recommneded for reasons specified in the <a href="01_Intro.html#1.1Intro">methods</a>.</p>
+<h2 data-number="4.3" class="anchored" data-anchor-id="3.3Vis"><span class="header-section-number">4.3</span> Map Results</h2>
+<p>The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which <code>trend</code> outputs they would like to view as either “Endpoint” or “Slope”. The “Slope” trend is recommended for reasons specified in the <a href="01_Intro.html#1.1Intro">methods</a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(model<span class="sc">==</span><span class="st">"iCAR"</span>){</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a> trend <span class="ot">&lt;-</span> <span class="st">"Slope"</span> </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#trend &lt;- "Endpoint"</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Graph your outputs</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">graph_results</span>(name, trend)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a> trend <span class="ot">&lt;-</span> <span class="st">"Slope"</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#trend &lt;- "Endpoint"</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Graph your outputs</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">graph_results</span>(name, trend)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Images/iCAR_SalishSea_SpeciesWEGR.png" class="img-fluid figure-img"></p>
+<figcaption>Alt text for accessibility</figcaption>
+</figure>
 </div>
 <p>Visually map of species trends per survey site resulting from the SPDE analysis.</p>
 <iframe src="https://dmethier.shinyapps.io/SalishSeaTrends_Map/" width="100%" height="600">
