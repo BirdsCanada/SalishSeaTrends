@@ -17,7 +17,7 @@ This guide provides users with step-by-step instructions and user defined parame
 
 The workflow is as follows:
 
-**Chapter 1: TEchnical Overview**
+**Chapter 1: Technical Overview**
 
 The methods section is technical. Users are strongly encouraged to read this section in full before proceeding with an analysis.
 
