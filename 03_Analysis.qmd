@@ -12,7 +12,7 @@ Run the setup if starting a new environment and load previously saved data and f
 
 source("Scripts/00_Setup.R")
 
-#Manually Specify the start and end year of the analysis. These years should match those selected for the data cleaning scripts. 
+Y#Manually Specify the start and end year of the analysis. These years should match those selected for the data cleaning scripts. 
 Y1 = 2008
 Y2 = 2024
 
@@ -50,7 +50,7 @@ model<-"iCAR"
 
 ```
 
-If doing an SPDE model, you may define your `area` as "SalishSea", "BCCWS", or "PSSS". Only sites with more than 10 years of data will be retained in the analysis.
+If doing an SPDE model, you may define your `area` as "SALISHSEA", "BCCWS", or "PSSS". Only sites with more than 10 years of data will be retained in the analysis.
 
 ```{r}
 
@@ -178,7 +178,7 @@ type <-"migration"
 
 ### Minimum Data Requirement {#3.1.3Analysis}
 
-Select the minimum data requirements for the analysis. The ones selected here were done following the inspection of the International dataset. However, finer scale assessment may need to assess their suitability.
+Select the minimum data requirements for the analysis. The ones selected here were done following the inspection of the international dataset. However, finer scale assessment may need to assess their suitability.
 
 ```{r}
 
@@ -241,11 +241,11 @@ run_analysis(model)
 
 ```
 
-Note that the Dispersion Statistic file in the `Output` folder should be reviewed after the analysis. If the statistic is \> 10 you should inspect the FitPlots in the Plot directory. In this case we will want to rerun using a different distributional assumption on the counts. This can be done by manually changing the `fam` to Poission and selecting these species to be rerun.
+Note that the Dispersion Statistic file in the `Output` folder should be reviewed after the analysis. If the statistic is \> 10 you should inspect the FitPlots in the Plot directory. In this case we will want to rerun using a different distributional assumption on the counts. This can be done by manually changing the `fam` to Poisson and selecting these species to be rerun.
 
 ## Map Results {#3.3Vis}
 
-The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which `trend` outputs they would like to view as either "Endpoint" or "Slope". The "Slope" trend is recommended for reasons specified in the [methods](#1.1Intro). 
+The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which `trend` outputs they would like to view as either "Endpoint" or "Slope". The "Slope" trend is recommended for reasons specified in the [methods](#1.1Intro).
 
 ```{r}
 
@@ -261,7 +261,7 @@ graph_results(name, trend)
 
 ![Alt text for accessibility](Images/iCAR_SalishSea_SpeciesWEGR.png)
 
-Visually map of species trends per survey site resulting from the SPDE analysis.
+Map of species trends per survey site resulting from the SPDE analysis.
 
 <iframe src="https://dmethier.shinyapps.io/SalishSeaTrends_Map/" width="100%" height="600">
 
