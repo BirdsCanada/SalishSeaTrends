@@ -20,7 +20,17 @@ data.dir <- "Data/"
 spatial.dir <- "Data/Spatial/"
 plot.dir <- "Output/Plots/"
 
-#install.packages("INLA",repos=c(getOption("repos"),INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE) 
+if(system.file(package="librarian") == "") {
+  
+  install.packages("librarian")
+  
+}
+
+if(system.file(package="INLA") == "") {
+  
+  install.packages("INLA",repos=c(getOption("repos"),INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE) 
+  
+} 
 
 #Load required libraries
 librarian::shelf("BirdsCanada/naturecounts", tidyverse, sf, mapview, sdmpredictors,
@@ -29,6 +39,8 @@ librarian::shelf("BirdsCanada/naturecounts", tidyverse, sf, mapview, sdmpredicto
                  rnaturalearth, mapview, INLA, mgcv, sn, fmesher, inlabru, splines, 
                  maps, splancs, spdep, igraph, ggspatial, terra, tidyterra, stringr, reshape2, 
                  measurements, ggOceanMaps, leaflet, readr, shiny, rsconnect, quarto)
+
+
 
 BMDE<-meta_bmde_fields("core")
 
