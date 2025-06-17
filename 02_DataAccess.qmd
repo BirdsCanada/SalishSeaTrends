@@ -45,7 +45,7 @@ Data are formatted using a standardized schema that is a core standard of the [A
 ```{r BCCWS Data Download}
 
 #Sample code to access BCCWS data from NatureCounts
-BCCWS_BMDE<-nc_data_dl(collection="BCCWS", username = "rdjmacklin", fields_set = "extended", request_id = 254949)
+BCCWS_BMDE<-nc_data_dl(collection="BCCWS", username = "YOURUSERNAME", fields_set = "extended", request_id = 12345, info="MYREASON")
 
 #Write raw data to the `Data` folder in working directory
 write.csv(BCCWS_BMDE, "Data/BCCWS_BMDE.csv", row.names = FALSE)
