@@ -33,7 +33,7 @@ if(guild=="yes"){
 }  
 
 #grid data are only those cells containing data. This layers is created in ArcGIS. 
-nb1 <- spdep::poly2nb(poly, row.names=poly$data); nb1
+nb1 <- spdep::poly2nb(poly, row.names=poly$data, queen=TRUE); nb1
 is.symmetric.nb(nb1, verbose = FALSE, force = TRUE)
 nb2INLA("nb1.graph", nb1)
 nb1.adj <- paste(getwd(),"/nb1.graph", sep="")

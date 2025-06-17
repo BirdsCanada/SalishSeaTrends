@@ -10,7 +10,9 @@ All R scripts and resources associated with this project, as well as many other 
 
 This repository is regularly updated and serves as the central hub for sharing code related to Birds Canada’s monitoring and research programs. If you run into issues using this code, or it generates errors, please open a git issue or email dethier\@birdscanada.org.
 
-To access the R code directly visit: https://github.com/BirdsCanada/SalishSeaTrends
+To access the R code directly visit: <https://github.com/BirdsCanada/SalishSeaTrends>
+
+The Shiny App code is available here: <https://github.com/DMEthier/SalishSeaTrends_Map>
 
 You can view files directly on GitHub, or download individual scripts and entire repositories by clicking the green Code button and selecting Download ZIP. For advanced users, you can clone repositories using Git into RStudio using the following command in the Terminal:
 
@@ -30,7 +32,6 @@ Data users are encourage to review the [Transboundary avian data for the Salish 
 -   [BCCWSClean.R](Scripts/BCCWSClean.R)
 -   [PSSSClean.R](Scripts/PSSSClean.R)
 -   [Graph_iCAR.R](Scripts/Graph_iCAR.R)
--   [Graph_SPDE.R](Scripts/Graph_SPDE.R)
 -   [OutputTables.R](Scripts/OutputTables.R)
 -   [PSSSBMDE.R](Scripts/PSSSBMDE.R)
 
