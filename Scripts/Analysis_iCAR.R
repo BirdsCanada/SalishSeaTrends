@@ -333,8 +333,9 @@ for(i in 1:length(sp.list)){
         family=fam,
         results_code = "BCCWS/PSSS",
         version = Sys.Date(),
-        season="Winter",
-        trend_index="")
+        season="Winter"
+        #trend_index=""
+        )
       
       #LOESS
       indices.csv <- indices.csv %>%
@@ -353,18 +354,7 @@ for(i in 1:length(sp.list)){
         ) %>%
         ungroup()
       
-      # Order output before printing to table
-      indices.csv<-indices.csv %>% ungroup %>% dplyr::select(results_code, version, area_code, season, period, species_code, species_id, year, index, stderr, stdev, upper_ci, lower_ci, LOESS_index, trend_index)
-     
-      # Write data to table
-      write.table(indices.csv, 
-                  file = paste(out.dir,	name, "_AnnualIndices_iCAR.csv", sep = ""),
-                  row.names = FALSE, 
-                  append = TRUE, 
-                  quote = FALSE, 
-                  sep = ",", 
-                  col.names = FALSE)
-      
+      #will print after computing end point trends. 
       
       ##############################################################################
       ##END POINT TRENDS ##
@@ -479,25 +469,28 @@ for(i in 1:length(sp.list)){
       ##SLOPE TRENDS ##
       
       calc_slope <- function(df) {
-         mod <- lm(log(effects) ~ wyear, data = df)
-         slope <- coef(mod)[2]
-         years <- max(df$wyear) - min(df$wyear)
-         percent_annual_change <- 100 * (exp(slope) - 1)
-         total_percent_change <- 100 * (exp(slope * years) - 1)
-         tibble(
-           slope = slope,
-           percent_annual_change = percent_annual_change,
-           total_percent_change = total_percent_change
-         )
-       }
-       
-       # Apply to each region and posterior sample
-       slope_trends <- tmp0 %>%
-         group_by(alpha_i, sample) %>%
-         group_modify(~ calc_slope(.x)) %>%
-         ungroup()
-       
-       # Summarise across posterior samples for each region
+        mod <- lm(log(effects) ~ wyear, data = df)
+        intercept <- coef(mod)[1]
+        slope <- coef(mod)[2]
+        years <- max(df$wyear) - min(df$wyear)
+        percent_annual_change <- 100 * (exp(slope) - 1)
+        total_percent_change <- 100 * (exp(slope * years) - 1)
+        tibble(
+          intercept = intercept,
+          slope = slope,
+          percent_annual_change = percent_annual_change,
+          total_percent_change = total_percent_change
+        )
+      }
+      
+      #Apply to each region and poterior sample
+      slope_trends<-tmp0 %>% 
+        group_by(alpha_i, sample) %>% 
+        group_modify(~calc_slope(.x)) %>% 
+        ungroup()
+      
+      
+     # Summarise across posterior samples for each region
        slope_summary <- slope_trends %>%
          group_by(alpha_i) %>%
          summarise(
@@ -517,9 +510,7 @@ for(i in 1:length(sp.list)){
           TRUE ~ "Low"
                 )) %>% left_join(grid3, by = "alpha_i")
          
-       
-      
-      #write output to table
+       #write output to table
       trend.out<-NULL
       trend.out <- slope_summary %>%
         mutate(model_type="ALPHA SPATIAL iCAR", 
@@ -584,6 +575,50 @@ for(i in 1:length(sp.list)){
                   sep = ",", 
                   col.names = FALSE)  
      
+     
+       ############################################################################
+      ##Trend Slope estimates to index file
+     
+       trendlines <- slope_trends %>%
+        left_join(tmp0 %>% select(alpha_i, wyear) %>% distinct(), by = "alpha_i", relationship = "many-to-many") %>%
+        group_by(alpha_i, sample) %>%
+        mutate(fitted = exp(intercept + slope * wyear)) %>%
+        ungroup()
+      
+       trend_summary <- trendlines %>%
+         group_by(alpha_i, wyear) %>%
+         summarise(
+           trend_index = mean(fitted)
+         ) %>%
+         ungroup() %>%
+         left_join(grid3, by="alpha_i") %>% 
+         select(trend_index, area_code, wyear)
+        
+       
+        full_area_index <- trendlines %>%
+         group_by(wyear) %>%
+         summarise(
+           trend_index = mean(fitted)
+         ) %>%
+         mutate(area_code = "Full Study Area")
+       
+       trend_summary <- bind_rows(trend_summary, full_area_index)
+       names(trend_summary)[names(trend_summary) == "wyear"] <- "year"
+       
+       indices.csv<-indices.csv %>% left_join(trend_summary, by=c("year", "area_code"))
+       
+       # Order output before printing to table
+       indices.csv<-indices.csv %>% ungroup %>% dplyr::select(results_code, version, area_code, season, period, species_code, species_id, year, index, stderr, stdev, upper_ci, lower_ci, LOESS_index, trend_index)
+       
+       # Write data to table
+       write.table(indices.csv, 
+                   file = paste(out.dir,	name, "_AnnualIndices_iCAR.csv", sep = ""),
+                   row.names = FALSE, 
+                   append = TRUE, 
+                   quote = FALSE, 
+                   sep = ",", 
+                   col.names = FALSE)
+       
       
       ############################################################################
       ### FULL STUDY AREA INDEX ###

@@ -12,14 +12,17 @@ Run the setup if starting a new environment and load previously saved data and f
 
 source("Scripts/00_Setup.R")
 
-Y#Manually Specify the start and end year of the analysis. These years should match those selected for the data cleaning scripts. 
-Y1 = 2008
+#Manually Specify the start and end year of the analysis. 
+Y1 = 2010
 Y2 = 2024
 
 #Load your saved species data 
 sp.data<-read.csv("Data/sp.data.csv")
+sp.data <-sp.data %>% filter(wyear>=Y1 & wyear<=Y2)
+
 #Load your saved events data which is needed for zero-filling
 events<-read.csv("Data/events.csv")
+events<-events %>% filter(wyear>=Y1 & wyear<=Y2)
 
 #Create a spatial points layers for graphing results
 loc<-events %>% select(SurveyAreaIdentifier, DecimalLatitude, DecimalLongitude) %>% distinct()
@@ -172,7 +175,7 @@ family<-unique(sp.data$family_name)
 #view(family)
 
 #select on of the options for the analysis
-type <-"migration"
+type <-"family"
 
 ```
 
@@ -223,7 +226,7 @@ The Output_Tables function creates is a file for Annual Indices, Trends, and a f
 
 #Give your analytically output file a unique name (e.g., BCCWS_Species, SalishSea_Migration, Watershed_Species), 
 
-name<-"SalishSea_Species"
+name<-"SalishSea_Family"
 
 #This is the template used for the State of Canada's Birds and is required for upload into NatureCounts
 
