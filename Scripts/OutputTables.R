@@ -26,10 +26,10 @@ output_tables <- function(name, model = c("SPDE", "iCAR")) {
                          "precision_num", "precision_cat", "coverage_num", "coverage_cat",
                          "sample_size", "sample_size_units", "prob_LD", "prob_MD", "prob_LC",
                          "prob_MI", "prob_LI")
-  write.table(trends.csv,
-              file = file.path(out.dir, paste0(name, "_TrendsEndpoint", suffix)),
-              row.names = FALSE, append = FALSE, quote = FALSE, sep = ",")
-  
+  # write.table(trends.csv,
+  #             file = file.path(out.dir, paste0(name, "_TrendsEndpoint", suffix)),
+  #             row.names = FALSE, append = FALSE, quote = FALSE, sep = ",")
+  # 
 
   write.table(trends.csv,
               file = file.path(out.dir, paste0(name, "_TrendsSlope", suffix)),

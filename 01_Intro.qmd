@@ -14,25 +14,21 @@ Species must meet the minimum data requirements in order to be included in the a
 
 Extreme outliers in observation counts are identified using a quantile-based threshold. We calculated the outlier cutoff as three times the 99th percentile of the maximum observation count. This was done to prevent disproportionate influence from rare extreme values and to aid in model fit. Data from 2020 were removed to due survey disruptions caused by COVID-19.
 
-We modeled the maximum observed counts yₐₜ at site a and year t using a negative binomial distribution: yₐₜ ∼ NB(μₐₜ, ϕ) where μₐₜ = exp\[log(Dₐₜ) + fₜ + γₖ + α(sₐ)\]. The linear predictor incorporated survey duration Dₐₜ as an offset, a temporal parameter γₖ with an independent and identically distributed (IID) random effect to allow for random fluctuations in counts from year to year, and a site-level random effects fₜ with IID.
+We modeled observed bird counts, yat at site a and year t using a negative binomial distribution: yat∼NB(μat,ϕ). The expected count, μat, was modeled on the log scale as follows: log⁡(μat)=log⁡(Dat)+ft+γk+αi+τizt+ϵit
 
-The spatial component on abundance α(sₐ) uses either the iCAR or SPDE approach. [This is user defined before running the analysis.](#3.1Analysis)
+where Dat is the survey duration (included as an offset), ft is a year-specific random effect (modeled as IID), γk is a random intercept for survey route, αi is a spatially structured random intercept for area (using an intrinsic conditional autoregressive (ICAR) prior), τi is a spatially structured random slope for area-specific temporal trends (also using an ICAR prior), zt is the standardized year, and ϵit is an unstructured area-year interaction term (IID) to capture local spatiotemporal anomalies.
+
+Abundance indices for each area and year were derived by exponentiating the linear predictor for each posterior sample: Index=exp(ft+γk+αi+τizt+ϵit)
+
+Posterior means and 95% credible intervals were computed across samples to summarize abundance and its uncertainty. Area-specific trends were quantified using the posterior distribution of the temporal slope parameter, τi, with annual percent change calculated as 100×(exp⁡(τi)−1).
+
+The spatial component on abundance αi uses either the iCAR or SPDE approach. [This is user defined before running the analysis.](#3.1Analysis)
 
 The SPDE approach uses a mesh, featuring maximum edge lengths of 25 km (inner domain) and 50 km (outer buffer), minimum vertex spacing of 2 km, and boundary constraints derived from coastline geometry. For the spatial range parameter, we set the prior such that there was a 50% probability that the spatial correlation range exceeded 20 km (i.e., P(range \> 20 km) = 0.5). For the spatial standard deviation, we set the prior so that there was a 10% probability that the marginal standard deviation exceeded 1 (i.e., P(σ \> 1) = 0.1). These priors provide weakly informative regularization, reflecting plausible spatial scales and variation while avoiding over fitting. [These priors can be adjusted by users before running an analysis](#3.1SPDE).
 
-The iCAR approach assigned spatially-structured random intercepts for each provided polygon based on the neighborhood adjacency (1=neighbour, 0 otherwise). This allowed for information on relative abundance to be shared across neighbouring polygons. Values of α(sₐ) came from a normal distribution with a mean value related to the average of adjacent cells and with a conditional variance proportional to the variance across adjacent cells and inversely proportional to the number of adjacent cells. We provide an example using the "Watersheds in the Salish Sea Bioregion" layer from the [Salish Sea Atlas Data](https://salish-sea-atlas-data-wwu.hub.arcgis.com/). Users can [upload a multipolygon spatial layer](#3.1Analysis), which covers part or all of the Salish Sea to run the analysis for the management jurisdictions of interest.
+The iCAR approach assigned spatially-structured random intercepts for each provided polygon based on the neighborhood adjacency (1=neighbour, 0 otherwise). This allowed for information on relative abundance and trends to be shared across neighbouring polygons. Values of α(sₐ) came from a normal distribution with a mean value related to the average of adjacent cells and with a conditional variance proportional to the variance across adjacent cells and inversely proportional to the number of adjacent cells. We provide an example using the "Watersheds in the Salish Sea Bioregion" layer from the [Salish Sea Atlas Data](https://salish-sea-atlas-data-wwu.hub.arcgis.com/). Users can [upload a multipolygon spatial layer](#3.1Analysis), which covers part or all of the Salish Sea to run the analysis for the management jurisdictions of interest.
 
-Models are fitted via integrated nested Laplace approximation (INLA) with 1,000 posterior samples drawn for uncertainty quantification. We computed annual abundance indices Ñₜ by summing exponentiated linear predictors of abundances, then derived trends using the slope and endpoint methods.
-
--   Slope Trend = 100 x (exp(coef(lm(log(NY) \~ Y))\[2\]) - 1)
-
-    *The average annual rate of change across all years, estimated via ordinary least squares regression on log-transformed predicted abundances. Assumes a linear trend on a log scale. This is the output we would encourage users to select for making assessment of trends, as the end-point trend will be less stable given our model structure.*
-
--   Endpoint Trend = 100 × \[(Ñ_Y₂/Ñ_Y₁)\^{1/(Y₂-Y₁)} - 1\].
-
-    *The constant annual rate that would transition NY1 to NY2 over Y2−Y1 years, assuming exponential growth. This is equivalent to the geometric mean of annual growth rates, and is standard with the Canadian Breeding Bird Survey (BBS) analysis. Because the BBS uses a GAM year effect, the smoothing of the annual indices makes the end-point approach more stable as it mitigates the sensitivity of anomalous start/end years.*
-
-Credible intervals reflected the 2.5% and 97.5% quantiles of posterior trend estimates, with interval width calculated as their difference. The iCAR model also produces area-weighted composite indices of abundance, where [weights are assigned by the user as being equal or based on the polygon area](#3.1.1Analysis).
+The iCAR model also produces area-weighted composite indices of abundance, where [weights are assigned by the user as being equal or based on the polygon area](#3.1.1Analysis).
 
 For analyses conducted at the guild level, we included an additional species-level random effect, also modeled with an IID, to account for unstructured heterogeneity among species.
 

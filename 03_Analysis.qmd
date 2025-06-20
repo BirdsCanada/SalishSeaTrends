@@ -13,7 +13,7 @@ Run the setup if starting a new environment and load previously saved data and f
 source("Scripts/00_Setup.R")
 
 #Manually Specify the start and end year of the analysis. 
-Y1 = 2010
+Y1 = 2008
 Y2 = 2024
 
 #Load your saved species data 
@@ -248,23 +248,21 @@ Note that the Dispersion Statistic file in the `Output` folder should be reviewe
 
 ## Map Results {#3.3Vis}
 
-The analysis calculates trends using both the end point method and a slope through the calculated annual indices of abundance. When mapping the results, the user needs to select which `trend` outputs they would like to view as either "Endpoint" or "Slope". The "Slope" trend is recommended for reasons specified in the [methods](#1.1Intro).
+The map type your select to generate will be dependent on your `model` type.
+
+If running a iCAR analysis, a static spatial plots can be generated:
 
 ```{r}
 
 if(model=="iCAR"){
- trend <- "Slope" 
-#trend <- "Endpoint"
-
-#Graph your outputs
-graph_results(name, trend)
+ graph_results(name, trend)
 }
 
 ```
 
 ![Alt text for accessibility](Images/iCAR_SalishSea_SpeciesWEGR.png)
 
-Map of species trends per survey site resulting from the SPDE analysis.
+Map of species trends per survey site resulting from the SPDE analysis are best displayed as an interactive Shine App:
 
 <iframe src="https://dmethier.shinyapps.io/SalishSeaTrends_Map/" width="100%" height="600">
 

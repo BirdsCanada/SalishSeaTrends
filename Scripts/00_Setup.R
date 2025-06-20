@@ -1,5 +1,4 @@
 #To update the project versions and dependancies, run the following command 
-#renv::snapshot()
 
 options(timeout = 1200)
 
@@ -20,27 +19,43 @@ data.dir <- "Data/"
 spatial.dir <- "Data/Spatial/"
 plot.dir <- "Output/Plots/"
 
-if(system.file(package="librarian") == "") {
-  
+
+# 1. Install the 'librarian' package if it is not already installed
+if (!requireNamespace("librarian", quietly = TRUE)) {
   install.packages("librarian")
-  
 }
 
-if(system.file(package="INLA") == "") {
-  
-  install.packages("INLA",repos=c(getOption("repos"),INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE) 
-  
-} 
+# 2. Install INLA if not already installed
+if (!requireNamespace("INLA", quietly = TRUE)) {
+  install.packages(
+    "INLA",
+    repos = c(getOption("repos"), INLA = "https://inla.r-inla-download.org/R/stable"),
+    dep = TRUE,
+    type = "binary"
+  )
+}
 
-#Load required libraries
-librarian::shelf("BirdsCanada/naturecounts", tidyverse, sf, mapview, sdmpredictors,
-                 svMisc, terra, geojsonsf, leaflet, HelpersMG, gdalUtilities, ggplot2,
-                 exactextractr, readxl, reshape, ggmap, gridExtra, ggspatial, prettymapr, 
-                 rnaturalearth, mapview, INLA, mgcv, sn, fmesher, inlabru, splines, 
-                 maps, splancs, spdep, igraph, ggspatial, terra, tidyterra, stringr, reshape2, 
-                 measurements, ggOceanMaps, leaflet, readr, shiny, rsconnect, quarto)
+# # 3. Install Bioconductor dependencies for INLA (if needed)
+# if (!requireNamespace("BiocManager", quietly = TRUE)) {
+#   install.packages("BiocManager")
+# }
+# if (!requireNamespace("graph", quietly = TRUE) || !requireNamespace("Rgraphviz", quietly = TRUE)) {
+#   BiocManager::install(c("graph", "Rgraphviz"), dependencies = TRUE)
+# }
+
+# 4. Install and load all required packages using librarian::shelf()
+librarian::shelf(
+  "BirdsCanada/naturecounts", tidyverse, sf, mapview, sdmpredictors,
+  svMisc, terra, geojsonsf, leaflet, HelpersMG, gdalUtilities, ggplot2,
+  exactextractr, readxl, reshape, ggmap, gridExtra, ggspatial, prettymapr, 
+  rnaturalearth, mgcv, sn, fmesher, inlabru, splines, 
+  maps, splancs, spdep, igraph, tidyterra, stringr, reshape2, 
+  measurements, ggOceanMaps, readr, shiny, rsconnect, quarto
+)
 
 
+# 5. Load INLA
+library(INLA)
 
 BMDE<-meta_bmde_fields("core")
 
