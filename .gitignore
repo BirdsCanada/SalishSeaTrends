@@ -16,4 +16,10 @@
 !Data/Species_Analysis_List.csv
 !Data/Spatial/*
 
+Data/Spatial/BC_WA_Merged_Polygon*
+Data/Spatial/MidwinterAerialSeabirdSurveys.gdb
+
 PlotTrends.R 
+SummaryTables.R
+
+03_Analysis_Demo.qmd
