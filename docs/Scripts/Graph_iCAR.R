@@ -1,6 +1,6 @@
 # Read trend data and clean
 
-trend<-tolower(trend)
+trend<-"slope"
 
 if (trend == "endpoint") {
   all.trends <- read.csv(file.path(out.dir, paste0(name, "_TrendsEndPoint_iCAR.csv"))) %>% 
