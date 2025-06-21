@@ -28,7 +28,6 @@ Data users are encourage to review the [Transboundary avian data for the Salish 
 
 -   [00_Setup.R](Scripts/00_Setup.R)
 -   [Analysis_iCAR.R](Scripts/Analysis_iCAR.R)
--   [Analysis_SPDE.R](Scripts/Analysis_SPDE.R)
 -   [BCCWSClean.R](Scripts/BCCWSClean.R)
 -   [PSSSClean.R](Scripts/PSSSClean.R)
 -   [Graph_iCAR.R](Scripts/Graph_iCAR.R)
