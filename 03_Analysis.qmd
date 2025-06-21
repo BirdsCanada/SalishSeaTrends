@@ -44,6 +44,7 @@ map<- st_read("Data/Spatial/Salish_Sea_Water_Polygon.shp")
 #ensure the coordinate reference systems are the same
 mapCRS<-st_crs(map) #get the CRS of the poly data
 
+model<-"iCAR"
 
 ```
 
@@ -51,22 +52,9 @@ mapCRS<-st_crs(map) #get the CRS of the poly data
 
 Here the user has several customization options.
 
-### Model Type {#3.1.1Analysis}
-
-You can choose the continuous space "SPDE" or discrete space "iCAR" method.
-
-```{r}
-
-model<-"iCAR"
-#model<-"SPDE" # Only sites with >= 10 years of data will be retained
-
-```
-
 If doing an iCAR model, upload the desired spatial polygon for the analysis. We use "Watersheds in the Salish Sea Bioregion" layer from the [Salish Sea Atlas Data](https://salish-sea-atlas-data-wwu.hub.arcgis.com/) as an example.
 
 ```{r}
-if(model == "iCAR"){
-  
   assignment_method <- "within"  
 # assignment_method <- "nearest"
   
@@ -211,14 +199,7 @@ fam<-'nbinomial'
 #Priors for the random effects
 hyper.iid <- list(prec = list(prior = "pc.prec", param = c(1, 0.01)))
 
-if(model == "SPDE"){
-#SPDE spatial priors used to make the model mesh
-prior.range = c(20, 0.5)  # 50% probability range >20 km  
-prior.sigma = c(1, 0.1)   # 10% probability stdev >1 
-}
 ```
-
-![Alt text for accessibility](Images/SPDEModelMesh.png)
 
 ## Analysis {#3.2Analysis}
 
@@ -265,11 +246,3 @@ if(model=="iCAR"){
 ```
 
 ![Alt text for accessibility](Images/iCAR_SalishSea_SpeciesWEGR.png)
-
-Map of species trends per survey site resulting from the SPDE analysis are best displayed as an interactive Shine App:
-
-<iframe src="https://dmethier.shinyapps.io/SalishSeaTrends_Map/" width="100%" height="600">
-
-</iframe>
-
-Code for creating the Shiny App are available at https://github.com/DMEthier/SalishSeaTrends_Map.
