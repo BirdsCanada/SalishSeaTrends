@@ -182,10 +182,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#3.1Analysis" id="toc-3.1Analysis" class="nav-link active" data-scroll-target="#3.1Analysis"><span class="header-section-number">4.1</span> Set Analysis Parameters</a>
   <ul class="collapse">
-  <li><a href="#3.1.1Analysis" id="toc-3.1.1Analysis" class="nav-link" data-scroll-target="#3.1.1Analysis"><span class="header-section-number">4.1.1</span> Model Type</a></li>
-  <li><a href="#3.1.2Analysis" id="toc-3.1.2Analysis" class="nav-link" data-scroll-target="#3.1.2Analysis"><span class="header-section-number">4.1.2</span> Species or Guild Specific Analysis</a></li>
-  <li><a href="#3.1.3Analysis" id="toc-3.1.3Analysis" class="nav-link" data-scroll-target="#3.1.3Analysis"><span class="header-section-number">4.1.3</span> Minimum Data Requirement</a></li>
-  <li><a href="#model-specifications" id="toc-model-specifications" class="nav-link" data-scroll-target="#model-specifications"><span class="header-section-number">4.1.4</span> Model Specifications</a></li>
+  <li><a href="#3.1.2Analysis" id="toc-3.1.2Analysis" class="nav-link" data-scroll-target="#3.1.2Analysis"><span class="header-section-number">4.1.1</span> Species or Guild Specific Analysis</a></li>
+  <li><a href="#3.1.3Analysis" id="toc-3.1.3Analysis" class="nav-link" data-scroll-target="#3.1.3Analysis"><span class="header-section-number">4.1.2</span> Minimum Data Requirement</a></li>
+  <li><a href="#model-specifications" id="toc-model-specifications" class="nav-link" data-scroll-target="#model-specifications"><span class="header-section-number">4.1.3</span> Model Specifications</a></li>
   </ul></li>
   <li><a href="#3.2Analysis" id="toc-3.2Analysis" class="nav-link" data-scroll-target="#3.2Analysis"><span class="header-section-number">4.2</span> Analysis</a></li>
   <li><a href="#3.3Vis" id="toc-3.3Vis" class="nav-link" data-scroll-target="#3.3Vis"><span class="header-section-number">4.3</span> Map Results</a></li>
@@ -214,7 +213,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Run the setup if starting a new environment and load previously saved data and format for analysis.</p>
+<p>Run the setup if starting a new environment and load previously saved data and filter for analysis.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"Scripts/00_Setup.R"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -222,110 +221,110 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Y1 <span class="ot">=</span> <span class="dv">2008</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Y2 <span class="ot">=</span> <span class="dv">2024</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Load your saved species data </span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/sp.data.csv"</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>sp.data <span class="ot">&lt;-</span>sp.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(wyear<span class="sc">&gt;=</span>Y1 <span class="sc">&amp;</span> wyear<span class="sc">&lt;=</span>Y2)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Load your saved events data which is needed for zero-filling</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>events<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/events.csv"</span>)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>events<span class="ot">&lt;-</span>events <span class="sc">%&gt;%</span> <span class="fu">filter</span>(wyear<span class="sc">&gt;=</span>Y1 <span class="sc">&amp;</span> wyear<span class="sc">&lt;=</span>Y2)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a spatial points layers for graphing results</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>loc<span class="ot">&lt;-</span>events <span class="sc">%&gt;%</span> <span class="fu">select</span>(SurveyAreaIdentifier, DecimalLatitude, DecimalLongitude) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>xy<span class="ot">&lt;-</span><span class="fu">st_as_sf</span>(loc, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"DecimalLongitude"</span>, <span class="st">"DecimalLatitude"</span>))</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(xy)<span class="ot">&lt;-</span><span class="st">"+proj=longlat +datum=NAD83"</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the Salish Sea Water Polygon for graphing results </span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>map<span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Data/Spatial/Salish_Sea_Water_Polygon.shp"</span>)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#ensure the coordinate reference systems are the same</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>mapCRS<span class="ot">&lt;-</span><span class="fu">st_crs</span>(map) <span class="co">#get the CRS of the poly data</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>xy<span class="ot">&lt;-</span><span class="fu">st_transform</span>(xy, mapCRS) <span class="co">#transform </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Manually specify the area of the analysis</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> <span class="st">"SALISHSEA"</span> <span class="co">#one word to be compatible with the code.</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#area &lt;- "BCCWS"</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#area &lt;- "PSSS"</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Load your saved species data and filter for years and area</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>sp.data<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"Data/sp.data.csv"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>sp.data <span class="ot">&lt;-</span> sp.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(wyear <span class="sc">&gt;=</span> Y1 <span class="sc">&amp;</span> wyear <span class="sc">&lt;=</span> Y2)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(area <span class="sc">!=</span> <span class="st">"SALISHSEA"</span>) {</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  sp.data <span class="ot">&lt;-</span> sp.data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ProjectCode <span class="sc">==</span> area)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Load your saved events data which is needed for zero-filling</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>events <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Data/events.csv"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>events <span class="ot">&lt;-</span> events <span class="sc">%&gt;%</span> <span class="fu">filter</span>(wyear <span class="sc">&gt;=</span> Y1 <span class="sc">&amp;</span> wyear <span class="sc">&lt;=</span> Y2)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(area <span class="sc">!=</span> <span class="st">"SALISHSEA"</span>) {</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  events <span class="ot">&lt;-</span> events <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ProjectCode <span class="sc">==</span> area)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the Salish Sea Water Polygon for graphing results </span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>map<span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Data/Spatial/Salish_Sea_Water_Polygon.shp"</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">#ensure the coordinate reference systems are the same</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>mapCRS<span class="ot">&lt;-</span><span class="fu">st_crs</span>(map) <span class="co">#get the CRS of the poly data</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>model<span class="ot">&lt;-</span><span class="st">"iCAR"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="3.1Analysis" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="3.1Analysis"><span class="header-section-number">4.1</span> Set Analysis Parameters</h2>
 <p>Here the user has several customization options.</p>
-<section id="3.1.1Analysis" class="level3" data-number="4.1.1">
-<h3 data-number="4.1.1" class="anchored" data-anchor-id="3.1.1Analysis"><span class="header-section-number">4.1.1</span> Model Type</h3>
-<p>You can choose the continuous space “SPDE” or discrete space “iCAR” method.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model<span class="ot">&lt;-</span><span class="st">"iCAR"</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#model&lt;-"SPDE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>If doing an SPDE model, you may define your <code>area</code> as “SALISHSEA”, “BCCWS”, or “PSSS”. Only sites with more than 10 years of data will be retained in the analysis.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(model <span class="sc">==</span> <span class="st">"SPDE"</span>){</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>area <span class="ot">&lt;-</span> <span class="st">"SALISHSEA"</span> <span class="co">#one word to be compatible with the code.</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#area &lt;- "BCCWS"</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#area &lt;- "PSSS"</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p>If doing an iCAR model, upload the desired spatial polygon for the analysis. We use “Watersheds in the Salish Sea Bioregion” layer from the <a href="https://salish-sea-atlas-data-wwu.hub.arcgis.com/">Salish Sea Atlas Data</a> as an example.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(model <span class="sc">==</span> <span class="st">"iCAR"</span>){</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  assignment_method <span class="ot">&lt;-</span> <span class="st">"within"</span>  </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># assignment_method &lt;- "nearest"</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and prepare polygon</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  poly <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Data/Spatial/Salish_Sea_Watersheds.shp"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_make_valid</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_transform</span>(<span class="fu">st_crs</span>(mapCRS))  <span class="co"># Ensure CRS matches points</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#List available fields for user selection</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">names</span>(poly))</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Prompt user to select polygon ID and area fields</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  polygon_id_field <span class="ot">&lt;-</span> <span class="st">"Name"</span> <span class="co">#Enter the field name for polygon ID (e.g., 'WatershedID')</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  area_field <span class="ot">&lt;-</span> <span class="st">""</span> <span class="co">#Enter the field name for area (or leave blank if none or you desire equal weights)</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#Rename fields to 'Name' and 'Area'. If polygon area is missing, this will be created and assigned to 1. Analytically, this means the "Study Area" trend will be equally weighted across all polygons. </span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  poly <span class="ot">&lt;-</span> poly <span class="sc">%&gt;%</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Name =</span> <span class="sc">!!</span>polygon_id_field) <span class="sc">%&gt;%</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Area =</span> <span class="cf">if</span> (area_field <span class="sc">!=</span> <span class="st">""</span>) .data[[area_field]] <span class="cf">else</span> <span class="dv">1</span>)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#Assignment method   </span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> (assignment_method <span class="sc">==</span> <span class="st">"within"</span>) {</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Assign points to polygons only if strictly within</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  xy_assigned <span class="ot">&lt;-</span> <span class="fu">st_join</span>(xy, poly, <span class="at">join =</span> st_within)</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (assignment_method <span class="sc">==</span> <span class="st">"nearest"</span>) {</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Assign each point to the nearest polygon</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  nearest_poly_index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(xy, poly)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  xy_assigned <span class="ot">&lt;-</span> xy</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  xy_assigned<span class="sc">$</span>Name <span class="ot">&lt;-</span> poly<span class="sc">$</span>Name[nearest_poly_index]</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  xy_assigned<span class="sc">$</span>Area <span class="ot">&lt;-</span> poly<span class="sc">$</span>Area[nearest_poly_index]</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"Unknown assignment method."</span>)</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop polygons with no assigned points</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>used_names <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">na.omit</span>(xy_assigned<span class="sc">$</span>Name))</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>poly <span class="ot">&lt;-</span> poly <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Name <span class="sc">%in%</span> used_names)</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a> <span class="co"># Create grid table</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> xy_assigned <span class="sc">%&gt;%</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Name <span class="sc">%in%</span> poly<span class="sc">$</span>Name) <span class="sc">%&gt;%</span></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(SurveyAreaIdentifier, Name, Area) <span class="sc">%&gt;%</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">alpha_i =</span> <span class="fu">as.integer</span>(<span class="fu">factor</span>(Name)))</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge grid info back to events</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>events <span class="ot">&lt;-</span> events <span class="sc">%&gt;%</span></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(grid, <span class="at">by =</span> <span class="st">"SurveyAreaIdentifier"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Name)</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Visualization</span></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>  spatial_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> poly, <span class="fu">aes</span>(<span class="at">fill =</span> Name), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> xy, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(spatial_plot)</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="fu">file.path</span>(plot.dir, <span class="st">"iCAR_Spatial_Plot.jpeg"</span>), </span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>         <span class="at">plot =</span> spatial_plot, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>  assignment_method <span class="ot">&lt;-</span> <span class="st">"within"</span>  </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># assignment_method &lt;- "nearest"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load and prepare polygon</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  poly <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"Data/Spatial/Salish_Sea_Watersheds.shp"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_make_valid</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_transform</span>(<span class="fu">st_crs</span>(mapCRS))  <span class="co"># Ensure CRS matches points</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#List available fields for user selection</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">names</span>(poly))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Prompt user to select polygon ID and area fields</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  polygon_id_field <span class="ot">&lt;-</span> <span class="st">"Name"</span> <span class="co">#Enter the field name for polygon ID (e.g., 'WatershedID')</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  area_field <span class="ot">&lt;-</span> <span class="st">""</span> <span class="co">#Enter the field name for area (or leave blank if none or you desire equal weights)</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#Rename fields to 'Name' and 'Area'. If polygon area is missing, this will be created and assigned to 1. Analytically, this means the "Study Area" trend will be equally weighted across all polygons. </span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  poly <span class="ot">&lt;-</span> poly <span class="sc">%&gt;%</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Name =</span> <span class="sc">!!</span>polygon_id_field) <span class="sc">%&gt;%</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Area =</span> <span class="cf">if</span> (area_field <span class="sc">!=</span> <span class="st">""</span>) .data[[area_field]] <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#Assignment method   </span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> (assignment_method <span class="sc">==</span> <span class="st">"within"</span>) {</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Assign points to polygons only if strictly within</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  xy_assigned <span class="ot">&lt;-</span> <span class="fu">st_join</span>(xy, poly, <span class="at">join =</span> st_within)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> <span class="cf">if</span> (assignment_method <span class="sc">==</span> <span class="st">"nearest"</span>) {</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Assign each point to the nearest polygon</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  nearest_poly_index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(xy, poly)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  xy_assigned <span class="ot">&lt;-</span> xy</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  xy_assigned<span class="sc">$</span>Name <span class="ot">&lt;-</span> poly<span class="sc">$</span>Name[nearest_poly_index]</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  xy_assigned<span class="sc">$</span>Area <span class="ot">&lt;-</span> poly<span class="sc">$</span>Area[nearest_poly_index]</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"Unknown assignment method."</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop polygons with no assigned points</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>used_names <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">na.omit</span>(xy_assigned<span class="sc">$</span>Name))</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>poly <span class="ot">&lt;-</span> poly <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Name <span class="sc">%in%</span> used_names)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a> <span class="co"># Create grid table</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> xy_assigned <span class="sc">%&gt;%</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Name <span class="sc">%in%</span> poly<span class="sc">$</span>Name) <span class="sc">%&gt;%</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(SurveyAreaIdentifier, Name, Area) <span class="sc">%&gt;%</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">alpha_i =</span> <span class="fu">as.integer</span>(<span class="fu">factor</span>(Name)))<span class="sc">%&gt;%</span> </span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Name) <span class="co">#Drop unassigned point</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge grid info back to events</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>events <span class="ot">&lt;-</span> events <span class="sc">%&gt;%</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(grid, <span class="at">by =</span> <span class="st">"SurveyAreaIdentifier"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(Name)</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a spatial points layers for graphing results</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>loc<span class="ot">&lt;-</span>events <span class="sc">%&gt;%</span> <span class="fu">select</span>(SurveyAreaIdentifier, DecimalLatitude, DecimalLongitude) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>xy<span class="ot">&lt;-</span><span class="fu">st_as_sf</span>(loc, <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"DecimalLongitude"</span>, <span class="st">"DecimalLatitude"</span>))</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(xy)<span class="ot">&lt;-</span><span class="st">"+proj=longlat +datum=NAD83"</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>xy<span class="ot">&lt;-</span><span class="fu">st_transform</span>(xy, mapCRS) <span class="co">#transform </span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualization</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>  spatial_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> poly, <span class="fu">aes</span>(<span class="at">fill =</span> Name), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">data =</span> xy2, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(spatial_plot)</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(<span class="fu">file.path</span>(plot.dir, <span class="st">"iCAR_Spatial_Plot.jpeg"</span>), </span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>         <span class="at">plot =</span> spatial_plot, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -333,74 +332,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>Alt text for accessibility</figcaption>
 </figure>
 </div>
-</section>
-<section id="3.1.2Analysis" class="level3" data-number="4.1.2">
-<h3 data-number="4.1.2" class="anchored" data-anchor-id="3.1.2Analysis"><span class="header-section-number">4.1.2</span> Species or Guild Specific Analysis</h3>
+<section id="3.1.2Analysis" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="3.1.2Analysis"><span class="header-section-number">4.1.1</span> Species or Guild Specific Analysis</h3>
 <p>For a species-specific analysis, select the species you wish to analyse.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#To view your options of species</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>species<span class="ot">&lt;-</span><span class="fu">unique</span>(sp.data<span class="sc">$</span>CommonName)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#view(species)</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a list of species using all available species in the dataset.</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>species.list<span class="ot">&lt;-</span><span class="fu">tolower</span>(<span class="st">"All"</span>) <span class="co">#R is case sensitive</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Or you can manually select species. Ensure case and spelling is correct. </span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#species.list &lt;- c("American Wigeon", "Common Loon", "Large Gull") </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#To view your options of species</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>species<span class="ot">&lt;-</span><span class="fu">unique</span>(sp.data<span class="sc">$</span>CommonName)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#view(species)</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a list of species using all available species in the dataset.</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>species.list<span class="ot">&lt;-</span><span class="fu">tolower</span>(<span class="st">"All"</span>) <span class="co">#R is case sensitive</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#Or you can manually select species. Ensure case and spelling is correct. </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#species.list &lt;- c("American Wigeon", "Common Loon", "Large Gull") </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For a guild-specific analysis, change <code>guild</code> to “Yes” and specify the <code>type</code> as either “migration”, “diet”, or “family”. This will override the species list above.</p>
 <p><em>You do not need to run this code chunk if doing a species-specific analysis. Default guild is set to “No” in the setup script.</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>guild <span class="ot">&lt;-</span> <span class="st">"yes"</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#To view your options of guilds</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>migration<span class="ot">&lt;-</span><span class="fu">unique</span>(sp.data<span class="sc">$</span>Migration)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#view(migration)</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>diet<span class="ot">&lt;-</span><span class="fu">unique</span>(sp.data<span class="sc">$</span>Diet)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#view(diet)</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>family<span class="ot">&lt;-</span><span class="fu">unique</span>(sp.data<span class="sc">$</span>family_name)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#view(family)</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#select on of the options for the analysis</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>type <span class="ot">&lt;-</span><span class="st">"family"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>guild <span class="ot">&lt;-</span> <span class="st">"yes"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#To view your options of guilds</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>migration<span class="ot">&lt;-</span><span class="fu">unique</span>(sp.data<span class="sc">$</span>Migration)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#view(migration)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>diet<span class="ot">&lt;-</span><span class="fu">unique</span>(sp.data<span class="sc">$</span>Diet)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#view(diet)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>family<span class="ot">&lt;-</span><span class="fu">unique</span>(sp.data<span class="sc">$</span>family_name)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#view(family)</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#select on of the options for the analysis</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>type <span class="ot">&lt;-</span><span class="st">"family"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="3.1.3Analysis" class="level3" data-number="4.1.3">
-<h3 data-number="4.1.3" class="anchored" data-anchor-id="3.1.3Analysis"><span class="header-section-number">4.1.3</span> Minimum Data Requirement</h3>
+<section id="3.1.3Analysis" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="3.1.3Analysis"><span class="header-section-number">4.1.2</span> Minimum Data Requirement</h3>
 <p>Select the minimum data requirements for the analysis. The ones selected here were done following the inspection of the international dataset. However, finer scale assessment may need to assess their suitability.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#The minimum data required across sites with at least one detection:</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>min.abundance <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co">#Overall abundance per year &gt; 10</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>min.years <span class="ot">&lt;-</span> (Y2<span class="sc">-</span>Y1)<span class="sc">/</span><span class="dv">2</span> <span class="co">#Detected in &gt; one-half of the survey years</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>nsites <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co">#Detected at &gt; 10 survey sites</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#The minimum data required across sites with at least one detection:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>min.abundance <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co">#Overall abundance per year &gt; 10</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>min.years <span class="ot">&lt;-</span> (Y2<span class="sc">-</span>Y1)<span class="sc">/</span><span class="dv">2</span> <span class="co">#Detected in &gt; one-half of the survey years</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>nsites <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co">#Detected at &gt; 10 survey sites</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="model-specifications" class="level3" data-number="4.1.4">
-<h3 data-number="4.1.4" class="anchored" data-anchor-id="model-specifications"><span class="header-section-number">4.1.4</span> Model Specifications</h3>
+<section id="model-specifications" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="model-specifications"><span class="header-section-number">4.1.3</span> Model Specifications</h3>
 <p>Select the distributional family, and set random and spatial priors, or retain the defaults. These priors were selected based on model assessments for the full study area.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Here we select 'nbinomal' but this may need to adjust if there is residual overdispersion. </span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fam<span class="ot">&lt;-</span><span class="st">'nbinomial'</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#fam&lt;-'poisson'</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Priors for the random effects</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>hyper.iid <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">prior =</span> <span class="st">"pc.prec"</span>, <span class="at">param =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.01</span>)))</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(model <span class="sc">==</span> <span class="st">"SPDE"</span>){</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#SPDE spatial priors used to make the model mesh</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>prior.range <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="fl">0.5</span>)  <span class="co"># 50% probability range &gt;20 km  </span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>prior.sigma <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.1</span>)   <span class="co"># 10% probability stdev &gt;1 </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="Images/SPDEModelMesh.png" class="img-fluid figure-img"></p>
-<figcaption>Alt text for accessibility</figcaption>
-</figure>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Here we select 'nbinomal' but this may need to adjust if there is residual overdispersion. </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fam<span class="ot">&lt;-</span><span class="st">'nbinomial'</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#fam&lt;-'poisson'</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Priors for the random effects</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>hyper.iid <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">prec =</span> <span class="fu">list</span>(<span class="at">prior =</span> <span class="st">"pc.prec"</span>, <span class="at">param =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.01</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -409,19 +395,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create output tables to the <code>Output</code> folder using a custom file <code>name</code>.</p>
 <p>The Output_Tables function creates is a file for Annual Indices, Trends, and a file with the Dispersion statistic.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Give your analytically output file a unique name (e.g., BCCWS_Species, SalishSea_Migration, Watershed_Species), </span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>name<span class="ot">&lt;-</span><span class="st">"SalishSea_Family"</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#This is the template used for the State of Canada's Birds and is required for upload into NatureCounts</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Create output tables, which will include your custom name and the `model` you specified.</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">output_tables</span>(name, model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Give your analytically output file a unique name (e.g., BCCWS_Species, SalishSea_Migration, Watershed_Species), </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>name<span class="ot">&lt;-</span><span class="st">"SalishSea_Family"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#This is the template used for the State of Canada's Birds and is required for upload into NatureCounts</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Create output tables, which will include your custom name and the `model` you specified.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">output_tables</span>(name, model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You are ready to start your analysis! The analysis will write results to the files on in the <code>Output</code> folder and also create some plots for model checking.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we can initiate the analysis based on the `model` you previously specified.   </span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">run_analysis</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we can initiate the analysis based on the `model` you previously specified.   </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">run_analysis</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that the Dispersion Statistic file in the <code>Output</code> folder should be reviewed after the analysis. If the statistic is &gt; 10 you should inspect the FitPlots in the Plot directory. In this case we will want to rerun using a different distributional assumption on the counts. This can be done by manually changing the <code>fam</code> to Poisson and selecting these species to be rerun.</p>
 </section>
@@ -430,9 +416,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The map type your select to generate will be dependent on your <code>model</code> type.</p>
 <p>If running a iCAR analysis, a static spatial plots can be generated:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(model<span class="sc">==</span><span class="st">"iCAR"</span>){</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">graph_results</span>(name, trend)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(model<span class="sc">==</span><span class="st">"iCAR"</span>){</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">graph_results</span>(name)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -440,10 +426,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>Alt text for accessibility</figcaption>
 </figure>
 </div>
-<p>Map of species trends per survey site resulting from the SPDE analysis are best displayed as an interactive Shine App:</p>
-<iframe src="https://dmethier.shinyapps.io/SalishSeaTrends_Map/" width="100%" height="600">
-</iframe>
-<p>Code for creating the Shiny App are available at https://github.com/DMEthier/SalishSeaTrends_Map.</p>
 
 
 </section>
