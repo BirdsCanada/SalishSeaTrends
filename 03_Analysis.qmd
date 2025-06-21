@@ -123,7 +123,6 @@ xy<-st_transform(xy, mapCRS) #transform
   print(spatial_plot)
   ggsave(file.path(plot.dir, "iCAR_Spatial_Plot.jpeg"), 
          plot = spatial_plot, width = 8, height = 6, dpi = 300)
-}
 
 ```
 
