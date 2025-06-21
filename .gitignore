@@ -18,6 +18,7 @@
 
 Data/Spatial/BC_WA_Merged_Polygon*
 Data/Spatial/MidwinterAerialSeabirdSurveys.gdb
+Data/Spatial/PSEMP_basin*
 
 PlotTrends.R 
 SummaryTables.R

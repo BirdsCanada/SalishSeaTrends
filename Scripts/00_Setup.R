@@ -116,7 +116,7 @@ compute_dispersion_SPDE <- function(M1, Stack, fam) {
 } 
 
 #Calculate Dispersion Statistic for iCAR 
-calculate_dispersion_iCAR <- function(inla_model, observed, fam = "nbinomial") {
+calculate_dispersion_iCAR <- function(inla_model, observed, fam = fam) {
   # Extract fitted values
   mu <- inla_model$summary.fitted.values$mean
     # Initialize theta (only used for negative binomial)

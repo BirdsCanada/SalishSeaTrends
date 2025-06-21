@@ -13,6 +13,15 @@ if(species.list == "all"){
 sp.dat<-sp.dat %>% filter(wyear != 2020)
 event<-event %>% filter(wyear != 2020)
 
+# # Identify all unique wyear values
+# all_years <- unique(event$wyear)
+# 
+# # Filter basins with samples in every wyear
+# event <- event %>%
+#   group_by(Name) %>%
+#   filter(all(all_years %in% wyear)) %>%
+#   ungroup()
+
 guild <- tolower(guild)
 
 #If guild is set to "Yes" this will override the species list above.   
@@ -204,6 +213,7 @@ for(i in 1:length(sp.list)){
         
       }
       
+      if(fam == "nbinomial"){
       M2<-try(inla(formula, family = fam, data = dat, offset = log(dat$DurationInHours), 
                    control.predictor = list(compute = TRUE),
                    control.compute = list(
@@ -220,6 +230,26 @@ for(i in 1:length(sp.list)){
                      hyper = list(theta = list(prior = "loggamma", param = c(3, 0.1)))
                    )
       ))
+      }
+      
+      if(fam =="poisson"){
+        M2 <- try(INLA::inla(
+          formula, family = fam,  data = dat, offset = log(dat$DurationInHours),
+          control.predictor = list(compute = TRUE),
+          control.compute = list(
+            dic = TRUE, 
+            waic = TRUE, 
+            config = TRUE, 
+            cpo = TRUE
+          ),
+          control.fixed = list(
+            mean = 0,
+            prec = 0.001
+          )
+          # Removed control.family block
+        ))
+        
+      }
   
       if (inherits(M2, "try-error")) {
         cat("The iCAR model failed to run. Please check your input or model specifications.\n")
@@ -228,7 +258,7 @@ for(i in 1:length(sp.list)){
         print("Model iCAR model ran successfully.")
         
      #Dispersion Statistic
-       Dispersion1 <- calculate_dispersion_iCAR(M2, dat$ObservationCount)
+       Dispersion1 <- calculate_dispersion_iCAR(M2, dat$ObservationCount, fam)
        print(paste(sp.list[i], " Dispersions Statistic = ", Dispersion1, sep = ""))
       
        # Append to dispersion file
@@ -287,28 +317,6 @@ for(i in 1:length(sp.list)){
       
      tmp0<-NULL
 
-     # calculate_indices <- function(sample) {
-     #   # Extract effects for this posterior sample
-     #   alpha_vals <- sample$latent[grep("^alpha_i", rownames(sample$latent))]
-     #   tau_vals   <- sample$latent[grep("^tau_i", rownames(sample$latent))]
-     #   year_vals  <- sample$latent[grep("^year_idx", rownames(sample$latent))]
-     # 
-     # #   # Make a cell-year grid
-     #   expand_grid(
-     #     alpha_i = seq_along(alpha_vals),
-     #     year_idx = year_idx_vector
-     #   ) %>%
-     #     mutate(
-     #       # Lookup: year_vals should correspond to year_idx
-     #       # If year_vals named with year_idx, otherwise use position
-     #       year_effect = year_vals[match(year_idx, sort(unique(year_idx_vector)))],
-     #       log_index = alpha_vals[alpha_i] + year_effect, + tau_vals[alpha_i] * year_idx,
-     #       index1 = exp(log_index),
-     #       wyear = last_year + year_idx
-     #     )
-     # }
-
-     
      calculate_indices <- function(sample) {
        # Extract effects for this posterior sample
        alpha_vals    <- sample$latent[grep("^alpha_i", rownames(sample$latent))]
@@ -344,6 +352,7 @@ for(i in 1:length(sp.list)){
      
      tmp1<-NULL
      tmp1 <- tmp0 %>%
+       drop_na(index1) %>% 
        group_by(alpha_i, wyear) %>%
        summarise(
          index = mean(index1, na.rm = TRUE),
@@ -369,7 +378,7 @@ for(i in 1:length(sp.list)){
       area_weighted_indices <- all_samples_with_area%>%
         group_by(sample, wyear) %>%
         summarise(
-          weighted_index = sum(index1 * Area) / sum(Area),
+          weighted_index = sum(index1 * Area, na.rm = TRUE) / sum(Area), 
           .groups = "drop"
         )
       
@@ -377,11 +386,11 @@ for(i in 1:length(sp.list)){
       tmp2_area <- area_weighted_indices %>%
         group_by(wyear) %>%
         summarise(
-          index = mean(weighted_index),
-          stdev = sd(weighted_index),
+          index = mean(weighted_index, na.rm = TRUE),
+          stdev = sd(weighted_index, na.rm = TRUE),
           stderr = stdev / sqrt(n()),
-          lower_ci = quantile(weighted_index, 0.025),
-          upper_ci = quantile(weighted_index, 0.975),
+          lower_ci = quantile(weighted_index, 0.025, na.rm = TRUE),
+          upper_ci = quantile(weighted_index, 0.975, na.rm = TRUE),
           .groups = "drop"
         ) %>%
         mutate(
@@ -488,11 +497,21 @@ for(i in 1:length(sp.list)){
    
       #Full area
       calc_area_weighted_slope <- function(df) {
+        # Check for at least 5 unique years
+        if (length(unique(df$wyear)) < 5) {
+          return(tibble(slope = NA_real_, 
+                        percent_annual_change = NA_real_))
+        }
+        
+        # Proceed with trend calculation
         fit <- lm(log(weighted_index) ~ wyear, data = df)
         slope <- coef(fit)[2]
-        percent_annual_change = 100 * (exp(slope) - 1)
-        tibble(slope = slope, percent_annual_change = percent_annual_change)
+        percent_annual_change <- 100 * (exp(slope) - 1)
+        
+        tibble(slope = slope, 
+               percent_annual_change = percent_annual_change)
       }
+      
       
       area_slope_trends <- area_weighted_indices %>%
         group_by(sample) %>%

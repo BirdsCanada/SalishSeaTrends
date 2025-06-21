@@ -6,7 +6,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Run the setup if starting a new environment and load previously saved data and format for analysis.
+Run the setup if starting a new environment and load previously saved data and filter for analysis.
 
 ```{r}
 
@@ -16,25 +16,34 @@ source("Scripts/00_Setup.R")
 Y1 = 2008
 Y2 = 2024
 
-#Load your saved species data 
+#Manually specify the area of the analysis
+area <- "SALISHSEA" #one word to be compatible with the code.
+#area <- "BCCWS"
+#area <- "PSSS"
+
+
+#Load your saved species data and filter for years and area
 sp.data<-read.csv("Data/sp.data.csv")
-sp.data <-sp.data %>% filter(wyear>=Y1 & wyear<=Y2)
+sp.data <- sp.data %>% filter(wyear >= Y1 & wyear <= Y2)
 
-#Load your saved events data which is needed for zero-filling
-events<-read.csv("Data/events.csv")
-events<-events %>% filter(wyear>=Y1 & wyear<=Y2)
+if(area != "SALISHSEA") {
+  sp.data <- sp.data %>% filter(ProjectCode == area)
+}
 
-#Create a spatial points layers for graphing results
-loc<-events %>% select(SurveyAreaIdentifier, DecimalLatitude, DecimalLongitude) %>% distinct()
-xy<-st_as_sf(loc, coords = c("DecimalLongitude", "DecimalLatitude"))
-st_crs(xy)<-"+proj=longlat +datum=NAD83"
+# Load your saved events data which is needed for zero-filling
+events <- read.csv("Data/events.csv")
+events <- events %>% filter(wyear >= Y1 & wyear <= Y2)
+
+if(area != "SALISHSEA") {
+  events <- events %>% filter(ProjectCode == area)
+}
 
 #Load the Salish Sea Water Polygon for graphing results 
 map<- st_read("Data/Spatial/Salish_Sea_Water_Polygon.shp")
 
 #ensure the coordinate reference systems are the same
 mapCRS<-st_crs(map) #get the CRS of the poly data
-xy<-st_transform(xy, mapCRS) #transform 
+
 
 ```
 
@@ -49,19 +58,7 @@ You can choose the continuous space "SPDE" or discrete space "iCAR" method.
 ```{r}
 
 model<-"iCAR"
-#model<-"SPDE"
-
-```
-
-If doing an SPDE model, you may define your `area` as "SALISHSEA", "BCCWS", or "PSSS". Only sites with more than 10 years of data will be retained in the analysis.
-
-```{r}
-
-if(model == "SPDE"){
-area <- "SALISHSEA" #one word to be compatible with the code.
-#area <- "BCCWS"
-#area <- "PSSS"
-}
+#model<-"SPDE" # Only sites with >= 10 years of data will be retained
 
 ```
 
@@ -115,17 +112,24 @@ grid <- xy_assigned %>%
   filter(Name %in% poly$Name) %>%
   select(SurveyAreaIdentifier, Name, Area) %>%
   distinct() %>%
-  mutate(alpha_i = as.integer(factor(Name)))
+  mutate(alpha_i = as.integer(factor(Name)))%>% 
+  drop_na(Name) #Drop unassigned point
 
 # Merge grid info back to events
 events <- events %>%
   left_join(grid, by = "SurveyAreaIdentifier") %>%
   drop_na(Name)
 
-  # Visualization
+#Create a spatial points layers for graphing results
+loc<-events %>% select(SurveyAreaIdentifier, DecimalLatitude, DecimalLongitude) %>% distinct()
+xy<-st_as_sf(loc, coords = c("DecimalLongitude", "DecimalLatitude"))
+st_crs(xy)<-"+proj=longlat +datum=NAD83"
+xy<-st_transform(xy, mapCRS) #transform 
+
+# Visualization
   spatial_plot <- ggplot() +
     geom_sf(data = poly, aes(fill = Name), color = "black") +
-    geom_sf(data = xy, color = "black", size = 1) +
+    geom_sf(data = xy2, color = "black", size = 1) +
     theme_minimal()
   
   print(spatial_plot)
@@ -255,7 +259,7 @@ If running a iCAR analysis, a static spatial plots can be generated:
 ```{r}
 
 if(model=="iCAR"){
- graph_results(name, trend)
+ graph_results(name)
 }
 
 ```
