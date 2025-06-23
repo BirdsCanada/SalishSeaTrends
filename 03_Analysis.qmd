@@ -46,13 +46,20 @@ mapCRS<-st_crs(map) #get the CRS of the poly data
 
 model<-"iCAR"
 
+#Create a spatial points layers for graphing results
+loc<-events %>% select(SurveyAreaIdentifier, DecimalLatitude, DecimalLongitude) %>% distinct()
+xy<-st_as_sf(loc, coords = c("DecimalLongitude", "DecimalLatitude"))
+st_crs(xy)<-"+proj=longlat +datum=NAD83"
+xy<-st_transform(xy, mapCRS) #transform 
+
+
 ```
 
 ## Set Analysis Parameters {#3.1Analysis}
 
 Here the user has several customization options.
 
-If doing an iCAR model, upload the desired spatial polygon for the analysis. We use "Watersheds in the Salish Sea Bioregion" layer from the [Salish Sea Atlas Data](https://salish-sea-atlas-data-wwu.hub.arcgis.com/) as an example.
+Upload the desired spatial polygon for the analysis. We use "Watersheds in the Salish Sea Bioregion" layer from the [Salish Sea Atlas Data](#0) as an example.
 
 ```{r}
   assignment_method <- "within"  
@@ -108,16 +115,10 @@ events <- events %>%
   left_join(grid, by = "SurveyAreaIdentifier") %>%
   drop_na(Name)
 
-#Create a spatial points layers for graphing results
-loc<-events %>% select(SurveyAreaIdentifier, DecimalLatitude, DecimalLongitude) %>% distinct()
-xy<-st_as_sf(loc, coords = c("DecimalLongitude", "DecimalLatitude"))
-st_crs(xy)<-"+proj=longlat +datum=NAD83"
-xy<-st_transform(xy, mapCRS) #transform 
-
 # Visualization
   spatial_plot <- ggplot() +
     geom_sf(data = poly, aes(fill = Name), color = "black") +
-    geom_sf(data = xy2, color = "black", size = 1) +
+    geom_sf(data = xy, color = "black", size = 1) +
     theme_minimal()
   
   print(spatial_plot)
@@ -191,7 +192,6 @@ Select the distributional family, and set random and spatial priors, or retain t
 ```{r}
 
 #Here we select 'nbinomal' but this may need to adjust if there is residual overdispersion. 
-
 fam<-'nbinomial'
 #fam<-'poisson'
 
@@ -210,7 +210,7 @@ The Output_Tables function creates is a file for Annual Indices, Trends, and a f
 
 #Give your analytically output file a unique name (e.g., BCCWS_Species, SalishSea_Migration, Watershed_Species), 
 
-name<-"SalishSea_Family"
+name<-"Watershed_Family"
 
 #This is the template used for the State of Canada's Birds and is required for upload into NatureCounts
 
@@ -223,7 +223,6 @@ You are ready to start your analysis! The analysis will write results to the fil
 
 ```{r}
 
-#Now we can initiate the analysis based on the `model` you previously specified.   
 run_analysis(model)
 
 ```
@@ -232,15 +231,11 @@ Note that the Dispersion Statistic file in the `Output` folder should be reviewe
 
 ## Map Results {#3.3Vis}
 
-The map type your select to generate will be dependent on your `model` type.
-
-If running a iCAR analysis, a static spatial plots can be generated:
+Finally, you can visualize your results.
 
 ```{r}
 
-if(model=="iCAR"){
  graph_results(name)
-}
 
 ```
 
