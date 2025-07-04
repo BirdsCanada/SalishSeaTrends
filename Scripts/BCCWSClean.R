@@ -96,7 +96,7 @@ clean_BCCWS <- function(Y1, Y2) {
   in.BCCWS <- in.BCCWS %>%
     mutate(
       CommonName = case_when(
-        CommonName %in% c("gull (large)", "Iceland Gull", "Iceland Gull (Thayer's)", "Western x Glaucous-winged Gull (hybrid)", "Glaucous Gull", "Glaucous-winged Gull", "Western Gull", "Herring Gull", "Iceland (Thayer's) Gull", "Iceland (Thayer's Gull)", "WEGU x GWGU hybrid", "California Gull") ~ "Large Gull",
+        CommonName %in% c("gull (large)", "Iceland Gull", "Iceland Gull (Thayer's)", "Western x Glaucous-winged Gull (hybrid)", "Glaucous Gull", "Glaucous-winged Gull", "Western Gull", "Herring Gull", "Iceland (Thayer's) Gull", "Iceland (Thayer's Gull)", "WEGU x GWGU hybrid", "California Gull") ~ "Larus sp.",
         CommonName %in% c("scaup sp.", "Lesser Scaup", "Greater Scaup", "Greater/Lesser Scaup") ~ "Greater-Lesser Scaup",
         CommonName %in% c("Eared Grebe", "Horned Grebe") ~ "Eared-Horned Grebe",
         CommonName %in% c("Canada Goose", "Cackling Goose") ~ "Canada-Cackling Goose",
@@ -105,7 +105,18 @@ clean_BCCWS <- function(Y1, Y2) {
       )
     )
   
-  
+  # Then, update species_id based on the new CommonName
+  in.BCCWS <- in.BCCWS %>%
+    mutate(
+      species_id = case_when(
+        CommonName == "Greater-Lesser Scaup" ~ 695,
+        CommonName == "Eared-Horned Grebe" ~ 41201,
+        CommonName == "Large Gull" ~ 41291,
+        CommonName == "Canada-Cackling Goose" ~ 261,
+        CommonName == "Western-Clark's Grebe" ~ 1641,
+        TRUE ~ species_id  # Keep existing value if not matched
+      )
+    )
   
   # Remove rows with NA CommonName or ObservationCount
   in.BCCWS <- in.BCCWS %>% filter(!is.na(CommonName), !is.na(ObservationCount))

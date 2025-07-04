@@ -397,7 +397,7 @@ for(i in 1:length(sp.list)){
           alpha_i =999,
           Area = 999,
           Name = "AreaWeighted", 
-          area_code="Full Study Area" # Identifier for merged output
+          area_code="BCR_5" # Identifier for merged output
          )
       
       tmp1 <-rbind(tmp1, tmp2_area)
@@ -421,8 +421,8 @@ for(i in 1:length(sp.list)){
         smooth_lower_ci="",
         upload_dt="",
         family=fam,
-        results_code = "BCCWS/PSSS",
-        version = Sys.Date(),
+        results_code = "BCCWS_PSSS",
+        version = as.integer(format(Sys.Date(), "%Y")),
         season="Winter"
           )
       
@@ -481,10 +481,10 @@ for(i in 1:length(sp.list)){
         ) %>%
         mutate(
           index_type = "Slope Trend",
-          Width_of_Credible_Interval = upper_ci - lower_ci,
+          precision_num = upper_ci - lower_ci,
           precision_cat = case_when(
-            Width_of_Credible_Interval < 3.5           ~ "High",
-            between(Width_of_Credible_Interval, 3.5, 6.7) ~ "Medium",
+            precision_num < 3.5           ~ "High",
+            between(precision_num, 3.5, 6.7) ~ "Medium",
             TRUE                                       ~ "Low"
           )
         ) %>%
@@ -542,15 +542,15 @@ for(i in 1:length(sp.list)){
         mutate(
           aplha_i = 9999, 
           index_type = "Slope Trend",
-          Width_of_Credible_Interval = upper_ci - lower_ci,
+          precision_num = upper_ci - lower_ci,
           precision_cat = case_when(
-            Width_of_Credible_Interval < 3.5           ~ "High",
-            between(Width_of_Credible_Interval, 3.5, 6.7) ~ "Medium",
+            precision_num < 3.5           ~ "High",
+            between(precision_num, 3.5, 6.7) ~ "Medium",
             TRUE                                       ~ "Low"
           ),
-          Name = "Full Study Area", 
+          Name = "BCR_5", 
           Area = 9999, 
-          area_code="Full Study Area",
+          area_code="BCR_5",
           percent_change = percent_change)
       
       all_cols <- union(names(slope_summary), names(area_slope_summary))
@@ -585,8 +585,8 @@ for(i in 1:length(sp.list)){
                year_end = Y2,
                period ="all years",
                season = "winter",
-               results_code = "BCCWS/PSSS",
-               version= Sys.Date(), 
+               results_code = "BCCWS_PSSS",
+               version = as.integer(format(Sys.Date(), "%Y")), 
                species_code = sp.code,
                species_id=sp.id, 
                species_name=species_name,
@@ -602,7 +602,7 @@ for(i in 1:length(sp.list)){
                prob_increase_33 = "",	
                prob_increase_100 = "",
                confidence = "",
-               precision_num = "",
+               #precision_num = "",
                suitability="",
                coverage_num = "",
                coverage_cat = "",
@@ -708,7 +708,7 @@ for(i in 1:length(sp.list)){
         summarise(
           trend_index = mean(index_pred)
         ) %>% 
-        mutate(area_code = "Full Study Area", year=wyear) %>% select(-wyear)
+        mutate(area_code = "BCR_5", year=wyear) %>% select(-wyear)
       
       #Combine output
        trends_index<-rbind(trends_index, slope_points_summary)

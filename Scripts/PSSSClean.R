@@ -89,12 +89,25 @@ clean_PSSS <- function(Y1, Y2) {
       CommonName = case_match(
         CommonName,
         c("gull (large)", "Glaucous Gull", "Glaucous-winged Gull", "Western Gull", "Herring Gull",
-          "Iceland (Thayer's) Gull", "Iceland (Thayer's Gull)", "WEGU x GWGU hybrid", "California Gull") ~ "Large Gull",
+          "Iceland (Thayer's) Gull", "Iceland (Thayer's Gull)", "WEGU x GWGU hybrid", "California Gull") ~ "Larus sp.",
         c("scaup sp.", "Lesser Scaup", "Greater Scaup", "Greater-Lesser Scaup") ~ "Greater-Lesser Scaup",
         c("Eared Grebe", "Horned Grebe") ~ "Eared-Horned Grebe",
         c("Canada Goose", "Cackling Goose") ~ "Canada-Cackling Goose",
         c("Clark's Grebe", "Western Grebe") ~ "Western-Clark's Grebe",
         .default = CommonName
+      )
+    )
+  
+  # Then, update species_id based on the new CommonName
+  in.PSSS <- in.PSSS %>%
+    mutate(
+      species_id = case_when(
+        CommonName == "Greater-Lesser Scaup" ~ 695,
+        CommonName == "Eared-Horned Grebe" ~ 41201,
+        CommonName == "Large Gull" ~ 41291,
+        CommonName == "Canada-Cackling Goose" ~ 261,
+        CommonName == "Western-Clark's Grebe" ~ 1641,
+        TRUE ~ species_id  # Keep existing value if not matched
       )
     )
   
