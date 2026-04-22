@@ -121,7 +121,7 @@ Additional data cleaning includes the creation of:
 #Keep in mind that this is the winter year (wyear) which is the start year of the survey
 #The survey straddles two calendar years
 Y1 = 2008
-Y2 = 2024
+Y2 = 2024 
 
 clean_BCCWS<-clean_BCCWS(Y1, Y2)
 clean_PSSS<-clean_PSSS(Y1, Y2)
@@ -184,7 +184,7 @@ family<-meta_species_taxonomy() %>% select(species_id, group_id, family_name, fa
 
 guilds<-left_join(guilds, family, by=c("species_id"))
 
-sp.data<-left_join(sp.data, guilds, by=c("CommonName" = "english_name"))
+sp.data<-left_join(sp.data, guilds, by=c("CommonName" = "english_name", "species_id"))
 
 #write to Data folder in working directory
 write.csv(sp.data, "Data/sp.data.csv", row.names = FALSE)

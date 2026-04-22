@@ -1,5 +1,6 @@
 clean_BCCWS <- function(Y1, Y2) {
   # Read raw data
+  in.BCCWS<- NULL
   in.BCCWS <- read.csv("Data/BCCWS_BMDE.csv")
   
   # Adjust SpeciesCode for MEW GULL species_id 5140 and 5142
@@ -84,7 +85,7 @@ clean_BCCWS <- function(Y1, Y2) {
   event.BCCWS <- event.BCCWS %>% group_by(ProjectCode, SurveyAreaIdentifier) %>% slice_min(DecimalLatitude) %>% ungroup()
   
   # Retain needed columns for analysis
-  in.BCCWS <- in.BCCWS %>% select(ProjectCode, SurveyAreaIdentifier, SpeciesCode, CommonName, ObservationCount, wyear, YearCollected, wmonth, MonthCollected, DayCollected)
+  in.BCCWS <- in.BCCWS %>% select(ProjectCode, SurveyAreaIdentifier, SpeciesCode, species_id, CommonName, ObservationCount, wyear, YearCollected, wmonth, MonthCollected, DayCollected)
   
   # Remove species detected less than 10 times over all years
   sample <- in.BCCWS %>% group_by(CommonName) %>% summarise(n_tot = sum(ObservationCount, na.rm = TRUE)) %>% filter(n_tot > 10)
@@ -109,12 +110,12 @@ clean_BCCWS <- function(Y1, Y2) {
   in.BCCWS <- in.BCCWS %>%
     mutate(
       species_id = case_when(
-        CommonName == "Greater-Lesser Scaup" ~ 695,
-        CommonName == "Eared-Horned Grebe" ~ 41201,
-        CommonName == "Large Gull" ~ 41291,
-        CommonName == "Canada-Cackling Goose" ~ 261,
-        CommonName == "Western-Clark's Grebe" ~ 1641,
-        TRUE ~ species_id  # Keep existing value if not matched
+        CommonName == "Greater-Lesser Scaup"  ~ 695L,
+        CommonName == "Eared-Horned Grebe"    ~ 41201L,
+        CommonName == "Large Gull"            ~ 41291L,
+        CommonName == "Canada-Cackling Goose" ~ 261L,
+        CommonName == "Western-Clark's Grebe" ~ 1641L,
+        TRUE ~ .data$species_id   # explicitly use the existing column
       )
     )
   

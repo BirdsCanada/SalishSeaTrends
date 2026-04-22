@@ -79,9 +79,9 @@ species_id,species_code,english_name,scientific_name,Migration,Diet
 5240,WEGU,Western Gull,Larus occidentalis,SDM,Omnivore
 45994,WWSC,White-winged Scoter,Melanitta deglandi,SDM,Benthivore
 1570,YBLO,Yellow-billed Loon,Gavia adamsii,LDM,Piscivore
-680,GRSC,Greater-Lesser Scaup,Aythya marila/ affinis,SDM,Omnivore
-1640,EAGR,Eared-Horned Grebe,Podiceps nigricollis/ auritus,SDM,Benthivore
-1650,WEGR,Western-Clark's Grebe,Aechmophorus occidentalis/ clarkii,SDM,Piscivore
-230,CAGO,Canada-Cackling Goose,Branta canadensis/ hutchinsii,Local,Herbivore
-5160,CAGU,Large Gull,Larus sp. ,SDM,Omnivore
+695,GRSC,Greater-Lesser Scaup,Aythya marila/ affinis,SDM,Omnivore
+41201,EAGR,Eared-Horned Grebe,Podiceps nigricollis/ auritus,SDM,Benthivore
+1641,WEGR,Western-Clark's Grebe,Aechmophorus occidentalis/ clarkii,SDM,Piscivore
+261,CAGO,Canada-Cackling Goose,Branta canadensis/ hutchinsii,Local,Herbivore
+41291,CAGU,Large Gull,Larus sp. ,SDM,Omnivore
 280,TUSW,Trumpeter Swan,Cygnus buccinator,SDM,Herbivore

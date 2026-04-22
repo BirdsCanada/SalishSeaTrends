@@ -1,10 +1,6 @@
 #Analysis iCAR
 
-if(species.list == "all"){
-  sp.list<-unique(sp.data$CommonName)
-}else{
   sp.list<-species.list
-}
 
   sp.dat<-sp.data 
   event<-events
@@ -172,11 +168,20 @@ for(i in 1:length(sp.list)){
         area_year = as.integer(factor(paste(Name, wyear, sep = "_"))))%>%
         arrange(SurveyAreaIdentifier, wyear)
       
+    
+      #if(response == "max"){
       # Aggregate data to annual max count
       dat <- dat %>%
         group_by(SurveyAreaIdentifier, wyear) %>%
         slice_max(ObservationCount, n = 1, with_ties = FALSE) %>%
         ungroup()
+      }else{
+        #Get the median observation count
+        dat <- dat %>%
+          group_by(SurveyAreaIdentifier, wyear) %>%
+          mutate(ObservationCount = round(median(ObservationCount, na.rm = TRUE))) %>%
+          ungroup()
+      #}
       
       #hyper.iid.simple <- list(prec = list(initial = 0, fixed = TRUE))
       
@@ -256,6 +261,80 @@ for(i in 1:length(sp.list)){
       } else {
         # Continue with normal processing
         print("Model iCAR model ran successfully.")
+        
+ #Model Diagnostics
+    
+        # --- Simulation-based residuals using INLA PITs ---
+        pit_vals <- M2$cpo$pit
+        resid_uniform <- pit_vals  # "DHARMa-style" PIT residuals
+        # mu1 = posterior mean of fitted values (on response scale)
+        mu1 <- M2$summary.fitted.values$mean
+        
+        
+        res_df <- data.frame(
+          PIT = resid_uniform,
+          Fitted = mu1
+        )
+        
+        # QQ plot against Uniform(0,1)
+        qq_p <- ggplot(res_df, aes(sample = PIT)) +
+          stat_qq(distribution = stats::qunif) +
+          stat_qq_line(distribution = stats::qunif, colour = "red") +
+          labs(title = paste("PIT QQ-plot (iCAR)", sp.list[i]),
+               x = "Theoretical quantiles (Uniform)",
+               y = "Sample quantiles (PIT)") +
+          theme_minimal()
+        
+        ggsave(
+          filename = file.path(plot.dir, paste0(name, sp.list[i], "_PIT_QQ_iCAR.jpeg")),
+          plot = qq_p, width = 6, height = 5, dpi = 150
+        )
+        
+        # Histogram of PIT values
+        hist_p <- ggplot(res_df, aes(x = PIT)) +
+          geom_histogram(bins = 20, colour = "black", fill = "grey80") +
+          labs(title = paste("PIT histogram (iCAR)", sp.list[i]),
+               x = "PIT value", y = "Count") +
+          theme_minimal()
+        
+        ggsave(
+          filename = file.path(plot.dir, paste0(name, sp.list[i], "_PIT_hist_iCAR.jpeg")),
+          plot = hist_p, width = 6, height = 5, dpi = 150
+        )
+        
+        # PIT vs fitted
+        rf_p <- ggplot(res_df, aes(x = Fitted, y = PIT)) +
+          geom_point(alpha = 0.3, colour = "dodgerblue") +
+          geom_smooth(se = FALSE, method = "loess", colour = "red") +
+          labs(title = paste("PIT vs fitted (iCAR)", sp.list[i]),
+               x = "Fitted value", y = "PIT") +
+          theme_minimal()
+        
+        ggsave(
+          filename = file.path(plot.dir, paste0(name, sp.list[i], "_PIT_vs_fitted_iCAR.jpeg")),
+          plot = rf_p, width = 6, height = 5, dpi = 150
+        )
+        
+        pit_mean  <- mean(pit_vals, na.rm = TRUE)
+        pit_var   <- var(pit_vals,  na.rm = TRUE)
+        ks_test   <- suppressWarnings(ks.test(pit_vals, "punif", 0, 1))
+        
+        diag_entry <- data.frame(
+          area_code = name,
+          SpeciesCode = sp.list[i],
+          pit_mean = pit_mean,
+          pit_var = pit_var,
+          ks_D = ks_test$statistic,
+          ks_p = ks_test$p.value
+        )
+        
+        write.table(
+          diag_entry,
+          file = paste0(out.dir, name, "_PITDiag_iCAR.csv"),
+          append = TRUE, sep = ",",
+          row.names = FALSE, col.names = !file.exists(paste0(out.dir, name, "_PITDiag_iCAR.csv"))
+        )
+        
         
      #Dispersion Statistic
        Dispersion1 <- calculate_dispersion_iCAR(M2, dat$ObservationCount, fam)

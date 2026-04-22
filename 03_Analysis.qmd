@@ -136,14 +136,14 @@ For a species-specific analysis, select the species you wish to analyse.
 ```{r}
 
 #To view your options of species
-species<-unique(sp.data$CommonName)
-#view(species)
-
-#Create a list of species using all available species in the dataset.
-species.list<-tolower("All") #R is case sensitive
+species.list<-unique(sp.data$CommonName)
+#view(species.list)
 
 #Or you can manually select species. Ensure case and spelling is correct. 
 #species.list <- c("American Wigeon", "Common Loon", "Large Gull") 
+
+# #Create a list of species using all available species in the dataset.
+# species.list<-tolower("All") #R is case sensitive
 
 
 ```
@@ -210,7 +210,7 @@ The Output_Tables function creates is a file for Annual Indices, Trends, and a f
 
 #Give your analytically output file a unique name (e.g., BCCWS_Species, SalishSea_Migration, Watershed_Species), 
 
-name<-"Watershed_Migration"
+name<-"SalishSea_Species"
 
 #This is the template used for the State of Canada's Birds and is required for upload into NatureCounts
 
