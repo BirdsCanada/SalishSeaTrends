@@ -63,7 +63,7 @@ Upload the desired spatial polygon for the analysis. We use "Watersheds in the S
 
 ```{r}
   assignment_method <- "within"  
-# assignment_method <- "nearest"
+ #assignment_method <- "nearest"
   
 # Load and prepare polygon
   poly <- st_read("Data/Spatial/Salish_Sea_Watersheds.shp") %>% 
@@ -137,7 +137,7 @@ For a species-specific analysis, select the species you wish to analyse.
 
 #To view your options of species
 species.list<-unique(sp.data$CommonName)
-#view(species.list)
+#View(species.list)
 
 #Or you can manually select species. Ensure case and spelling is correct. 
 #species.list <- c("American Wigeon", "Common Loon", "Large Gull") 
@@ -166,8 +166,8 @@ diet<-unique(sp.data$Diet)
 family<-unique(sp.data$family_name)
 #view(family)
 
-#select on of the options for the analysis
-type <-"migration"
+#select one of the options for the analysis
+type <-"diet"
 
 ```
 
@@ -210,7 +210,7 @@ The Output_Tables function creates is a file for Annual Indices, Trends, and a f
 
 #Give your analytically output file a unique name (e.g., BCCWS_Species, SalishSea_Migration, Watershed_Species), 
 
-name<-"SalishSea_Species"
+name<-"SalishSea_DietGuild"
 
 #This is the template used for the State of Canada's Birds and is required for upload into NatureCounts
 

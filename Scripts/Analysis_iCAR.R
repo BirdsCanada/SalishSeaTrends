@@ -168,19 +168,19 @@ for(i in 1:length(sp.list)){
         area_year = as.integer(factor(paste(Name, wyear, sep = "_"))))%>%
         arrange(SurveyAreaIdentifier, wyear)
       
-    
+      #This is not activated as an option in the analysis, but could be if a different response is desired. 
       #if(response == "max"){
       # Aggregate data to annual max count
       dat <- dat %>%
         group_by(SurveyAreaIdentifier, wyear) %>%
         slice_max(ObservationCount, n = 1, with_ties = FALSE) %>%
         ungroup()
-      }else{
-        #Get the median observation count
-        dat <- dat %>%
-          group_by(SurveyAreaIdentifier, wyear) %>%
-          mutate(ObservationCount = round(median(ObservationCount, na.rm = TRUE))) %>%
-          ungroup()
+      # }else{
+      #   #Get the median observation count
+      #   dat <- dat %>%
+      #     group_by(SurveyAreaIdentifier, wyear) %>%
+      #     mutate(ObservationCount = round(median(ObservationCount, na.rm = TRUE))) %>%
+      #     ungroup()
       #}
       
       #hyper.iid.simple <- list(prec = list(initial = 0, fixed = TRUE))
@@ -202,8 +202,7 @@ for(i in 1:length(sp.list)){
              hyper = hyper.iid) +
           f(area_year, model="iid", hyper=hyper.iid)
          
-          
-       
+     
       }else{
         
         formula<- ObservationCount ~ -1 + 
@@ -388,6 +387,12 @@ for(i in 1:length(sp.list)){
         filter(alpha_i %in% cells_with_counts) %>%
         group_by(alpha_i) %>%
         summarise(sample_size = n_distinct(SurveyAreaIdentifier), .groups = "drop")
+      
+      sum_row <- data.frame(
+        alpha_i = "BCR_5",
+        sample_size = sum(sample_size$sample_size, na.rm = TRUE)
+      )
+      sample_size <- rbind(sample_size, sum_row)
       
       #Calculate Posterior estimate of abundance
       nsamples<- 1000
@@ -706,6 +711,9 @@ for(i in 1:length(sp.list)){
                quantile_950 = "",
                trend_id = "",
                upload_dt = "")
+      
+      trend.out$alpha_i   <- as.character(trend.out$alpha_i)
+      sample_size$alpha_i <- as.character(sample_size$alpha_i)
       
       trend.out<-left_join(trend.out, sample_size, by="alpha_i")
       
