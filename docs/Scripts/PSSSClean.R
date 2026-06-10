@@ -1,5 +1,6 @@
 clean_PSSS <- function(Y1, Y2) {
   # Read raw data
+  in.PSSS<-NULL
   in.PSSS <- read.csv("Data/PSSS_BMDE.csv")
   
   # Fix Thayer's Gull species code
@@ -71,12 +72,16 @@ clean_PSSS <- function(Y1, Y2) {
     slice_min(DurationInHours) %>%
     ungroup()
   
+  sp.tx2<-sp.tax %>% select(species_id, english_name) %>% distinct()
+  
+  in.PSSS<-left_join(in.PSSS, sp.tx2, by=c("CommonName" = "english_name"), relationship = "many-to-many")
+  
   # Clean observation data
   in.PSSS <- in.PSSS %>%
     filter(!is.na(ObservationCount), !is.na(SurveyAreaIdentifier)) %>%
-    group_by(ProjectCode, SurveyAreaIdentifier, SpeciesCode, CommonName, wyear, wmonth, YearCollected, MonthCollected, DayCollected) %>%
+    group_by(ProjectCode, SurveyAreaIdentifier, SpeciesCode, species_id, CommonName, wyear, wmonth, YearCollected, MonthCollected, DayCollected) %>%
     summarise(ObservationCount = sum(ObservationCount), .groups = "drop") %>%
-    select(ProjectCode, SurveyAreaIdentifier, SpeciesCode, CommonName, ObservationCount, wyear, wmonth, YearCollected, MonthCollected, DayCollected)
+    select(ProjectCode, SurveyAreaIdentifier, SpeciesCode, species_id, CommonName, ObservationCount, wyear, wmonth, YearCollected, MonthCollected, DayCollected)
   
   # Filter and group species
   in.PSSS <- in.PSSS %>%
@@ -89,12 +94,25 @@ clean_PSSS <- function(Y1, Y2) {
       CommonName = case_match(
         CommonName,
         c("gull (large)", "Glaucous Gull", "Glaucous-winged Gull", "Western Gull", "Herring Gull",
-          "Iceland (Thayer's) Gull", "Iceland (Thayer's Gull)", "WEGU x GWGU hybrid", "California Gull") ~ "Large Gull",
+          "Iceland (Thayer's) Gull", "Iceland (Thayer's Gull)", "WEGU x GWGU hybrid", "California Gull") ~ "Larus sp.",
         c("scaup sp.", "Lesser Scaup", "Greater Scaup", "Greater-Lesser Scaup") ~ "Greater-Lesser Scaup",
         c("Eared Grebe", "Horned Grebe") ~ "Eared-Horned Grebe",
         c("Canada Goose", "Cackling Goose") ~ "Canada-Cackling Goose",
         c("Clark's Grebe", "Western Grebe") ~ "Western-Clark's Grebe",
         .default = CommonName
+      )
+    )
+  
+  # Then, update species_id based on the new CommonName
+  in.PSSS <- in.PSSS %>%
+    mutate(
+      species_id = case_when(
+        CommonName == "Greater-Lesser Scaup"  ~ 695L,
+        CommonName == "Eared-Horned Grebe"    ~ 41201L,
+        CommonName == "Large Gull"            ~ 41291L,
+        CommonName == "Canada-Cackling Goose" ~ 261L,
+        CommonName == "Western-Clark's Grebe" ~ 1641L,
+        TRUE ~ .data$species_id   # explicitly use the existing column
       )
     )
   

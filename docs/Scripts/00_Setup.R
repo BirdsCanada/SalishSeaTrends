@@ -45,7 +45,7 @@ if (!requireNamespace("INLA", quietly = TRUE)) {
 
 # 4. Install and load all required packages using librarian::shelf()
 librarian::shelf(
-  "BirdsCanada/naturecounts", tidyverse, sf, mapview, sdmpredictors,
+  "BirdsCanada/naturecounts", dplyr, tidyverse, sf, mapview, sdmpredictors,
   svMisc, terra, geojsonsf, leaflet, HelpersMG, gdalUtilities, ggplot2,
   exactextractr, readxl, reshape, ggmap, gridExtra, ggspatial, prettymapr, 
   rnaturalearth, mgcv, sn, fmesher, inlabru, splines, 

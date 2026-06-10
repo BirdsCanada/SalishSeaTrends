@@ -29,6 +29,8 @@ if(!inherits(map, "sf")) stop("map must be an sf object")
 
 species_list3 <- unique(all.trends$species_code)
 
+all.trends<-all.trends %>% filter(area_code!="BCR-5")
+
 for(current_sp in species_list3) {
   # Filter data for current species
   species_data <- all.trends %>% filter(species_code == current_sp)
